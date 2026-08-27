@@ -1,6 +1,7 @@
 import { Router } from "express";
 import rateLimit   from "express-rate-limit";
-import { adminAuth } from "../config/firebaseAdmin";
+import { adminAuth }   from "../config/firebaseAdmin";
+import { requireAuth } from "../middleware/auth";
 
 export const authRoutes = Router();
 
@@ -43,13 +44,27 @@ authRoutes.post("/check-email", authLimiter, async (req, res) => {
 });
 
 // POST /api/auth/revoke-tokens
-// Revokes all refresh tokens for a user (call on suspicious activity)
-authRoutes.post("/revoke-tokens", resetLimiter, async (req, res) => {
-  const { uid } = req.body as { uid?: string };
-  if (!uid || typeof uid !== "string") {
-    res.status(400).json({ error: "uid is required" });
+// Revokes all refresh tokens for the CALLER (call on suspicious activity).
+//
+// This used to read `uid` from the request body with no authentication at all,
+// which let any anonymous caller sign out any account whose Firebase UID they
+// knew — and UIDs are not secrets: they appear in medicines.userId,
+// doseLogs.userId and in the deterministic careGuardianLinks ID
+// `{guardianId}_{patientId}`. (MG-SEC-002.)
+//
+// The identity now comes from the verified ID token, never from the body, so
+// the endpoint can only ever act on the session that called it. A body `uid` is
+// rejected outright rather than ignored, so a caller relying on the old shape
+// gets a clear 400 instead of silently revoking their own session.
+authRoutes.post("/revoke-tokens", requireAuth, resetLimiter, async (req, res) => {
+  if ((req.body as { uid?: unknown })?.uid !== undefined) {
+    res.status(400).json({
+      error: "uid is not accepted; this endpoint only revokes the caller's own session",
+    });
     return;
   }
+
+  const uid = (req as any).uid as string;
   try {
     await adminAuth.revokeRefreshTokens(uid);
     res.json({ success: true });

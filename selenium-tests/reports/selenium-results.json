@@ -1,0 +1,4464 @@
+{
+  "summary": {
+    "total": 300,
+    "passed": 300,
+    "failed": 0,
+    "skipped": 0,
+    "passRate": "100.00%",
+    "totalMs": 32651
+  },
+  "results": [
+    {
+      "id": "SEL-001",
+      "suite": "01 Public Page Smoke",
+      "title": "Login page — document reaches readyState=complete",
+      "steps": [
+        "Navigate to /login",
+        "Wait for the auth gate to settle",
+        "Assert readyState === 'complete'"
+      ],
+      "expected": "readyState === 'complete'",
+      "status": "PASS",
+      "actual": "complete",
+      "error": "",
+      "durationMs": 175
+    },
+    {
+      "id": "SEL-002",
+      "suite": "01 Public Page Smoke",
+      "title": "Login page — React mounts content into #root",
+      "steps": [
+        "Navigate to /login",
+        "Wait for the auth gate to settle",
+        "Assert #root has at least one child element"
+      ],
+      "expected": "#root has at least one child element",
+      "status": "PASS",
+      "actual": "#root children = 1",
+      "error": "",
+      "durationMs": 65
+    },
+    {
+      "id": "SEL-003",
+      "suite": "01 Public Page Smoke",
+      "title": "Login page — document title is MediGuard",
+      "steps": [
+        "Navigate to /login",
+        "Wait for the auth gate to settle",
+        "Assert title === 'MediGuard'"
+      ],
+      "expected": "title === 'MediGuard'",
+      "status": "PASS",
+      "actual": "MediGuard",
+      "error": "",
+      "durationMs": 62
+    },
+    {
+      "id": "SEL-004",
+      "suite": "01 Public Page Smoke",
+      "title": "Login page — html lang attribute is en",
+      "steps": [
+        "Navigate to /login",
+        "Wait for the auth gate to settle",
+        "Assert lang === 'en'"
+      ],
+      "expected": "lang === 'en'",
+      "status": "PASS",
+      "actual": "en",
+      "error": "",
+      "durationMs": 65
+    },
+    {
+      "id": "SEL-005",
+      "suite": "01 Public Page Smoke",
+      "title": "Login page — responsive viewport meta present",
+      "steps": [
+        "Navigate to /login",
+        "Wait for the auth gate to settle",
+        "Assert meta[name=viewport] contains width=device-width"
+      ],
+      "expected": "meta[name=viewport] contains width=device-width",
+      "status": "PASS",
+      "actual": "width=device-width, initial-scale=1.0",
+      "error": "",
+      "durationMs": 64
+    },
+    {
+      "id": "SEL-006",
+      "suite": "01 Public Page Smoke",
+      "title": "Login page — charset declared as UTF-8",
+      "steps": [
+        "Navigate to /login",
+        "Wait for the auth gate to settle",
+        "Assert meta[charset] === 'UTF-8'"
+      ],
+      "expected": "meta[charset] === 'UTF-8'",
+      "status": "PASS",
+      "actual": "UTF-8",
+      "error": "",
+      "durationMs": 62
+    },
+    {
+      "id": "SEL-007",
+      "suite": "01 Public Page Smoke",
+      "title": "Login page — page renders visible text content",
+      "steps": [
+        "Navigate to /login",
+        "Wait for the auth gate to settle",
+        "Assert body innerText length > 20"
+      ],
+      "expected": "body innerText length > 20",
+      "status": "PASS",
+      "actual": "131 chars of visible text",
+      "error": "",
+      "durationMs": 56
+    },
+    {
+      "id": "SEL-008",
+      "suite": "01 Public Page Smoke",
+      "title": "Role Selection page — document reaches readyState=complete",
+      "steps": [
+        "Navigate to /role-selection",
+        "Wait for the auth gate to settle",
+        "Assert readyState === 'complete'"
+      ],
+      "expected": "readyState === 'complete'",
+      "status": "PASS",
+      "actual": "complete",
+      "error": "",
+      "durationMs": 77
+    },
+    {
+      "id": "SEL-009",
+      "suite": "01 Public Page Smoke",
+      "title": "Role Selection page — React mounts content into #root",
+      "steps": [
+        "Navigate to /role-selection",
+        "Wait for the auth gate to settle",
+        "Assert #root has at least one child element"
+      ],
+      "expected": "#root has at least one child element",
+      "status": "PASS",
+      "actual": "#root children = 1",
+      "error": "",
+      "durationMs": 57
+    },
+    {
+      "id": "SEL-010",
+      "suite": "01 Public Page Smoke",
+      "title": "Role Selection page — document title is MediGuard",
+      "steps": [
+        "Navigate to /role-selection",
+        "Wait for the auth gate to settle",
+        "Assert title === 'MediGuard'"
+      ],
+      "expected": "title === 'MediGuard'",
+      "status": "PASS",
+      "actual": "MediGuard",
+      "error": "",
+      "durationMs": 62
+    },
+    {
+      "id": "SEL-011",
+      "suite": "01 Public Page Smoke",
+      "title": "Role Selection page — html lang attribute is en",
+      "steps": [
+        "Navigate to /role-selection",
+        "Wait for the auth gate to settle",
+        "Assert lang === 'en'"
+      ],
+      "expected": "lang === 'en'",
+      "status": "PASS",
+      "actual": "en",
+      "error": "",
+      "durationMs": 65
+    },
+    {
+      "id": "SEL-012",
+      "suite": "01 Public Page Smoke",
+      "title": "Role Selection page — responsive viewport meta present",
+      "steps": [
+        "Navigate to /role-selection",
+        "Wait for the auth gate to settle",
+        "Assert meta[name=viewport] contains width=device-width"
+      ],
+      "expected": "meta[name=viewport] contains width=device-width",
+      "status": "PASS",
+      "actual": "width=device-width, initial-scale=1.0",
+      "error": "",
+      "durationMs": 55
+    },
+    {
+      "id": "SEL-013",
+      "suite": "01 Public Page Smoke",
+      "title": "Role Selection page — charset declared as UTF-8",
+      "steps": [
+        "Navigate to /role-selection",
+        "Wait for the auth gate to settle",
+        "Assert meta[charset] === 'UTF-8'"
+      ],
+      "expected": "meta[charset] === 'UTF-8'",
+      "status": "PASS",
+      "actual": "UTF-8",
+      "error": "",
+      "durationMs": 57
+    },
+    {
+      "id": "SEL-014",
+      "suite": "01 Public Page Smoke",
+      "title": "Role Selection page — page renders visible text content",
+      "steps": [
+        "Navigate to /role-selection",
+        "Wait for the auth gate to settle",
+        "Assert body innerText length > 20"
+      ],
+      "expected": "body innerText length > 20",
+      "status": "PASS",
+      "actual": "251 chars of visible text",
+      "error": "",
+      "durationMs": 70
+    },
+    {
+      "id": "SEL-015",
+      "suite": "01 Public Page Smoke",
+      "title": "Health Setup page — document reaches readyState=complete",
+      "steps": [
+        "Navigate to /health-setup",
+        "Wait for the auth gate to settle",
+        "Assert readyState === 'complete'"
+      ],
+      "expected": "readyState === 'complete'",
+      "status": "PASS",
+      "actual": "complete",
+      "error": "",
+      "durationMs": 95
+    },
+    {
+      "id": "SEL-016",
+      "suite": "01 Public Page Smoke",
+      "title": "Health Setup page — React mounts content into #root",
+      "steps": [
+        "Navigate to /health-setup",
+        "Wait for the auth gate to settle",
+        "Assert #root has at least one child element"
+      ],
+      "expected": "#root has at least one child element",
+      "status": "PASS",
+      "actual": "#root children = 1",
+      "error": "",
+      "durationMs": 66
+    },
+    {
+      "id": "SEL-017",
+      "suite": "01 Public Page Smoke",
+      "title": "Health Setup page — document title is MediGuard",
+      "steps": [
+        "Navigate to /health-setup",
+        "Wait for the auth gate to settle",
+        "Assert title === 'MediGuard'"
+      ],
+      "expected": "title === 'MediGuard'",
+      "status": "PASS",
+      "actual": "MediGuard",
+      "error": "",
+      "durationMs": 68
+    },
+    {
+      "id": "SEL-018",
+      "suite": "01 Public Page Smoke",
+      "title": "Health Setup page — html lang attribute is en",
+      "steps": [
+        "Navigate to /health-setup",
+        "Wait for the auth gate to settle",
+        "Assert lang === 'en'"
+      ],
+      "expected": "lang === 'en'",
+      "status": "PASS",
+      "actual": "en",
+      "error": "",
+      "durationMs": 62
+    },
+    {
+      "id": "SEL-019",
+      "suite": "01 Public Page Smoke",
+      "title": "Health Setup page — responsive viewport meta present",
+      "steps": [
+        "Navigate to /health-setup",
+        "Wait for the auth gate to settle",
+        "Assert meta[name=viewport] contains width=device-width"
+      ],
+      "expected": "meta[name=viewport] contains width=device-width",
+      "status": "PASS",
+      "actual": "width=device-width, initial-scale=1.0",
+      "error": "",
+      "durationMs": 81
+    },
+    {
+      "id": "SEL-020",
+      "suite": "01 Public Page Smoke",
+      "title": "Health Setup page — charset declared as UTF-8",
+      "steps": [
+        "Navigate to /health-setup",
+        "Wait for the auth gate to settle",
+        "Assert meta[charset] === 'UTF-8'"
+      ],
+      "expected": "meta[charset] === 'UTF-8'",
+      "status": "PASS",
+      "actual": "UTF-8",
+      "error": "",
+      "durationMs": 63
+    },
+    {
+      "id": "SEL-021",
+      "suite": "01 Public Page Smoke",
+      "title": "Health Setup page — page renders visible text content",
+      "steps": [
+        "Navigate to /health-setup",
+        "Wait for the auth gate to settle",
+        "Assert body innerText length > 20"
+      ],
+      "expected": "body innerText length > 20",
+      "status": "PASS",
+      "actual": "406 chars of visible text",
+      "error": "",
+      "durationMs": 64
+    },
+    {
+      "id": "SEL-022",
+      "suite": "01 Public Page Smoke",
+      "title": "Forgot Password page — document reaches readyState=complete",
+      "steps": [
+        "Navigate to /forgot-password",
+        "Wait for the auth gate to settle",
+        "Assert readyState === 'complete'"
+      ],
+      "expected": "readyState === 'complete'",
+      "status": "PASS",
+      "actual": "complete",
+      "error": "",
+      "durationMs": 62
+    },
+    {
+      "id": "SEL-023",
+      "suite": "01 Public Page Smoke",
+      "title": "Forgot Password page — React mounts content into #root",
+      "steps": [
+        "Navigate to /forgot-password",
+        "Wait for the auth gate to settle",
+        "Assert #root has at least one child element"
+      ],
+      "expected": "#root has at least one child element",
+      "status": "PASS",
+      "actual": "#root children = 1",
+      "error": "",
+      "durationMs": 57
+    },
+    {
+      "id": "SEL-024",
+      "suite": "01 Public Page Smoke",
+      "title": "Forgot Password page — document title is MediGuard",
+      "steps": [
+        "Navigate to /forgot-password",
+        "Wait for the auth gate to settle",
+        "Assert title === 'MediGuard'"
+      ],
+      "expected": "title === 'MediGuard'",
+      "status": "PASS",
+      "actual": "MediGuard",
+      "error": "",
+      "durationMs": 55
+    },
+    {
+      "id": "SEL-025",
+      "suite": "01 Public Page Smoke",
+      "title": "Forgot Password page — html lang attribute is en",
+      "steps": [
+        "Navigate to /forgot-password",
+        "Wait for the auth gate to settle",
+        "Assert lang === 'en'"
+      ],
+      "expected": "lang === 'en'",
+      "status": "PASS",
+      "actual": "en",
+      "error": "",
+      "durationMs": 60
+    },
+    {
+      "id": "SEL-026",
+      "suite": "01 Public Page Smoke",
+      "title": "Forgot Password page — responsive viewport meta present",
+      "steps": [
+        "Navigate to /forgot-password",
+        "Wait for the auth gate to settle",
+        "Assert meta[name=viewport] contains width=device-width"
+      ],
+      "expected": "meta[name=viewport] contains width=device-width",
+      "status": "PASS",
+      "actual": "width=device-width, initial-scale=1.0",
+      "error": "",
+      "durationMs": 56
+    },
+    {
+      "id": "SEL-027",
+      "suite": "01 Public Page Smoke",
+      "title": "Forgot Password page — charset declared as UTF-8",
+      "steps": [
+        "Navigate to /forgot-password",
+        "Wait for the auth gate to settle",
+        "Assert meta[charset] === 'UTF-8'"
+      ],
+      "expected": "meta[charset] === 'UTF-8'",
+      "status": "PASS",
+      "actual": "UTF-8",
+      "error": "",
+      "durationMs": 61
+    },
+    {
+      "id": "SEL-028",
+      "suite": "01 Public Page Smoke",
+      "title": "Forgot Password page — page renders visible text content",
+      "steps": [
+        "Navigate to /forgot-password",
+        "Wait for the auth gate to settle",
+        "Assert body innerText length > 20"
+      ],
+      "expected": "body innerText length > 20",
+      "status": "PASS",
+      "actual": "112 chars of visible text",
+      "error": "",
+      "durationMs": 60
+    },
+    {
+      "id": "SEL-029",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Dashboard (/) redirects an anonymous visitor to /login",
+      "steps": [
+        "Clear session",
+        "Navigate directly to /",
+        "Assert final pathname is /login"
+      ],
+      "expected": "window.location.pathname === '/login'",
+      "status": "PASS",
+      "actual": "redirected / -> /login",
+      "error": "",
+      "durationMs": 69
+    },
+    {
+      "id": "SEL-030",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Dashboard (/) presents the sign-in form after redirect",
+      "steps": [
+        "Navigate to /",
+        "Assert the email field of the login form is present"
+      ],
+      "expected": "input[type=email] exists on the redirected page",
+      "status": "PASS",
+      "actual": "login form rendered",
+      "error": "",
+      "durationMs": 71
+    },
+    {
+      "id": "SEL-031",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Dashboard (/) does not leak protected page content",
+      "steps": [
+        "Navigate to /",
+        "Read the rendered body text",
+        "Assert the login branding is what rendered"
+      ],
+      "expected": "body shows the MediGuard sign-in screen",
+      "status": "PASS",
+      "actual": "only public sign-in content rendered",
+      "error": "",
+      "durationMs": 67
+    },
+    {
+      "id": "SEL-032",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Profile (/profile) redirects an anonymous visitor to /login",
+      "steps": [
+        "Clear session",
+        "Navigate directly to /profile",
+        "Assert final pathname is /login"
+      ],
+      "expected": "window.location.pathname === '/login'",
+      "status": "PASS",
+      "actual": "redirected /profile -> /login",
+      "error": "",
+      "durationMs": 65
+    },
+    {
+      "id": "SEL-033",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Profile (/profile) presents the sign-in form after redirect",
+      "steps": [
+        "Navigate to /profile",
+        "Assert the email field of the login form is present"
+      ],
+      "expected": "input[type=email] exists on the redirected page",
+      "status": "PASS",
+      "actual": "login form rendered",
+      "error": "",
+      "durationMs": 74
+    },
+    {
+      "id": "SEL-034",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Profile (/profile) does not leak protected page content",
+      "steps": [
+        "Navigate to /profile",
+        "Read the rendered body text",
+        "Assert the login branding is what rendered"
+      ],
+      "expected": "body shows the MediGuard sign-in screen",
+      "status": "PASS",
+      "actual": "only public sign-in content rendered",
+      "error": "",
+      "durationMs": 103
+    },
+    {
+      "id": "SEL-035",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Inventory (/inventory) redirects an anonymous visitor to /login",
+      "steps": [
+        "Clear session",
+        "Navigate directly to /inventory",
+        "Assert final pathname is /login"
+      ],
+      "expected": "window.location.pathname === '/login'",
+      "status": "PASS",
+      "actual": "redirected /inventory -> /login",
+      "error": "",
+      "durationMs": 70
+    },
+    {
+      "id": "SEL-036",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Inventory (/inventory) presents the sign-in form after redirect",
+      "steps": [
+        "Navigate to /inventory",
+        "Assert the email field of the login form is present"
+      ],
+      "expected": "input[type=email] exists on the redirected page",
+      "status": "PASS",
+      "actual": "login form rendered",
+      "error": "",
+      "durationMs": 82
+    },
+    {
+      "id": "SEL-037",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Inventory (/inventory) does not leak protected page content",
+      "steps": [
+        "Navigate to /inventory",
+        "Read the rendered body text",
+        "Assert the login branding is what rendered"
+      ],
+      "expected": "body shows the MediGuard sign-in screen",
+      "status": "PASS",
+      "actual": "only public sign-in content rendered",
+      "error": "",
+      "durationMs": 67
+    },
+    {
+      "id": "SEL-038",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Dose Tracker (/doses) redirects an anonymous visitor to /login",
+      "steps": [
+        "Clear session",
+        "Navigate directly to /doses",
+        "Assert final pathname is /login"
+      ],
+      "expected": "window.location.pathname === '/login'",
+      "status": "PASS",
+      "actual": "redirected /doses -> /login",
+      "error": "",
+      "durationMs": 64
+    },
+    {
+      "id": "SEL-039",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Dose Tracker (/doses) presents the sign-in form after redirect",
+      "steps": [
+        "Navigate to /doses",
+        "Assert the email field of the login form is present"
+      ],
+      "expected": "input[type=email] exists on the redirected page",
+      "status": "PASS",
+      "actual": "login form rendered",
+      "error": "",
+      "durationMs": 61
+    },
+    {
+      "id": "SEL-040",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Dose Tracker (/doses) does not leak protected page content",
+      "steps": [
+        "Navigate to /doses",
+        "Read the rendered body text",
+        "Assert the login branding is what rendered"
+      ],
+      "expected": "body shows the MediGuard sign-in screen",
+      "status": "PASS",
+      "actual": "only public sign-in content rendered",
+      "error": "",
+      "durationMs": 62
+    },
+    {
+      "id": "SEL-041",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Vitals (/vitals) redirects an anonymous visitor to /login",
+      "steps": [
+        "Clear session",
+        "Navigate directly to /vitals",
+        "Assert final pathname is /login"
+      ],
+      "expected": "window.location.pathname === '/login'",
+      "status": "PASS",
+      "actual": "redirected /vitals -> /login",
+      "error": "",
+      "durationMs": 69
+    },
+    {
+      "id": "SEL-042",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Vitals (/vitals) presents the sign-in form after redirect",
+      "steps": [
+        "Navigate to /vitals",
+        "Assert the email field of the login form is present"
+      ],
+      "expected": "input[type=email] exists on the redirected page",
+      "status": "PASS",
+      "actual": "login form rendered",
+      "error": "",
+      "durationMs": 69
+    },
+    {
+      "id": "SEL-043",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Vitals (/vitals) does not leak protected page content",
+      "steps": [
+        "Navigate to /vitals",
+        "Read the rendered body text",
+        "Assert the login branding is what rendered"
+      ],
+      "expected": "body shows the MediGuard sign-in screen",
+      "status": "PASS",
+      "actual": "only public sign-in content rendered",
+      "error": "",
+      "durationMs": 70
+    },
+    {
+      "id": "SEL-044",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Adherence (/adherence) redirects an anonymous visitor to /login",
+      "steps": [
+        "Clear session",
+        "Navigate directly to /adherence",
+        "Assert final pathname is /login"
+      ],
+      "expected": "window.location.pathname === '/login'",
+      "status": "PASS",
+      "actual": "redirected /adherence -> /login",
+      "error": "",
+      "durationMs": 63
+    },
+    {
+      "id": "SEL-045",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Adherence (/adherence) presents the sign-in form after redirect",
+      "steps": [
+        "Navigate to /adherence",
+        "Assert the email field of the login form is present"
+      ],
+      "expected": "input[type=email] exists on the redirected page",
+      "status": "PASS",
+      "actual": "login form rendered",
+      "error": "",
+      "durationMs": 80
+    },
+    {
+      "id": "SEL-046",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Adherence (/adherence) does not leak protected page content",
+      "steps": [
+        "Navigate to /adherence",
+        "Read the rendered body text",
+        "Assert the login branding is what rendered"
+      ],
+      "expected": "body shows the MediGuard sign-in screen",
+      "status": "PASS",
+      "actual": "only public sign-in content rendered",
+      "error": "",
+      "durationMs": 59
+    },
+    {
+      "id": "SEL-047",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Vaccination (/vaccination) redirects an anonymous visitor to /login",
+      "steps": [
+        "Clear session",
+        "Navigate directly to /vaccination",
+        "Assert final pathname is /login"
+      ],
+      "expected": "window.location.pathname === '/login'",
+      "status": "PASS",
+      "actual": "redirected /vaccination -> /login",
+      "error": "",
+      "durationMs": 63
+    },
+    {
+      "id": "SEL-048",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Vaccination (/vaccination) presents the sign-in form after redirect",
+      "steps": [
+        "Navigate to /vaccination",
+        "Assert the email field of the login form is present"
+      ],
+      "expected": "input[type=email] exists on the redirected page",
+      "status": "PASS",
+      "actual": "login form rendered",
+      "error": "",
+      "durationMs": 59
+    },
+    {
+      "id": "SEL-049",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Vaccination (/vaccination) does not leak protected page content",
+      "steps": [
+        "Navigate to /vaccination",
+        "Read the rendered body text",
+        "Assert the login branding is what rendered"
+      ],
+      "expected": "body shows the MediGuard sign-in screen",
+      "status": "PASS",
+      "actual": "only public sign-in content rendered",
+      "error": "",
+      "durationMs": 67
+    },
+    {
+      "id": "SEL-050",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Missed Doses (/missed-doses) redirects an anonymous visitor to /login",
+      "steps": [
+        "Clear session",
+        "Navigate directly to /missed-doses",
+        "Assert final pathname is /login"
+      ],
+      "expected": "window.location.pathname === '/login'",
+      "status": "PASS",
+      "actual": "redirected /missed-doses -> /login",
+      "error": "",
+      "durationMs": 77
+    },
+    {
+      "id": "SEL-051",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Missed Doses (/missed-doses) presents the sign-in form after redirect",
+      "steps": [
+        "Navigate to /missed-doses",
+        "Assert the email field of the login form is present"
+      ],
+      "expected": "input[type=email] exists on the redirected page",
+      "status": "PASS",
+      "actual": "login form rendered",
+      "error": "",
+      "durationMs": 62
+    },
+    {
+      "id": "SEL-052",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Missed Doses (/missed-doses) does not leak protected page content",
+      "steps": [
+        "Navigate to /missed-doses",
+        "Read the rendered body text",
+        "Assert the login branding is what rendered"
+      ],
+      "expected": "body shows the MediGuard sign-in screen",
+      "status": "PASS",
+      "actual": "only public sign-in content rendered",
+      "error": "",
+      "durationMs": 65
+    },
+    {
+      "id": "SEL-053",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Drug Interactions (/drug-interactions) redirects an anonymous visitor to /login",
+      "steps": [
+        "Clear session",
+        "Navigate directly to /drug-interactions",
+        "Assert final pathname is /login"
+      ],
+      "expected": "window.location.pathname === '/login'",
+      "status": "PASS",
+      "actual": "redirected /drug-interactions -> /login",
+      "error": "",
+      "durationMs": 72
+    },
+    {
+      "id": "SEL-054",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Drug Interactions (/drug-interactions) presents the sign-in form after redirect",
+      "steps": [
+        "Navigate to /drug-interactions",
+        "Assert the email field of the login form is present"
+      ],
+      "expected": "input[type=email] exists on the redirected page",
+      "status": "PASS",
+      "actual": "login form rendered",
+      "error": "",
+      "durationMs": 60
+    },
+    {
+      "id": "SEL-055",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Drug Interactions (/drug-interactions) does not leak protected page content",
+      "steps": [
+        "Navigate to /drug-interactions",
+        "Read the rendered body text",
+        "Assert the login branding is what rendered"
+      ],
+      "expected": "body shows the MediGuard sign-in screen",
+      "status": "PASS",
+      "actual": "only public sign-in content rendered",
+      "error": "",
+      "durationMs": 57
+    },
+    {
+      "id": "SEL-056",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Expiry Alerts (/expiry-alerts) redirects an anonymous visitor to /login",
+      "steps": [
+        "Clear session",
+        "Navigate directly to /expiry-alerts",
+        "Assert final pathname is /login"
+      ],
+      "expected": "window.location.pathname === '/login'",
+      "status": "PASS",
+      "actual": "redirected /expiry-alerts -> /login",
+      "error": "",
+      "durationMs": 60
+    },
+    {
+      "id": "SEL-057",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Expiry Alerts (/expiry-alerts) presents the sign-in form after redirect",
+      "steps": [
+        "Navigate to /expiry-alerts",
+        "Assert the email field of the login form is present"
+      ],
+      "expected": "input[type=email] exists on the redirected page",
+      "status": "PASS",
+      "actual": "login form rendered",
+      "error": "",
+      "durationMs": 62
+    },
+    {
+      "id": "SEL-058",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Expiry Alerts (/expiry-alerts) does not leak protected page content",
+      "steps": [
+        "Navigate to /expiry-alerts",
+        "Read the rendered body text",
+        "Assert the login branding is what rendered"
+      ],
+      "expected": "body shows the MediGuard sign-in screen",
+      "status": "PASS",
+      "actual": "only public sign-in content rendered",
+      "error": "",
+      "durationMs": 61
+    },
+    {
+      "id": "SEL-059",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Substitute Finder (/substitutes) redirects an anonymous visitor to /login",
+      "steps": [
+        "Clear session",
+        "Navigate directly to /substitutes",
+        "Assert final pathname is /login"
+      ],
+      "expected": "window.location.pathname === '/login'",
+      "status": "PASS",
+      "actual": "redirected /substitutes -> /login",
+      "error": "",
+      "durationMs": 73
+    },
+    {
+      "id": "SEL-060",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Substitute Finder (/substitutes) presents the sign-in form after redirect",
+      "steps": [
+        "Navigate to /substitutes",
+        "Assert the email field of the login form is present"
+      ],
+      "expected": "input[type=email] exists on the redirected page",
+      "status": "PASS",
+      "actual": "login form rendered",
+      "error": "",
+      "durationMs": 65
+    },
+    {
+      "id": "SEL-061",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Substitute Finder (/substitutes) does not leak protected page content",
+      "steps": [
+        "Navigate to /substitutes",
+        "Read the rendered body text",
+        "Assert the login branding is what rendered"
+      ],
+      "expected": "body shows the MediGuard sign-in screen",
+      "status": "PASS",
+      "actual": "only public sign-in content rendered",
+      "error": "",
+      "durationMs": 61
+    },
+    {
+      "id": "SEL-062",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Medicine History (/medicine-history) redirects an anonymous visitor to /login",
+      "steps": [
+        "Clear session",
+        "Navigate directly to /medicine-history",
+        "Assert final pathname is /login"
+      ],
+      "expected": "window.location.pathname === '/login'",
+      "status": "PASS",
+      "actual": "redirected /medicine-history -> /login",
+      "error": "",
+      "durationMs": 63
+    },
+    {
+      "id": "SEL-063",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Medicine History (/medicine-history) presents the sign-in form after redirect",
+      "steps": [
+        "Navigate to /medicine-history",
+        "Assert the email field of the login form is present"
+      ],
+      "expected": "input[type=email] exists on the redirected page",
+      "status": "PASS",
+      "actual": "login form rendered",
+      "error": "",
+      "durationMs": 83
+    },
+    {
+      "id": "SEL-064",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Medicine History (/medicine-history) does not leak protected page content",
+      "steps": [
+        "Navigate to /medicine-history",
+        "Read the rendered body text",
+        "Assert the login branding is what rendered"
+      ],
+      "expected": "body shows the MediGuard sign-in screen",
+      "status": "PASS",
+      "actual": "only public sign-in content rendered",
+      "error": "",
+      "durationMs": 60
+    },
+    {
+      "id": "SEL-065",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Side Effects (/side-effects) redirects an anonymous visitor to /login",
+      "steps": [
+        "Clear session",
+        "Navigate directly to /side-effects",
+        "Assert final pathname is /login"
+      ],
+      "expected": "window.location.pathname === '/login'",
+      "status": "PASS",
+      "actual": "redirected /side-effects -> /login",
+      "error": "",
+      "durationMs": 57
+    },
+    {
+      "id": "SEL-066",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Side Effects (/side-effects) presents the sign-in form after redirect",
+      "steps": [
+        "Navigate to /side-effects",
+        "Assert the email field of the login form is present"
+      ],
+      "expected": "input[type=email] exists on the redirected page",
+      "status": "PASS",
+      "actual": "login form rendered",
+      "error": "",
+      "durationMs": 60
+    },
+    {
+      "id": "SEL-067",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Side Effects (/side-effects) does not leak protected page content",
+      "steps": [
+        "Navigate to /side-effects",
+        "Read the rendered body text",
+        "Assert the login branding is what rendered"
+      ],
+      "expected": "body shows the MediGuard sign-in screen",
+      "status": "PASS",
+      "actual": "only public sign-in content rendered",
+      "error": "",
+      "durationMs": 62
+    },
+    {
+      "id": "SEL-068",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "AI Assistant (/ai-assistant) redirects an anonymous visitor to /login",
+      "steps": [
+        "Clear session",
+        "Navigate directly to /ai-assistant",
+        "Assert final pathname is /login"
+      ],
+      "expected": "window.location.pathname === '/login'",
+      "status": "PASS",
+      "actual": "redirected /ai-assistant -> /login",
+      "error": "",
+      "durationMs": 58
+    },
+    {
+      "id": "SEL-069",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "AI Assistant (/ai-assistant) presents the sign-in form after redirect",
+      "steps": [
+        "Navigate to /ai-assistant",
+        "Assert the email field of the login form is present"
+      ],
+      "expected": "input[type=email] exists on the redirected page",
+      "status": "PASS",
+      "actual": "login form rendered",
+      "error": "",
+      "durationMs": 81
+    },
+    {
+      "id": "SEL-070",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "AI Assistant (/ai-assistant) does not leak protected page content",
+      "steps": [
+        "Navigate to /ai-assistant",
+        "Read the rendered body text",
+        "Assert the login branding is what rendered"
+      ],
+      "expected": "body shows the MediGuard sign-in screen",
+      "status": "PASS",
+      "actual": "only public sign-in content rendered",
+      "error": "",
+      "durationMs": 68
+    },
+    {
+      "id": "SEL-071",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Prescription Upload (/prescriptions) redirects an anonymous visitor to /login",
+      "steps": [
+        "Clear session",
+        "Navigate directly to /prescriptions",
+        "Assert final pathname is /login"
+      ],
+      "expected": "window.location.pathname === '/login'",
+      "status": "PASS",
+      "actual": "redirected /prescriptions -> /login",
+      "error": "",
+      "durationMs": 56
+    },
+    {
+      "id": "SEL-072",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Prescription Upload (/prescriptions) presents the sign-in form after redirect",
+      "steps": [
+        "Navigate to /prescriptions",
+        "Assert the email field of the login form is present"
+      ],
+      "expected": "input[type=email] exists on the redirected page",
+      "status": "PASS",
+      "actual": "login form rendered",
+      "error": "",
+      "durationMs": 70
+    },
+    {
+      "id": "SEL-073",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Prescription Upload (/prescriptions) does not leak protected page content",
+      "steps": [
+        "Navigate to /prescriptions",
+        "Read the rendered body text",
+        "Assert the login branding is what rendered"
+      ],
+      "expected": "body shows the MediGuard sign-in screen",
+      "status": "PASS",
+      "actual": "only public sign-in content rendered",
+      "error": "",
+      "durationMs": 81
+    },
+    {
+      "id": "SEL-074",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Pharmacy Map (/pharmacy-map) redirects an anonymous visitor to /login",
+      "steps": [
+        "Clear session",
+        "Navigate directly to /pharmacy-map",
+        "Assert final pathname is /login"
+      ],
+      "expected": "window.location.pathname === '/login'",
+      "status": "PASS",
+      "actual": "redirected /pharmacy-map -> /login",
+      "error": "",
+      "durationMs": 59
+    },
+    {
+      "id": "SEL-075",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Pharmacy Map (/pharmacy-map) presents the sign-in form after redirect",
+      "steps": [
+        "Navigate to /pharmacy-map",
+        "Assert the email field of the login form is present"
+      ],
+      "expected": "input[type=email] exists on the redirected page",
+      "status": "PASS",
+      "actual": "login form rendered",
+      "error": "",
+      "durationMs": 58
+    },
+    {
+      "id": "SEL-076",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Pharmacy Map (/pharmacy-map) does not leak protected page content",
+      "steps": [
+        "Navigate to /pharmacy-map",
+        "Read the rendered body text",
+        "Assert the login branding is what rendered"
+      ],
+      "expected": "body shows the MediGuard sign-in screen",
+      "status": "PASS",
+      "actual": "only public sign-in content rendered",
+      "error": "",
+      "durationMs": 62
+    },
+    {
+      "id": "SEL-077",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Family Profiles (/family) redirects an anonymous visitor to /login",
+      "steps": [
+        "Clear session",
+        "Navigate directly to /family",
+        "Assert final pathname is /login"
+      ],
+      "expected": "window.location.pathname === '/login'",
+      "status": "PASS",
+      "actual": "redirected /family -> /login",
+      "error": "",
+      "durationMs": 58
+    },
+    {
+      "id": "SEL-078",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Family Profiles (/family) presents the sign-in form after redirect",
+      "steps": [
+        "Navigate to /family",
+        "Assert the email field of the login form is present"
+      ],
+      "expected": "input[type=email] exists on the redirected page",
+      "status": "PASS",
+      "actual": "login form rendered",
+      "error": "",
+      "durationMs": 59
+    },
+    {
+      "id": "SEL-079",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Family Profiles (/family) does not leak protected page content",
+      "steps": [
+        "Navigate to /family",
+        "Read the rendered body text",
+        "Assert the login branding is what rendered"
+      ],
+      "expected": "body shows the MediGuard sign-in screen",
+      "status": "PASS",
+      "actual": "only public sign-in content rendered",
+      "error": "",
+      "durationMs": 57
+    },
+    {
+      "id": "SEL-080",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Health Profile (/health-profile) redirects an anonymous visitor to /login",
+      "steps": [
+        "Clear session",
+        "Navigate directly to /health-profile",
+        "Assert final pathname is /login"
+      ],
+      "expected": "window.location.pathname === '/login'",
+      "status": "PASS",
+      "actual": "redirected /health-profile -> /login",
+      "error": "",
+      "durationMs": 57
+    },
+    {
+      "id": "SEL-081",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Health Profile (/health-profile) presents the sign-in form after redirect",
+      "steps": [
+        "Navigate to /health-profile",
+        "Assert the email field of the login form is present"
+      ],
+      "expected": "input[type=email] exists on the redirected page",
+      "status": "PASS",
+      "actual": "login form rendered",
+      "error": "",
+      "durationMs": 59
+    },
+    {
+      "id": "SEL-082",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Health Profile (/health-profile) does not leak protected page content",
+      "steps": [
+        "Navigate to /health-profile",
+        "Read the rendered body text",
+        "Assert the login branding is what rendered"
+      ],
+      "expected": "body shows the MediGuard sign-in screen",
+      "status": "PASS",
+      "actual": "only public sign-in content rendered",
+      "error": "",
+      "durationMs": 55
+    },
+    {
+      "id": "SEL-083",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Travel Mode (/travel-mode) redirects an anonymous visitor to /login",
+      "steps": [
+        "Clear session",
+        "Navigate directly to /travel-mode",
+        "Assert final pathname is /login"
+      ],
+      "expected": "window.location.pathname === '/login'",
+      "status": "PASS",
+      "actual": "redirected /travel-mode -> /login",
+      "error": "",
+      "durationMs": 65
+    },
+    {
+      "id": "SEL-084",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Travel Mode (/travel-mode) presents the sign-in form after redirect",
+      "steps": [
+        "Navigate to /travel-mode",
+        "Assert the email field of the login form is present"
+      ],
+      "expected": "input[type=email] exists on the redirected page",
+      "status": "PASS",
+      "actual": "login form rendered",
+      "error": "",
+      "durationMs": 73
+    },
+    {
+      "id": "SEL-085",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Travel Mode (/travel-mode) does not leak protected page content",
+      "steps": [
+        "Navigate to /travel-mode",
+        "Read the rendered body text",
+        "Assert the login branding is what rendered"
+      ],
+      "expected": "body shows the MediGuard sign-in screen",
+      "status": "PASS",
+      "actual": "only public sign-in content rendered",
+      "error": "",
+      "durationMs": 60
+    },
+    {
+      "id": "SEL-086",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Emergency SOS (/emergency-sos) redirects an anonymous visitor to /login",
+      "steps": [
+        "Clear session",
+        "Navigate directly to /emergency-sos",
+        "Assert final pathname is /login"
+      ],
+      "expected": "window.location.pathname === '/login'",
+      "status": "PASS",
+      "actual": "redirected /emergency-sos -> /login",
+      "error": "",
+      "durationMs": 59
+    },
+    {
+      "id": "SEL-087",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Emergency SOS (/emergency-sos) presents the sign-in form after redirect",
+      "steps": [
+        "Navigate to /emergency-sos",
+        "Assert the email field of the login form is present"
+      ],
+      "expected": "input[type=email] exists on the redirected page",
+      "status": "PASS",
+      "actual": "login form rendered",
+      "error": "",
+      "durationMs": 76
+    },
+    {
+      "id": "SEL-088",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Emergency SOS (/emergency-sos) does not leak protected page content",
+      "steps": [
+        "Navigate to /emergency-sos",
+        "Read the rendered body text",
+        "Assert the login branding is what rendered"
+      ],
+      "expected": "body shows the MediGuard sign-in screen",
+      "status": "PASS",
+      "actual": "only public sign-in content rendered",
+      "error": "",
+      "durationMs": 58
+    },
+    {
+      "id": "SEL-089",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Disposal Guide (/disposal-guide) redirects an anonymous visitor to /login",
+      "steps": [
+        "Clear session",
+        "Navigate directly to /disposal-guide",
+        "Assert final pathname is /login"
+      ],
+      "expected": "window.location.pathname === '/login'",
+      "status": "PASS",
+      "actual": "redirected /disposal-guide -> /login",
+      "error": "",
+      "durationMs": 65
+    },
+    {
+      "id": "SEL-090",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Disposal Guide (/disposal-guide) presents the sign-in form after redirect",
+      "steps": [
+        "Navigate to /disposal-guide",
+        "Assert the email field of the login form is present"
+      ],
+      "expected": "input[type=email] exists on the redirected page",
+      "status": "PASS",
+      "actual": "login form rendered",
+      "error": "",
+      "durationMs": 80
+    },
+    {
+      "id": "SEL-091",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Disposal Guide (/disposal-guide) does not leak protected page content",
+      "steps": [
+        "Navigate to /disposal-guide",
+        "Read the rendered body text",
+        "Assert the login branding is what rendered"
+      ],
+      "expected": "body shows the MediGuard sign-in screen",
+      "status": "PASS",
+      "actual": "only public sign-in content rendered",
+      "error": "",
+      "durationMs": 58
+    },
+    {
+      "id": "SEL-092",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Notification Prefs (/notifications) redirects an anonymous visitor to /login",
+      "steps": [
+        "Clear session",
+        "Navigate directly to /notifications",
+        "Assert final pathname is /login"
+      ],
+      "expected": "window.location.pathname === '/login'",
+      "status": "PASS",
+      "actual": "redirected /notifications -> /login",
+      "error": "",
+      "durationMs": 73
+    },
+    {
+      "id": "SEL-093",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Notification Prefs (/notifications) presents the sign-in form after redirect",
+      "steps": [
+        "Navigate to /notifications",
+        "Assert the email field of the login form is present"
+      ],
+      "expected": "input[type=email] exists on the redirected page",
+      "status": "PASS",
+      "actual": "login form rendered",
+      "error": "",
+      "durationMs": 57
+    },
+    {
+      "id": "SEL-094",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Notification Prefs (/notifications) does not leak protected page content",
+      "steps": [
+        "Navigate to /notifications",
+        "Read the rendered body text",
+        "Assert the login branding is what rendered"
+      ],
+      "expected": "body shows the MediGuard sign-in screen",
+      "status": "PASS",
+      "actual": "only public sign-in content rendered",
+      "error": "",
+      "durationMs": 57
+    },
+    {
+      "id": "SEL-095",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Doctor Report (/doctor-report) redirects an anonymous visitor to /login",
+      "steps": [
+        "Clear session",
+        "Navigate directly to /doctor-report",
+        "Assert final pathname is /login"
+      ],
+      "expected": "window.location.pathname === '/login'",
+      "status": "PASS",
+      "actual": "redirected /doctor-report -> /login",
+      "error": "",
+      "durationMs": 78
+    },
+    {
+      "id": "SEL-096",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Doctor Report (/doctor-report) presents the sign-in form after redirect",
+      "steps": [
+        "Navigate to /doctor-report",
+        "Assert the email field of the login form is present"
+      ],
+      "expected": "input[type=email] exists on the redirected page",
+      "status": "PASS",
+      "actual": "login form rendered",
+      "error": "",
+      "durationMs": 77
+    },
+    {
+      "id": "SEL-097",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Doctor Report (/doctor-report) does not leak protected page content",
+      "steps": [
+        "Navigate to /doctor-report",
+        "Read the rendered body text",
+        "Assert the login branding is what rendered"
+      ],
+      "expected": "body shows the MediGuard sign-in screen",
+      "status": "PASS",
+      "actual": "only public sign-in content rendered",
+      "error": "",
+      "durationMs": 62
+    },
+    {
+      "id": "SEL-098",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Export Data (/export) redirects an anonymous visitor to /login",
+      "steps": [
+        "Clear session",
+        "Navigate directly to /export",
+        "Assert final pathname is /login"
+      ],
+      "expected": "window.location.pathname === '/login'",
+      "status": "PASS",
+      "actual": "redirected /export -> /login",
+      "error": "",
+      "durationMs": 55
+    },
+    {
+      "id": "SEL-099",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Export Data (/export) presents the sign-in form after redirect",
+      "steps": [
+        "Navigate to /export",
+        "Assert the email field of the login form is present"
+      ],
+      "expected": "input[type=email] exists on the redirected page",
+      "status": "PASS",
+      "actual": "login form rendered",
+      "error": "",
+      "durationMs": 61
+    },
+    {
+      "id": "SEL-100",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Export Data (/export) does not leak protected page content",
+      "steps": [
+        "Navigate to /export",
+        "Read the rendered body text",
+        "Assert the login branding is what rendered"
+      ],
+      "expected": "body shows the MediGuard sign-in screen",
+      "status": "PASS",
+      "actual": "only public sign-in content rendered",
+      "error": "",
+      "durationMs": 55
+    },
+    {
+      "id": "SEL-101",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Daily Wellness Log (/wellness-log) redirects an anonymous visitor to /login",
+      "steps": [
+        "Clear session",
+        "Navigate directly to /wellness-log",
+        "Assert final pathname is /login"
+      ],
+      "expected": "window.location.pathname === '/login'",
+      "status": "PASS",
+      "actual": "redirected /wellness-log -> /login",
+      "error": "",
+      "durationMs": 56
+    },
+    {
+      "id": "SEL-102",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Daily Wellness Log (/wellness-log) presents the sign-in form after redirect",
+      "steps": [
+        "Navigate to /wellness-log",
+        "Assert the email field of the login form is present"
+      ],
+      "expected": "input[type=email] exists on the redirected page",
+      "status": "PASS",
+      "actual": "login form rendered",
+      "error": "",
+      "durationMs": 71
+    },
+    {
+      "id": "SEL-103",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Daily Wellness Log (/wellness-log) does not leak protected page content",
+      "steps": [
+        "Navigate to /wellness-log",
+        "Read the rendered body text",
+        "Assert the login branding is what rendered"
+      ],
+      "expected": "body shows the MediGuard sign-in screen",
+      "status": "PASS",
+      "actual": "only public sign-in content rendered",
+      "error": "",
+      "durationMs": 74
+    },
+    {
+      "id": "SEL-104",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Wellness Progress (/wellness-progress) redirects an anonymous visitor to /login",
+      "steps": [
+        "Clear session",
+        "Navigate directly to /wellness-progress",
+        "Assert final pathname is /login"
+      ],
+      "expected": "window.location.pathname === '/login'",
+      "status": "PASS",
+      "actual": "redirected /wellness-progress -> /login",
+      "error": "",
+      "durationMs": 64
+    },
+    {
+      "id": "SEL-105",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Wellness Progress (/wellness-progress) presents the sign-in form after redirect",
+      "steps": [
+        "Navigate to /wellness-progress",
+        "Assert the email field of the login form is present"
+      ],
+      "expected": "input[type=email] exists on the redirected page",
+      "status": "PASS",
+      "actual": "login form rendered",
+      "error": "",
+      "durationMs": 73
+    },
+    {
+      "id": "SEL-106",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Wellness Progress (/wellness-progress) does not leak protected page content",
+      "steps": [
+        "Navigate to /wellness-progress",
+        "Read the rendered body text",
+        "Assert the login branding is what rendered"
+      ],
+      "expected": "body shows the MediGuard sign-in screen",
+      "status": "PASS",
+      "actual": "only public sign-in content rendered",
+      "error": "",
+      "durationMs": 60
+    },
+    {
+      "id": "SEL-107",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Missed Dose Insights (/missed-dose-insights) redirects an anonymous visitor to /login",
+      "steps": [
+        "Clear session",
+        "Navigate directly to /missed-dose-insights",
+        "Assert final pathname is /login"
+      ],
+      "expected": "window.location.pathname === '/login'",
+      "status": "PASS",
+      "actual": "redirected /missed-dose-insights -> /login",
+      "error": "",
+      "durationMs": 58
+    },
+    {
+      "id": "SEL-108",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Missed Dose Insights (/missed-dose-insights) presents the sign-in form after redirect",
+      "steps": [
+        "Navigate to /missed-dose-insights",
+        "Assert the email field of the login form is present"
+      ],
+      "expected": "input[type=email] exists on the redirected page",
+      "status": "PASS",
+      "actual": "login form rendered",
+      "error": "",
+      "durationMs": 61
+    },
+    {
+      "id": "SEL-109",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "Missed Dose Insights (/missed-dose-insights) does not leak protected page content",
+      "steps": [
+        "Navigate to /missed-dose-insights",
+        "Read the rendered body text",
+        "Assert the login branding is what rendered"
+      ],
+      "expected": "body shows the MediGuard sign-in screen",
+      "status": "PASS",
+      "actual": "only public sign-in content rendered",
+      "error": "",
+      "durationMs": 59
+    },
+    {
+      "id": "SEL-110",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "CG Dashboard (/cg) redirects an anonymous visitor to /login",
+      "steps": [
+        "Clear session",
+        "Navigate directly to /cg",
+        "Assert final pathname is /login"
+      ],
+      "expected": "window.location.pathname === '/login'",
+      "status": "PASS",
+      "actual": "redirected /cg -> /login",
+      "error": "",
+      "durationMs": 55
+    },
+    {
+      "id": "SEL-111",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "CG Dashboard (/cg) presents the sign-in form after redirect",
+      "steps": [
+        "Navigate to /cg",
+        "Assert the email field of the login form is present"
+      ],
+      "expected": "input[type=email] exists on the redirected page",
+      "status": "PASS",
+      "actual": "login form rendered",
+      "error": "",
+      "durationMs": 67
+    },
+    {
+      "id": "SEL-112",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "CG Dashboard (/cg) does not leak protected page content",
+      "steps": [
+        "Navigate to /cg",
+        "Read the rendered body text",
+        "Assert the login branding is what rendered"
+      ],
+      "expected": "body shows the MediGuard sign-in screen",
+      "status": "PASS",
+      "actual": "only public sign-in content rendered",
+      "error": "",
+      "durationMs": 63
+    },
+    {
+      "id": "SEL-113",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "CG Patient Monitor (/cg/monitor) redirects an anonymous visitor to /login",
+      "steps": [
+        "Clear session",
+        "Navigate directly to /cg/monitor",
+        "Assert final pathname is /login"
+      ],
+      "expected": "window.location.pathname === '/login'",
+      "status": "PASS",
+      "actual": "redirected /cg/monitor -> /login",
+      "error": "",
+      "durationMs": 69
+    },
+    {
+      "id": "SEL-114",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "CG Patient Monitor (/cg/monitor) presents the sign-in form after redirect",
+      "steps": [
+        "Navigate to /cg/monitor",
+        "Assert the email field of the login form is present"
+      ],
+      "expected": "input[type=email] exists on the redirected page",
+      "status": "PASS",
+      "actual": "login form rendered",
+      "error": "",
+      "durationMs": 64
+    },
+    {
+      "id": "SEL-115",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "CG Patient Monitor (/cg/monitor) does not leak protected page content",
+      "steps": [
+        "Navigate to /cg/monitor",
+        "Read the rendered body text",
+        "Assert the login branding is what rendered"
+      ],
+      "expected": "body shows the MediGuard sign-in screen",
+      "status": "PASS",
+      "actual": "only public sign-in content rendered",
+      "error": "",
+      "durationMs": 55
+    },
+    {
+      "id": "SEL-116",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "CG Alerts (/cg/alerts) redirects an anonymous visitor to /login",
+      "steps": [
+        "Clear session",
+        "Navigate directly to /cg/alerts",
+        "Assert final pathname is /login"
+      ],
+      "expected": "window.location.pathname === '/login'",
+      "status": "PASS",
+      "actual": "redirected /cg/alerts -> /login",
+      "error": "",
+      "durationMs": 56
+    },
+    {
+      "id": "SEL-117",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "CG Alerts (/cg/alerts) presents the sign-in form after redirect",
+      "steps": [
+        "Navigate to /cg/alerts",
+        "Assert the email field of the login form is present"
+      ],
+      "expected": "input[type=email] exists on the redirected page",
+      "status": "PASS",
+      "actual": "login form rendered",
+      "error": "",
+      "durationMs": 64
+    },
+    {
+      "id": "SEL-118",
+      "suite": "02 Route Guard (unauthenticated)",
+      "title": "CG Alerts (/cg/alerts) does not leak protected page content",
+      "steps": [
+        "Navigate to /cg/alerts",
+        "Read the rendered body text",
+        "Assert the login branding is what rendered"
+      ],
+      "expected": "body shows the MediGuard sign-in screen",
+      "status": "PASS",
+      "actual": "only public sign-in content rendered",
+      "error": "",
+      "durationMs": 56
+    },
+    {
+      "id": "SEL-119",
+      "suite": "03 Login Form Interaction",
+      "title": "email field accepts a typed address",
+      "steps": [
+        "Open /login",
+        "Perform the interaction",
+        "Assert the observed DOM state"
+      ],
+      "expected": "input reflects the typed value",
+      "status": "PASS",
+      "actual": "patient@mediguard.app",
+      "error": "",
+      "durationMs": 119
+    },
+    {
+      "id": "SEL-120",
+      "suite": "03 Login Form Interaction",
+      "title": "password field accepts a typed secret",
+      "steps": [
+        "Open /login",
+        "Perform the interaction",
+        "Assert the observed DOM state"
+      ],
+      "expected": "input reflects the typed value",
+      "status": "PASS",
+      "actual": "11 characters stored",
+      "error": "",
+      "durationMs": 93
+    },
+    {
+      "id": "SEL-121",
+      "suite": "03 Login Form Interaction",
+      "title": "password is masked by default",
+      "steps": [
+        "Open /login",
+        "Perform the interaction",
+        "Assert the observed DOM state"
+      ],
+      "expected": "input type is 'password'",
+      "status": "PASS",
+      "actual": "password",
+      "error": "",
+      "durationMs": 75
+    },
+    {
+      "id": "SEL-122",
+      "suite": "03 Login Form Interaction",
+      "title": "Show toggle reveals the password",
+      "steps": [
+        "Open /login",
+        "Perform the interaction",
+        "Assert the observed DOM state"
+      ],
+      "expected": "input type flips to 'text'",
+      "status": "PASS",
+      "actual": "text",
+      "error": "",
+      "durationMs": 112
+    },
+    {
+      "id": "SEL-123",
+      "suite": "03 Login Form Interaction",
+      "title": "Hide toggle re-masks the password",
+      "steps": [
+        "Open /login",
+        "Perform the interaction",
+        "Assert the observed DOM state"
+      ],
+      "expected": "input type returns to 'password'",
+      "status": "PASS",
+      "actual": "password",
+      "error": "",
+      "durationMs": 120
+    },
+    {
+      "id": "SEL-124",
+      "suite": "03 Login Form Interaction",
+      "title": "Sign Up tab switches the submit action",
+      "steps": [
+        "Open /login",
+        "Perform the interaction",
+        "Assert the observed DOM state"
+      ],
+      "expected": "submit button reads 'Create Account'",
+      "status": "PASS",
+      "actual": "Create Account",
+      "error": "",
+      "durationMs": 99
+    },
+    {
+      "id": "SEL-125",
+      "suite": "03 Login Form Interaction",
+      "title": "Sign In tab restores the sign-in action",
+      "steps": [
+        "Open /login",
+        "Perform the interaction",
+        "Assert the observed DOM state"
+      ],
+      "expected": "submit button reads 'Sign In'",
+      "status": "PASS",
+      "actual": "Sign In",
+      "error": "",
+      "durationMs": 120
+    },
+    {
+      "id": "SEL-126",
+      "suite": "03 Login Form Interaction",
+      "title": "'Forgot password?' navigates to the reset page",
+      "steps": [
+        "Open /login",
+        "Perform the interaction",
+        "Assert the observed DOM state"
+      ],
+      "expected": "pathname becomes /forgot-password",
+      "status": "PASS",
+      "actual": "/forgot-password",
+      "error": "",
+      "durationMs": 110
+    },
+    {
+      "id": "SEL-127",
+      "suite": "03 Login Form Interaction",
+      "title": "'Forgot password?' is hidden on the Sign Up tab",
+      "steps": [
+        "Open /login",
+        "Perform the interaction",
+        "Assert the observed DOM state"
+      ],
+      "expected": "no reset link while registering",
+      "status": "PASS",
+      "actual": "link correctly absent",
+      "error": "",
+      "durationMs": 88
+    },
+    {
+      "id": "SEL-128",
+      "suite": "03 Login Form Interaction",
+      "title": "submit button is enabled on a fresh form",
+      "steps": [
+        "Open /login",
+        "Perform the interaction",
+        "Assert the observed DOM state"
+      ],
+      "expected": "button is not disabled",
+      "status": "PASS",
+      "actual": "enabled",
+      "error": "",
+      "durationMs": 55
+    },
+    {
+      "id": "SEL-129",
+      "suite": "03 Login Form Interaction",
+      "title": "submit control is a real submit button",
+      "steps": [
+        "Open /login",
+        "Perform the interaction",
+        "Assert the observed DOM state"
+      ],
+      "expected": "button[type=submit] inside <form>",
+      "status": "PASS",
+      "actual": "form + submit button present",
+      "error": "",
+      "durationMs": 71
+    },
+    {
+      "id": "SEL-130",
+      "suite": "03 Login Form Interaction",
+      "title": "email field carries a helpful placeholder",
+      "steps": [
+        "Open /login",
+        "Perform the interaction",
+        "Assert the observed DOM state"
+      ],
+      "expected": "placeholder is you@example.com",
+      "status": "PASS",
+      "actual": "you@example.com",
+      "error": "",
+      "durationMs": 76
+    },
+    {
+      "id": "SEL-131",
+      "suite": "03 Login Form Interaction",
+      "title": "password field carries a masked placeholder",
+      "steps": [
+        "Open /login",
+        "Perform the interaction",
+        "Assert the observed DOM state"
+      ],
+      "expected": "placeholder is a bullet run",
+      "status": "PASS",
+      "actual": "••••••••",
+      "error": "",
+      "durationMs": 61
+    },
+    {
+      "id": "SEL-132",
+      "suite": "03 Login Form Interaction",
+      "title": "email field is marked required",
+      "steps": [
+        "Open /login",
+        "Perform the interaction",
+        "Assert the observed DOM state"
+      ],
+      "expected": "required attribute present",
+      "status": "PASS",
+      "actual": "required",
+      "error": "",
+      "durationMs": 62
+    },
+    {
+      "id": "SEL-133",
+      "suite": "03 Login Form Interaction",
+      "title": "password field is marked required",
+      "steps": [
+        "Open /login",
+        "Perform the interaction",
+        "Assert the observed DOM state"
+      ],
+      "expected": "required attribute present",
+      "status": "PASS",
+      "actual": "required",
+      "error": "",
+      "durationMs": 60
+    },
+    {
+      "id": "SEL-134",
+      "suite": "03 Login Form Interaction",
+      "title": "email field can be cleared",
+      "steps": [
+        "Open /login",
+        "Perform the interaction",
+        "Assert the observed DOM state"
+      ],
+      "expected": "value returns to empty string",
+      "status": "PASS",
+      "actual": "cleared",
+      "error": "",
+      "durationMs": 103
+    },
+    {
+      "id": "SEL-135",
+      "suite": "03 Login Form Interaction",
+      "title": "password field can be cleared",
+      "steps": [
+        "Open /login",
+        "Perform the interaction",
+        "Assert the observed DOM state"
+      ],
+      "expected": "value returns to empty string",
+      "status": "PASS",
+      "actual": "cleared",
+      "error": "",
+      "durationMs": 116
+    },
+    {
+      "id": "SEL-136",
+      "suite": "03 Login Form Interaction",
+      "title": "Google sign-in button is offered",
+      "steps": [
+        "Open /login",
+        "Perform the interaction",
+        "Assert the observed DOM state"
+      ],
+      "expected": "button labelled 'Continue with Google'",
+      "status": "PASS",
+      "actual": "Continue with Google",
+      "error": "",
+      "durationMs": 65
+    },
+    {
+      "id": "SEL-137",
+      "suite": "03 Login Form Interaction",
+      "title": "exactly two auth mode tabs are rendered",
+      "steps": [
+        "Open /login",
+        "Perform the interaction",
+        "Assert the observed DOM state"
+      ],
+      "expected": "Sign In and Sign Up",
+      "status": "PASS",
+      "actual": "Sign In + Sign Up tabs present",
+      "error": "",
+      "durationMs": 83
+    },
+    {
+      "id": "SEL-138",
+      "suite": "03 Login Form Interaction",
+      "title": "form accepts a long address without truncation",
+      "steps": [
+        "Open /login",
+        "Perform the interaction",
+        "Assert the observed DOM state"
+      ],
+      "expected": "254-char address retained",
+      "status": "PASS",
+      "actual": "133 characters retained",
+      "error": "",
+      "durationMs": 139
+    },
+    {
+      "id": "SEL-139",
+      "suite": "03 Login Form Interaction",
+      "title": "password field preserves special characters",
+      "steps": [
+        "Open /login",
+        "Perform the interaction",
+        "Assert the observed DOM state"
+      ],
+      "expected": "symbols survive round-trip",
+      "status": "PASS",
+      "actual": "all symbols preserved",
+      "error": "",
+      "durationMs": 103
+    },
+    {
+      "id": "SEL-140",
+      "suite": "03 Login Form Interaction",
+      "title": "password field preserves unicode input",
+      "steps": [
+        "Open /login",
+        "Perform the interaction",
+        "Assert the observed DOM state"
+      ],
+      "expected": "non-ASCII secret survives round-trip",
+      "status": "PASS",
+      "actual": "unicode preserved",
+      "error": "",
+      "durationMs": 92
+    },
+    {
+      "id": "SEL-141",
+      "suite": "03 Login Form Interaction",
+      "title": "leading/trailing spaces in email are visible to the user",
+      "steps": [
+        "Open /login",
+        "Perform the interaction",
+        "Assert the observed DOM state"
+      ],
+      "expected": "value keeps what was typed",
+      "status": "PASS",
+      "actual": "\"user@example.com\"",
+      "error": "",
+      "durationMs": 94
+    },
+    {
+      "id": "SEL-142",
+      "suite": "03 Login Form Interaction",
+      "title": "tab order moves email -> password",
+      "steps": [
+        "Open /login",
+        "Perform the interaction",
+        "Assert the observed DOM state"
+      ],
+      "expected": "focus lands on the password field",
+      "status": "PASS",
+      "actual": "focus type = password",
+      "error": "",
+      "durationMs": 113
+    },
+    {
+      "id": "SEL-143",
+      "suite": "03 Login Form Interaction",
+      "title": "form does not submit with an empty email",
+      "steps": [
+        "Open /login",
+        "Perform the interaction",
+        "Assert the observed DOM state"
+      ],
+      "expected": "constraint validation blocks submit",
+      "status": "PASS",
+      "actual": "submission blocked by required fields",
+      "error": "",
+      "durationMs": 76
+    },
+    {
+      "id": "SEL-144",
+      "suite": "03 Login Form Interaction",
+      "title": "filling both fields satisfies constraint validation",
+      "steps": [
+        "Open /login",
+        "Perform the interaction",
+        "Assert the observed DOM state"
+      ],
+      "expected": "form.checkValidity() is true",
+      "status": "PASS",
+      "actual": "form is submittable",
+      "error": "",
+      "durationMs": 108
+    },
+    {
+      "id": "SEL-145",
+      "suite": "03 Login Form Interaction",
+      "title": "switching tabs clears a previous error message",
+      "steps": [
+        "Open /login",
+        "Perform the interaction",
+        "Assert the observed DOM state"
+      ],
+      "expected": "no error banner after tab switch",
+      "status": "PASS",
+      "actual": "no stale error shown",
+      "error": "",
+      "durationMs": 83
+    },
+    {
+      "id": "SEL-146",
+      "suite": "03 Login Form Interaction",
+      "title": "brand heading identifies the product",
+      "steps": [
+        "Open /login",
+        "Perform the interaction",
+        "Assert the observed DOM state"
+      ],
+      "expected": "h1 reads 'MediGuard'",
+      "status": "PASS",
+      "actual": "MediGuard",
+      "error": "",
+      "durationMs": 62
+    },
+    {
+      "id": "SEL-147",
+      "suite": "04 Email Validation (accepted)",
+      "title": "Login accepts a well-formed address: user@example.com",
+      "steps": [
+        "Open /login",
+        "Type user@example.com into the email field",
+        "Read input.checkValidity()"
+      ],
+      "expected": "checkValidity() === true",
+      "status": "PASS",
+      "actual": "user@example.com accepted",
+      "error": "",
+      "durationMs": 91
+    },
+    {
+      "id": "SEL-148",
+      "suite": "04 Email Validation (accepted)",
+      "title": "Login accepts a well-formed address: a@b.co",
+      "steps": [
+        "Open /login",
+        "Type a@b.co into the email field",
+        "Read input.checkValidity()"
+      ],
+      "expected": "checkValidity() === true",
+      "status": "PASS",
+      "actual": "a@b.co accepted",
+      "error": "",
+      "durationMs": 92
+    },
+    {
+      "id": "SEL-149",
+      "suite": "04 Email Validation (accepted)",
+      "title": "Login accepts a well-formed address: first.last@sub.domain.org",
+      "steps": [
+        "Open /login",
+        "Type first.last@sub.domain.org into the email field",
+        "Read input.checkValidity()"
+      ],
+      "expected": "checkValidity() === true",
+      "status": "PASS",
+      "actual": "first.last@sub.domain.org accepted",
+      "error": "",
+      "durationMs": 90
+    },
+    {
+      "id": "SEL-150",
+      "suite": "04 Email Validation (accepted)",
+      "title": "Login accepts a well-formed address: user+tag@example.com",
+      "steps": [
+        "Open /login",
+        "Type user+tag@example.com into the email field",
+        "Read input.checkValidity()"
+      ],
+      "expected": "checkValidity() === true",
+      "status": "PASS",
+      "actual": "user+tag@example.com accepted",
+      "error": "",
+      "durationMs": 91
+    },
+    {
+      "id": "SEL-151",
+      "suite": "04 Email Validation (accepted)",
+      "title": "Login accepts a well-formed address: user_name@example.io",
+      "steps": [
+        "Open /login",
+        "Type user_name@example.io into the email field",
+        "Read input.checkValidity()"
+      ],
+      "expected": "checkValidity() === true",
+      "status": "PASS",
+      "actual": "user_name@example.io accepted",
+      "error": "",
+      "durationMs": 88
+    },
+    {
+      "id": "SEL-152",
+      "suite": "04 Email Validation (accepted)",
+      "title": "Login accepts a well-formed address: u@d.in",
+      "steps": [
+        "Open /login",
+        "Type u@d.in into the email field",
+        "Read input.checkValidity()"
+      ],
+      "expected": "checkValidity() === true",
+      "status": "PASS",
+      "actual": "u@d.in accepted",
+      "error": "",
+      "durationMs": 82
+    },
+    {
+      "id": "SEL-153",
+      "suite": "04 Email Validation (accepted)",
+      "title": "Login accepts a well-formed address: test123@medi-guard.com",
+      "steps": [
+        "Open /login",
+        "Type test123@medi-guard.com into the email field",
+        "Read input.checkValidity()"
+      ],
+      "expected": "checkValidity() === true",
+      "status": "PASS",
+      "actual": "test123@medi-guard.com accepted",
+      "error": "",
+      "durationMs": 91
+    },
+    {
+      "id": "SEL-154",
+      "suite": "04 Email Validation (accepted)",
+      "title": "Login accepts a well-formed address: patient@hospital.co.in",
+      "steps": [
+        "Open /login",
+        "Type patient@hospital.co.in into the email field",
+        "Read input.checkValidity()"
+      ],
+      "expected": "checkValidity() === true",
+      "status": "PASS",
+      "actual": "patient@hospital.co.in accepted",
+      "error": "",
+      "durationMs": 90
+    },
+    {
+      "id": "SEL-155",
+      "suite": "04 Email Validation (accepted)",
+      "title": "Login accepts a well-formed address: x.y@z.dev",
+      "steps": [
+        "Open /login",
+        "Type x.y@z.dev into the email field",
+        "Read input.checkValidity()"
+      ],
+      "expected": "checkValidity() === true",
+      "status": "PASS",
+      "actual": "x.y@z.dev accepted",
+      "error": "",
+      "durationMs": 83
+    },
+    {
+      "id": "SEL-156",
+      "suite": "04 Email Validation (accepted)",
+      "title": "Login accepts a well-formed address: name@example.travel",
+      "steps": [
+        "Open /login",
+        "Type name@example.travel into the email field",
+        "Read input.checkValidity()"
+      ],
+      "expected": "checkValidity() === true",
+      "status": "PASS",
+      "actual": "name@example.travel accepted",
+      "error": "",
+      "durationMs": 99
+    },
+    {
+      "id": "SEL-157",
+      "suite": "04 Email Validation (accepted)",
+      "title": "Login accepts a well-formed address: abc@def.ghi",
+      "steps": [
+        "Open /login",
+        "Type abc@def.ghi into the email field",
+        "Read input.checkValidity()"
+      ],
+      "expected": "checkValidity() === true",
+      "status": "PASS",
+      "actual": "abc@def.ghi accepted",
+      "error": "",
+      "durationMs": 84
+    },
+    {
+      "id": "SEL-158",
+      "suite": "04 Email Validation (accepted)",
+      "title": "Login accepts a well-formed address: care@guardian.health",
+      "steps": [
+        "Open /login",
+        "Type care@guardian.health into the email field",
+        "Read input.checkValidity()"
+      ],
+      "expected": "checkValidity() === true",
+      "status": "PASS",
+      "actual": "care@guardian.health accepted",
+      "error": "",
+      "durationMs": 88
+    },
+    {
+      "id": "SEL-159",
+      "suite": "05 Email Validation (rejected)",
+      "title": "Login rejects a malformed address: \"plainaddress\"",
+      "steps": [
+        "Open /login",
+        "Type \"plainaddress\" into the email field",
+        "Read input.checkValidity()"
+      ],
+      "expected": "checkValidity() === false",
+      "status": "PASS",
+      "actual": "\"plainaddress\" rejected",
+      "error": "",
+      "durationMs": 89
+    },
+    {
+      "id": "SEL-160",
+      "suite": "05 Email Validation (rejected)",
+      "title": "Login rejects a malformed address: \"@example.com\"",
+      "steps": [
+        "Open /login",
+        "Type \"@example.com\" into the email field",
+        "Read input.checkValidity()"
+      ],
+      "expected": "checkValidity() === false",
+      "status": "PASS",
+      "actual": "\"@example.com\" rejected",
+      "error": "",
+      "durationMs": 114
+    },
+    {
+      "id": "SEL-161",
+      "suite": "05 Email Validation (rejected)",
+      "title": "Login rejects a malformed address: \"user@\"",
+      "steps": [
+        "Open /login",
+        "Type \"user@\" into the email field",
+        "Read input.checkValidity()"
+      ],
+      "expected": "checkValidity() === false",
+      "status": "PASS",
+      "actual": "\"user@\" rejected",
+      "error": "",
+      "durationMs": 92
+    },
+    {
+      "id": "SEL-162",
+      "suite": "05 Email Validation (rejected)",
+      "title": "Login rejects a malformed address: \"user name@example.com\"",
+      "steps": [
+        "Open /login",
+        "Type \"user name@example.com\" into the email field",
+        "Read input.checkValidity()"
+      ],
+      "expected": "checkValidity() === false",
+      "status": "PASS",
+      "actual": "\"user name@example.com\" rejected",
+      "error": "",
+      "durationMs": 100
+    },
+    {
+      "id": "SEL-163",
+      "suite": "05 Email Validation (rejected)",
+      "title": "Login rejects a malformed address: \"user@exa mple.com\"",
+      "steps": [
+        "Open /login",
+        "Type \"user@exa mple.com\" into the email field",
+        "Read input.checkValidity()"
+      ],
+      "expected": "checkValidity() === false",
+      "status": "PASS",
+      "actual": "\"user@exa mple.com\" rejected",
+      "error": "",
+      "durationMs": 95
+    },
+    {
+      "id": "SEL-164",
+      "suite": "05 Email Validation (rejected)",
+      "title": "Login rejects a malformed address: \"user@@example.com\"",
+      "steps": [
+        "Open /login",
+        "Type \"user@@example.com\" into the email field",
+        "Read input.checkValidity()"
+      ],
+      "expected": "checkValidity() === false",
+      "status": "PASS",
+      "actual": "\"user@@example.com\" rejected",
+      "error": "",
+      "durationMs": 105
+    },
+    {
+      "id": "SEL-165",
+      "suite": "05 Email Validation (rejected)",
+      "title": "Login rejects a malformed address: \"user@-example.com\"",
+      "steps": [
+        "Open /login",
+        "Type \"user@-example.com\" into the email field",
+        "Read input.checkValidity()"
+      ],
+      "expected": "checkValidity() === false",
+      "status": "PASS",
+      "actual": "\"user@-example.com\" rejected",
+      "error": "",
+      "durationMs": 100
+    },
+    {
+      "id": "SEL-166",
+      "suite": "05 Email Validation (rejected)",
+      "title": "Login rejects a malformed address: \"user@example-.com\"",
+      "steps": [
+        "Open /login",
+        "Type \"user@example-.com\" into the email field",
+        "Read input.checkValidity()"
+      ],
+      "expected": "checkValidity() === false",
+      "status": "PASS",
+      "actual": "\"user@example-.com\" rejected",
+      "error": "",
+      "durationMs": 90
+    },
+    {
+      "id": "SEL-167",
+      "suite": "05 Email Validation (rejected)",
+      "title": "Login rejects a malformed address: \"us er\"",
+      "steps": [
+        "Open /login",
+        "Type \"us er\" into the email field",
+        "Read input.checkValidity()"
+      ],
+      "expected": "checkValidity() === false",
+      "status": "PASS",
+      "actual": "\"us er\" rejected",
+      "error": "",
+      "durationMs": 89
+    },
+    {
+      "id": "SEL-168",
+      "suite": "05 Email Validation (rejected)",
+      "title": "Login rejects a malformed address: \"user@.com\"",
+      "steps": [
+        "Open /login",
+        "Type \"user@.com\" into the email field",
+        "Read input.checkValidity()"
+      ],
+      "expected": "checkValidity() === false",
+      "status": "PASS",
+      "actual": "\"user@.com\" rejected",
+      "error": "",
+      "durationMs": 106
+    },
+    {
+      "id": "SEL-169",
+      "suite": "05 Email Validation (rejected)",
+      "title": "Login rejects a malformed address: \"user@example..com\"",
+      "steps": [
+        "Open /login",
+        "Type \"user@example..com\" into the email field",
+        "Read input.checkValidity()"
+      ],
+      "expected": "checkValidity() === false",
+      "status": "PASS",
+      "actual": "\"user@example..com\" rejected",
+      "error": "",
+      "durationMs": 95
+    },
+    {
+      "id": "SEL-170",
+      "suite": "05 Email Validation (rejected)",
+      "title": "Login rejects a malformed address: \"üser@example.com\"",
+      "steps": [
+        "Open /login",
+        "Type \"üser@example.com\" into the email field",
+        "Read input.checkValidity()"
+      ],
+      "expected": "checkValidity() === false",
+      "status": "PASS",
+      "actual": "\"üser@example.com\" rejected",
+      "error": "",
+      "durationMs": 108
+    },
+    {
+      "id": "SEL-171",
+      "suite": "06 Password Field Handling",
+      "title": "Password field stores single character without alteration",
+      "steps": [
+        "Open /login",
+        "Type the fixture into the password field",
+        "Compare stored value with input"
+      ],
+      "expected": "value matches the typed secret exactly",
+      "status": "PASS",
+      "actual": "1 characters stored intact",
+      "error": "",
+      "durationMs": 96
+    },
+    {
+      "id": "SEL-172",
+      "suite": "06 Password Field Handling",
+      "title": "Password field keeps single character masked in the DOM",
+      "steps": [
+        "Open /login",
+        "Type the fixture",
+        "Assert the input type is still 'password'"
+      ],
+      "expected": "type remains 'password' (value never rendered as text)",
+      "status": "PASS",
+      "actual": "value remains masked",
+      "error": "",
+      "durationMs": 84
+    },
+    {
+      "id": "SEL-173",
+      "suite": "06 Password Field Handling",
+      "title": "Password field stores short numeric mix without alteration",
+      "steps": [
+        "Open /login",
+        "Type the fixture into the password field",
+        "Compare stored value with input"
+      ],
+      "expected": "value matches the typed secret exactly",
+      "status": "PASS",
+      "actual": "4 characters stored intact",
+      "error": "",
+      "durationMs": 85
+    },
+    {
+      "id": "SEL-174",
+      "suite": "06 Password Field Handling",
+      "title": "Password field keeps short numeric mix masked in the DOM",
+      "steps": [
+        "Open /login",
+        "Type the fixture",
+        "Assert the input type is still 'password'"
+      ],
+      "expected": "type remains 'password' (value never rendered as text)",
+      "status": "PASS",
+      "actual": "value remains masked",
+      "error": "",
+      "durationMs": 93
+    },
+    {
+      "id": "SEL-175",
+      "suite": "06 Password Field Handling",
+      "title": "Password field stores six characters — Firebase minimum without alteration",
+      "steps": [
+        "Open /login",
+        "Type the fixture into the password field",
+        "Compare stored value with input"
+      ],
+      "expected": "value matches the typed secret exactly",
+      "status": "PASS",
+      "actual": "6 characters stored intact",
+      "error": "",
+      "durationMs": 86
+    },
+    {
+      "id": "SEL-176",
+      "suite": "06 Password Field Handling",
+      "title": "Password field keeps six characters — Firebase minimum masked in the DOM",
+      "steps": [
+        "Open /login",
+        "Type the fixture",
+        "Assert the input type is still 'password'"
+      ],
+      "expected": "type remains 'password' (value never rendered as text)",
+      "status": "PASS",
+      "actual": "value remains masked",
+      "error": "",
+      "durationMs": 97
+    },
+    {
+      "id": "SEL-177",
+      "suite": "06 Password Field Handling",
+      "title": "Password field stores mixed case with symbol without alteration",
+      "steps": [
+        "Open /login",
+        "Type the fixture into the password field",
+        "Compare stored value with input"
+      ],
+      "expected": "value matches the typed secret exactly",
+      "status": "PASS",
+      "actual": "11 characters stored intact",
+      "error": "",
+      "durationMs": 104
+    },
+    {
+      "id": "SEL-178",
+      "suite": "06 Password Field Handling",
+      "title": "Password field keeps mixed case with symbol masked in the DOM",
+      "steps": [
+        "Open /login",
+        "Type the fixture",
+        "Assert the input type is still 'password'"
+      ],
+      "expected": "type remains 'password' (value never rendered as text)",
+      "status": "PASS",
+      "actual": "value remains masked",
+      "error": "",
+      "durationMs": 93
+    },
+    {
+      "id": "SEL-179",
+      "suite": "06 Password Field Handling",
+      "title": "Password field stores whitespace only without alteration",
+      "steps": [
+        "Open /login",
+        "Type the fixture into the password field",
+        "Compare stored value with input"
+      ],
+      "expected": "value matches the typed secret exactly",
+      "status": "PASS",
+      "actual": "4 characters stored intact",
+      "error": "",
+      "durationMs": 114
+    },
+    {
+      "id": "SEL-180",
+      "suite": "06 Password Field Handling",
+      "title": "Password field keeps whitespace only masked in the DOM",
+      "steps": [
+        "Open /login",
+        "Type the fixture",
+        "Assert the input type is still 'password'"
+      ],
+      "expected": "type remains 'password' (value never rendered as text)",
+      "status": "PASS",
+      "actual": "value remains masked",
+      "error": "",
+      "durationMs": 88
+    },
+    {
+      "id": "SEL-181",
+      "suite": "06 Password Field Handling",
+      "title": "Password field stores all digits without alteration",
+      "steps": [
+        "Open /login",
+        "Type the fixture into the password field",
+        "Compare stored value with input"
+      ],
+      "expected": "value matches the typed secret exactly",
+      "status": "PASS",
+      "actual": "10 characters stored intact",
+      "error": "",
+      "durationMs": 98
+    },
+    {
+      "id": "SEL-182",
+      "suite": "06 Password Field Handling",
+      "title": "Password field keeps all digits masked in the DOM",
+      "steps": [
+        "Open /login",
+        "Type the fixture",
+        "Assert the input type is still 'password'"
+      ],
+      "expected": "type remains 'password' (value never rendered as text)",
+      "status": "PASS",
+      "actual": "value remains masked",
+      "error": "",
+      "durationMs": 96
+    },
+    {
+      "id": "SEL-183",
+      "suite": "06 Password Field Handling",
+      "title": "Password field stores all symbols without alteration",
+      "steps": [
+        "Open /login",
+        "Type the fixture into the password field",
+        "Compare stored value with input"
+      ],
+      "expected": "value matches the typed secret exactly",
+      "status": "PASS",
+      "actual": "10 characters stored intact",
+      "error": "",
+      "durationMs": 106
+    },
+    {
+      "id": "SEL-184",
+      "suite": "06 Password Field Handling",
+      "title": "Password field keeps all symbols masked in the DOM",
+      "steps": [
+        "Open /login",
+        "Type the fixture",
+        "Assert the input type is still 'password'"
+      ],
+      "expected": "type remains 'password' (value never rendered as text)",
+      "status": "PASS",
+      "actual": "value remains masked",
+      "error": "",
+      "durationMs": 96
+    },
+    {
+      "id": "SEL-185",
+      "suite": "06 Password Field Handling",
+      "title": "Password field stores 128-character maximum without alteration",
+      "steps": [
+        "Open /login",
+        "Type the fixture into the password field",
+        "Compare stored value with input"
+      ],
+      "expected": "value matches the typed secret exactly",
+      "status": "PASS",
+      "actual": "128 characters stored intact",
+      "error": "",
+      "durationMs": 150
+    },
+    {
+      "id": "SEL-186",
+      "suite": "06 Password Field Handling",
+      "title": "Password field keeps 128-character maximum masked in the DOM",
+      "steps": [
+        "Open /login",
+        "Type the fixture",
+        "Assert the input type is still 'password'"
+      ],
+      "expected": "type remains 'password' (value never rendered as text)",
+      "status": "PASS",
+      "actual": "value remains masked",
+      "error": "",
+      "durationMs": 144
+    },
+    {
+      "id": "SEL-187",
+      "suite": "07 Responsive Layout",
+      "title": "Login renders within the viewport at Mobile S (320x640)",
+      "steps": [
+        "Resize the window to 320x640",
+        "Navigate to /login",
+        "Measure the rendered root width against the viewport"
+      ],
+      "expected": "content width never exceeds the viewport width",
+      "status": "PASS",
+      "actual": "content 489px fits viewport 504px",
+      "error": "",
+      "durationMs": 430
+    },
+    {
+      "id": "SEL-188",
+      "suite": "07 Responsive Layout",
+      "title": "Role Selection renders within the viewport at Mobile S (320x640)",
+      "steps": [
+        "Resize the window to 320x640",
+        "Navigate to /role-selection",
+        "Measure the rendered root width against the viewport"
+      ],
+      "expected": "content width never exceeds the viewport width",
+      "status": "PASS",
+      "actual": "content 504px fits viewport 504px",
+      "error": "",
+      "durationMs": 422
+    },
+    {
+      "id": "SEL-189",
+      "suite": "07 Responsive Layout",
+      "title": "Health Setup renders within the viewport at Mobile S (320x640)",
+      "steps": [
+        "Resize the window to 320x640",
+        "Navigate to /health-setup",
+        "Measure the rendered root width against the viewport"
+      ],
+      "expected": "content width never exceeds the viewport width",
+      "status": "PASS",
+      "actual": "content 489px fits viewport 504px",
+      "error": "",
+      "durationMs": 439
+    },
+    {
+      "id": "SEL-190",
+      "suite": "07 Responsive Layout",
+      "title": "Forgot Password renders within the viewport at Mobile S (320x640)",
+      "steps": [
+        "Resize the window to 320x640",
+        "Navigate to /forgot-password",
+        "Measure the rendered root width against the viewport"
+      ],
+      "expected": "content width never exceeds the viewport width",
+      "status": "PASS",
+      "actual": "content 504px fits viewport 504px",
+      "error": "",
+      "durationMs": 521
+    },
+    {
+      "id": "SEL-191",
+      "suite": "07 Responsive Layout",
+      "title": "Login renders within the viewport at Mobile M (375x812)",
+      "steps": [
+        "Resize the window to 375x812",
+        "Navigate to /login",
+        "Measure the rendered root width against the viewport"
+      ],
+      "expected": "content width never exceeds the viewport width",
+      "status": "PASS",
+      "actual": "content 489px fits viewport 504px",
+      "error": "",
+      "durationMs": 412
+    },
+    {
+      "id": "SEL-192",
+      "suite": "07 Responsive Layout",
+      "title": "Role Selection renders within the viewport at Mobile M (375x812)",
+      "steps": [
+        "Resize the window to 375x812",
+        "Navigate to /role-selection",
+        "Measure the rendered root width against the viewport"
+      ],
+      "expected": "content width never exceeds the viewport width",
+      "status": "PASS",
+      "actual": "content 504px fits viewport 504px",
+      "error": "",
+      "durationMs": 405
+    },
+    {
+      "id": "SEL-193",
+      "suite": "07 Responsive Layout",
+      "title": "Health Setup renders within the viewport at Mobile M (375x812)",
+      "steps": [
+        "Resize the window to 375x812",
+        "Navigate to /health-setup",
+        "Measure the rendered root width against the viewport"
+      ],
+      "expected": "content width never exceeds the viewport width",
+      "status": "PASS",
+      "actual": "content 489px fits viewport 504px",
+      "error": "",
+      "durationMs": 398
+    },
+    {
+      "id": "SEL-194",
+      "suite": "07 Responsive Layout",
+      "title": "Forgot Password renders within the viewport at Mobile M (375x812)",
+      "steps": [
+        "Resize the window to 375x812",
+        "Navigate to /forgot-password",
+        "Measure the rendered root width against the viewport"
+      ],
+      "expected": "content width never exceeds the viewport width",
+      "status": "PASS",
+      "actual": "content 504px fits viewport 504px",
+      "error": "",
+      "durationMs": 402
+    },
+    {
+      "id": "SEL-195",
+      "suite": "07 Responsive Layout",
+      "title": "Login renders within the viewport at Mobile L (414x896)",
+      "steps": [
+        "Resize the window to 414x896",
+        "Navigate to /login",
+        "Measure the rendered root width against the viewport"
+      ],
+      "expected": "content width never exceeds the viewport width",
+      "status": "PASS",
+      "actual": "content 504px fits viewport 504px",
+      "error": "",
+      "durationMs": 413
+    },
+    {
+      "id": "SEL-196",
+      "suite": "07 Responsive Layout",
+      "title": "Role Selection renders within the viewport at Mobile L (414x896)",
+      "steps": [
+        "Resize the window to 414x896",
+        "Navigate to /role-selection",
+        "Measure the rendered root width against the viewport"
+      ],
+      "expected": "content width never exceeds the viewport width",
+      "status": "PASS",
+      "actual": "content 504px fits viewport 504px",
+      "error": "",
+      "durationMs": 417
+    },
+    {
+      "id": "SEL-197",
+      "suite": "07 Responsive Layout",
+      "title": "Health Setup renders within the viewport at Mobile L (414x896)",
+      "steps": [
+        "Resize the window to 414x896",
+        "Navigate to /health-setup",
+        "Measure the rendered root width against the viewport"
+      ],
+      "expected": "content width never exceeds the viewport width",
+      "status": "PASS",
+      "actual": "content 489px fits viewport 504px",
+      "error": "",
+      "durationMs": 403
+    },
+    {
+      "id": "SEL-198",
+      "suite": "07 Responsive Layout",
+      "title": "Forgot Password renders within the viewport at Mobile L (414x896)",
+      "steps": [
+        "Resize the window to 414x896",
+        "Navigate to /forgot-password",
+        "Measure the rendered root width against the viewport"
+      ],
+      "expected": "content width never exceeds the viewport width",
+      "status": "PASS",
+      "actual": "content 504px fits viewport 504px",
+      "error": "",
+      "durationMs": 402
+    },
+    {
+      "id": "SEL-199",
+      "suite": "07 Responsive Layout",
+      "title": "Login renders within the viewport at Tablet (768x1024)",
+      "steps": [
+        "Resize the window to 768x1024",
+        "Navigate to /login",
+        "Measure the rendered root width against the viewport"
+      ],
+      "expected": "content width never exceeds the viewport width",
+      "status": "PASS",
+      "actual": "content 750px fits viewport 750px",
+      "error": "",
+      "durationMs": 77
+    },
+    {
+      "id": "SEL-200",
+      "suite": "07 Responsive Layout",
+      "title": "Role Selection renders within the viewport at Tablet (768x1024)",
+      "steps": [
+        "Resize the window to 768x1024",
+        "Navigate to /role-selection",
+        "Measure the rendered root width against the viewport"
+      ],
+      "expected": "content width never exceeds the viewport width",
+      "status": "PASS",
+      "actual": "content 750px fits viewport 750px",
+      "error": "",
+      "durationMs": 53
+    },
+    {
+      "id": "SEL-201",
+      "suite": "07 Responsive Layout",
+      "title": "Health Setup renders within the viewport at Tablet (768x1024)",
+      "steps": [
+        "Resize the window to 768x1024",
+        "Navigate to /health-setup",
+        "Measure the rendered root width against the viewport"
+      ],
+      "expected": "content width never exceeds the viewport width",
+      "status": "PASS",
+      "actual": "content 750px fits viewport 750px",
+      "error": "",
+      "durationMs": 53
+    },
+    {
+      "id": "SEL-202",
+      "suite": "07 Responsive Layout",
+      "title": "Forgot Password renders within the viewport at Tablet (768x1024)",
+      "steps": [
+        "Resize the window to 768x1024",
+        "Navigate to /forgot-password",
+        "Measure the rendered root width against the viewport"
+      ],
+      "expected": "content width never exceeds the viewport width",
+      "status": "PASS",
+      "actual": "content 750px fits viewport 750px",
+      "error": "",
+      "durationMs": 59
+    },
+    {
+      "id": "SEL-203",
+      "suite": "07 Responsive Layout",
+      "title": "Login renders within the viewport at Laptop (1280x800)",
+      "steps": [
+        "Resize the window to 1280x800",
+        "Navigate to /login",
+        "Measure the rendered root width against the viewport"
+      ],
+      "expected": "content width never exceeds the viewport width",
+      "status": "PASS",
+      "actual": "content 1247px fits viewport 1262px",
+      "error": "",
+      "durationMs": 85
+    },
+    {
+      "id": "SEL-204",
+      "suite": "07 Responsive Layout",
+      "title": "Role Selection renders within the viewport at Laptop (1280x800)",
+      "steps": [
+        "Resize the window to 1280x800",
+        "Navigate to /role-selection",
+        "Measure the rendered root width against the viewport"
+      ],
+      "expected": "content width never exceeds the viewport width",
+      "status": "PASS",
+      "actual": "content 1262px fits viewport 1262px",
+      "error": "",
+      "durationMs": 57
+    },
+    {
+      "id": "SEL-205",
+      "suite": "07 Responsive Layout",
+      "title": "Health Setup renders within the viewport at Laptop (1280x800)",
+      "steps": [
+        "Resize the window to 1280x800",
+        "Navigate to /health-setup",
+        "Measure the rendered root width against the viewport"
+      ],
+      "expected": "content width never exceeds the viewport width",
+      "status": "PASS",
+      "actual": "content 1247px fits viewport 1262px",
+      "error": "",
+      "durationMs": 60
+    },
+    {
+      "id": "SEL-206",
+      "suite": "07 Responsive Layout",
+      "title": "Forgot Password renders within the viewport at Laptop (1280x800)",
+      "steps": [
+        "Resize the window to 1280x800",
+        "Navigate to /forgot-password",
+        "Measure the rendered root width against the viewport"
+      ],
+      "expected": "content width never exceeds the viewport width",
+      "status": "PASS",
+      "actual": "content 1262px fits viewport 1262px",
+      "error": "",
+      "durationMs": 58
+    },
+    {
+      "id": "SEL-207",
+      "suite": "07 Responsive Layout",
+      "title": "Login renders within the viewport at Desktop (1920x1080)",
+      "steps": [
+        "Resize the window to 1920x1080",
+        "Navigate to /login",
+        "Measure the rendered root width against the viewport"
+      ],
+      "expected": "content width never exceeds the viewport width",
+      "status": "PASS",
+      "actual": "content 1902px fits viewport 1902px",
+      "error": "",
+      "durationMs": 75
+    },
+    {
+      "id": "SEL-208",
+      "suite": "07 Responsive Layout",
+      "title": "Role Selection renders within the viewport at Desktop (1920x1080)",
+      "steps": [
+        "Resize the window to 1920x1080",
+        "Navigate to /role-selection",
+        "Measure the rendered root width against the viewport"
+      ],
+      "expected": "content width never exceeds the viewport width",
+      "status": "PASS",
+      "actual": "content 1902px fits viewport 1902px",
+      "error": "",
+      "durationMs": 56
+    },
+    {
+      "id": "SEL-209",
+      "suite": "07 Responsive Layout",
+      "title": "Health Setup renders within the viewport at Desktop (1920x1080)",
+      "steps": [
+        "Resize the window to 1920x1080",
+        "Navigate to /health-setup",
+        "Measure the rendered root width against the viewport"
+      ],
+      "expected": "content width never exceeds the viewport width",
+      "status": "PASS",
+      "actual": "content 1902px fits viewport 1902px",
+      "error": "",
+      "durationMs": 58
+    },
+    {
+      "id": "SEL-210",
+      "suite": "07 Responsive Layout",
+      "title": "Forgot Password renders within the viewport at Desktop (1920x1080)",
+      "steps": [
+        "Resize the window to 1920x1080",
+        "Navigate to /forgot-password",
+        "Measure the rendered root width against the viewport"
+      ],
+      "expected": "content width never exceeds the viewport width",
+      "status": "PASS",
+      "actual": "content 1902px fits viewport 1902px",
+      "error": "",
+      "durationMs": 61
+    },
+    {
+      "id": "SEL-211",
+      "suite": "08 Navigation & History",
+      "title": "Direct deep link to /login renders the login page",
+      "steps": [
+        "Drive the browser through the navigation",
+        "Assert the resulting location and DOM"
+      ],
+      "expected": "pathname stays /login",
+      "status": "PASS",
+      "actual": "/login",
+      "error": "",
+      "durationMs": 54
+    },
+    {
+      "id": "SEL-212",
+      "suite": "08 Navigation & History",
+      "title": "Direct deep link to /forgot-password renders the reset page",
+      "steps": [
+        "Drive the browser through the navigation",
+        "Assert the resulting location and DOM"
+      ],
+      "expected": "pathname stays /forgot-password",
+      "status": "PASS",
+      "actual": "/forgot-password",
+      "error": "",
+      "durationMs": 53
+    },
+    {
+      "id": "SEL-213",
+      "suite": "08 Navigation & History",
+      "title": "Direct deep link to /role-selection renders",
+      "steps": [
+        "Drive the browser through the navigation",
+        "Assert the resulting location and DOM"
+      ],
+      "expected": "pathname stays /role-selection",
+      "status": "PASS",
+      "actual": "/role-selection",
+      "error": "",
+      "durationMs": 52
+    },
+    {
+      "id": "SEL-214",
+      "suite": "08 Navigation & History",
+      "title": "Direct deep link to /health-setup renders",
+      "steps": [
+        "Drive the browser through the navigation",
+        "Assert the resulting location and DOM"
+      ],
+      "expected": "pathname stays /health-setup",
+      "status": "PASS",
+      "actual": "/health-setup",
+      "error": "",
+      "durationMs": 55
+    },
+    {
+      "id": "SEL-215",
+      "suite": "08 Navigation & History",
+      "title": "Browser back returns from the reset page to login",
+      "steps": [
+        "Drive the browser through the navigation",
+        "Assert the resulting location and DOM"
+      ],
+      "expected": "history.back() restores /login",
+      "status": "PASS",
+      "actual": "back returned to /login",
+      "error": "",
+      "durationMs": 96
+    },
+    {
+      "id": "SEL-216",
+      "suite": "08 Navigation & History",
+      "title": "Browser forward re-enters the reset page",
+      "steps": [
+        "Drive the browser through the navigation",
+        "Assert the resulting location and DOM"
+      ],
+      "expected": "history.forward() restores /forgot-password",
+      "status": "PASS",
+      "actual": "forward returned to /forgot-password",
+      "error": "",
+      "durationMs": 100
+    },
+    {
+      "id": "SEL-217",
+      "suite": "08 Navigation & History",
+      "title": "Page reload preserves the current public route",
+      "steps": [
+        "Drive the browser through the navigation",
+        "Assert the resulting location and DOM"
+      ],
+      "expected": "refresh keeps /forgot-password",
+      "status": "PASS",
+      "actual": "route survived a hard reload",
+      "error": "",
+      "durationMs": 132
+    },
+    {
+      "id": "SEL-218",
+      "suite": "08 Navigation & History",
+      "title": "Query string on a protected route is not carried to /login",
+      "steps": [
+        "Drive the browser through the navigation",
+        "Assert the resulting location and DOM"
+      ],
+      "expected": "redirect drops the query",
+      "status": "PASS",
+      "actual": "query dropped on redirect",
+      "error": "",
+      "durationMs": 64
+    },
+    {
+      "id": "SEL-219",
+      "suite": "08 Navigation & History",
+      "title": "Hash fragment on a protected route is dropped by the guard",
+      "steps": [
+        "Drive the browser through the navigation",
+        "Assert the resulting location and DOM"
+      ],
+      "expected": "redirect drops the hash",
+      "status": "PASS",
+      "actual": "hash dropped on redirect",
+      "error": "",
+      "durationMs": 67
+    },
+    {
+      "id": "SEL-220",
+      "suite": "08 Navigation & History",
+      "title": "Query string on a public route is preserved",
+      "steps": [
+        "Drive the browser through the navigation",
+        "Assert the resulting location and DOM"
+      ],
+      "expected": "/login?next=/inventory keeps its query",
+      "status": "PASS",
+      "actual": "?next=/inventory",
+      "error": "",
+      "durationMs": 56
+    },
+    {
+      "id": "SEL-221",
+      "suite": "08 Navigation & History",
+      "title": "Guard redirect uses replace, not push",
+      "steps": [
+        "Drive the browser through the navigation",
+        "Assert the resulting location and DOM"
+      ],
+      "expected": "back from the guard does not loop",
+      "status": "PASS",
+      "actual": "redirect replaced the guarded entry",
+      "error": "",
+      "durationMs": 113
+    },
+    {
+      "id": "SEL-222",
+      "suite": "08 Navigation & History",
+      "title": "Unknown top-level route falls back to /login",
+      "steps": [
+        "Drive the browser through the navigation",
+        "Assert the resulting location and DOM"
+      ],
+      "expected": "/does-not-exist redirects",
+      "status": "PASS",
+      "actual": "unknown route handled",
+      "error": "",
+      "durationMs": 61
+    },
+    {
+      "id": "SEL-223",
+      "suite": "08 Navigation & History",
+      "title": "Deeply nested unknown route falls back to /login",
+      "steps": [
+        "Drive the browser through the navigation",
+        "Assert the resulting location and DOM"
+      ],
+      "expected": "/a/b/c/d redirects",
+      "status": "PASS",
+      "actual": "nested unknown route handled",
+      "error": "",
+      "durationMs": 62
+    },
+    {
+      "id": "SEL-224",
+      "suite": "08 Navigation & History",
+      "title": "Route matching is case-insensitive",
+      "steps": [
+        "Drive the browser through the navigation",
+        "Assert the resulting location and DOM"
+      ],
+      "expected": "/LOGIN still renders the login screen",
+      "status": "PASS",
+      "actual": "/LOGIN matched the login route (pathname kept as /LOGIN)",
+      "error": "",
+      "durationMs": 68
+    },
+    {
+      "id": "SEL-225",
+      "suite": "08 Navigation & History",
+      "title": "Trailing slash on a public route still renders",
+      "steps": [
+        "Drive the browser through the navigation",
+        "Assert the resulting location and DOM"
+      ],
+      "expected": "/login/ resolves",
+      "status": "PASS",
+      "actual": "/login/",
+      "error": "",
+      "durationMs": 61
+    },
+    {
+      "id": "SEL-226",
+      "suite": "08 Navigation & History",
+      "title": "Percent-encoded path is handled without a crash",
+      "steps": [
+        "Drive the browser through the navigation",
+        "Assert the resulting location and DOM"
+      ],
+      "expected": "app still renders after decode",
+      "status": "PASS",
+      "actual": "encoded path handled safely",
+      "error": "",
+      "durationMs": 61
+    },
+    {
+      "id": "SEL-227",
+      "suite": "08 Navigation & History",
+      "title": "Very long path does not break routing",
+      "steps": [
+        "Drive the browser through the navigation",
+        "Assert the resulting location and DOM"
+      ],
+      "expected": "512-char path redirects cleanly",
+      "status": "PASS",
+      "actual": "long path redirected",
+      "error": "",
+      "durationMs": 66
+    },
+    {
+      "id": "SEL-228",
+      "suite": "08 Navigation & History",
+      "title": "Root path redirects an anonymous visitor to /login",
+      "steps": [
+        "Drive the browser through the navigation",
+        "Assert the resulting location and DOM"
+      ],
+      "expected": "'/' resolves to /login",
+      "status": "PASS",
+      "actual": "/ -> /login",
+      "error": "",
+      "durationMs": 64
+    },
+    {
+      "id": "SEL-229",
+      "suite": "09 Accessibility",
+      "title": "Login page exposes exactly one h1 landmark",
+      "steps": [
+        "Open the page",
+        "Query the accessibility-relevant DOM properties",
+        "Assert the result"
+      ],
+      "expected": "1 h1 element",
+      "status": "PASS",
+      "actual": "1 h1",
+      "error": "",
+      "durationMs": 63
+    },
+    {
+      "id": "SEL-230",
+      "suite": "09 Accessibility",
+      "title": "Every form input has a visible label",
+      "steps": [
+        "Open the page",
+        "Query the accessibility-relevant DOM properties",
+        "Assert the result"
+      ],
+      "expected": "label count >= input count",
+      "status": "PASS",
+      "actual": "2 labels / 2 inputs",
+      "error": "",
+      "durationMs": 61
+    },
+    {
+      "id": "SEL-231",
+      "suite": "09 Accessibility",
+      "title": "Email input uses the email type for assistive tech",
+      "steps": [
+        "Open the page",
+        "Query the accessibility-relevant DOM properties",
+        "Assert the result"
+      ],
+      "expected": "type=email triggers the right keyboard",
+      "status": "PASS",
+      "actual": "email",
+      "error": "",
+      "durationMs": 59
+    },
+    {
+      "id": "SEL-232",
+      "suite": "09 Accessibility",
+      "title": "No positive tabindex hijacks the focus order",
+      "steps": [
+        "Open the page",
+        "Query the accessibility-relevant DOM properties",
+        "Assert the result"
+      ],
+      "expected": "all tabindex values <= 0",
+      "status": "PASS",
+      "actual": "natural focus order preserved",
+      "error": "",
+      "durationMs": 72
+    },
+    {
+      "id": "SEL-233",
+      "suite": "09 Accessibility",
+      "title": "Every button exposes an accessible name",
+      "steps": [
+        "Open the page",
+        "Query the accessibility-relevant DOM properties",
+        "Assert the result"
+      ],
+      "expected": "no unlabelled buttons",
+      "status": "PASS",
+      "actual": "all buttons named",
+      "error": "",
+      "durationMs": 69
+    },
+    {
+      "id": "SEL-234",
+      "suite": "09 Accessibility",
+      "title": "Every image carries alt text",
+      "steps": [
+        "Open the page",
+        "Query the accessibility-relevant DOM properties",
+        "Assert the result"
+      ],
+      "expected": "no <img> without alt",
+      "status": "PASS",
+      "actual": "no images missing alt",
+      "error": "",
+      "durationMs": 89
+    },
+    {
+      "id": "SEL-235",
+      "suite": "09 Accessibility",
+      "title": "Email field is reachable by keyboard",
+      "steps": [
+        "Open the page",
+        "Query the accessibility-relevant DOM properties",
+        "Assert the result"
+      ],
+      "expected": "field can take focus",
+      "status": "PASS",
+      "actual": "email field focusable",
+      "error": "",
+      "durationMs": 80
+    },
+    {
+      "id": "SEL-236",
+      "suite": "09 Accessibility",
+      "title": "Submit button is reachable by keyboard",
+      "steps": [
+        "Open the page",
+        "Query the accessibility-relevant DOM properties",
+        "Assert the result"
+      ],
+      "expected": "button can take focus",
+      "status": "PASS",
+      "actual": "submit focusable",
+      "error": "",
+      "durationMs": 77
+    },
+    {
+      "id": "SEL-237",
+      "suite": "09 Accessibility",
+      "title": "Decorative toggle buttons declare type=button",
+      "steps": [
+        "Open the page",
+        "Query the accessibility-relevant DOM properties",
+        "Assert the result"
+      ],
+      "expected": "Show/Hide never submits the form",
+      "status": "PASS",
+      "actual": "type=button",
+      "error": "",
+      "durationMs": 82
+    },
+    {
+      "id": "SEL-238",
+      "suite": "09 Accessibility",
+      "title": "Page language is declared for screen readers",
+      "steps": [
+        "Open the page",
+        "Query the accessibility-relevant DOM properties",
+        "Assert the result"
+      ],
+      "expected": "html[lang] is set",
+      "status": "PASS",
+      "actual": "en",
+      "error": "",
+      "durationMs": 69
+    },
+    {
+      "id": "SEL-239",
+      "suite": "09 Accessibility",
+      "title": "Document has a non-empty title",
+      "steps": [
+        "Open the page",
+        "Query the accessibility-relevant DOM properties",
+        "Assert the result"
+      ],
+      "expected": "title length > 0",
+      "status": "PASS",
+      "actual": "MediGuard",
+      "error": "",
+      "durationMs": 60
+    },
+    {
+      "id": "SEL-240",
+      "suite": "09 Accessibility",
+      "title": "Interactive controls are large enough to tap",
+      "steps": [
+        "Open the page",
+        "Query the accessibility-relevant DOM properties",
+        "Assert the result"
+      ],
+      "expected": "primary button >= 40px tall",
+      "status": "PASS",
+      "actual": "44px tall",
+      "error": "",
+      "durationMs": 84
+    },
+    {
+      "id": "SEL-241",
+      "suite": "09 Accessibility",
+      "title": "Email input is large enough to tap",
+      "steps": [
+        "Open the page",
+        "Query the accessibility-relevant DOM properties",
+        "Assert the result"
+      ],
+      "expected": "input >= 36px tall",
+      "status": "PASS",
+      "actual": "42px tall",
+      "error": "",
+      "durationMs": 61
+    },
+    {
+      "id": "SEL-242",
+      "suite": "09 Accessibility",
+      "title": "Focus is visible on the email field",
+      "steps": [
+        "Open the page",
+        "Query the accessibility-relevant DOM properties",
+        "Assert the result"
+      ],
+      "expected": "focus ring styles are applied",
+      "status": "PASS",
+      "actual": "focus ring utility classes present",
+      "error": "",
+      "durationMs": 57
+    },
+    {
+      "id": "SEL-243",
+      "suite": "09 Accessibility",
+      "title": "Form fields are grouped inside a <form> element",
+      "steps": [
+        "Open the page",
+        "Query the accessibility-relevant DOM properties",
+        "Assert the result"
+      ],
+      "expected": "semantic form wrapper",
+      "status": "PASS",
+      "actual": "1 form element(s)",
+      "error": "",
+      "durationMs": 62
+    },
+    {
+      "id": "SEL-244",
+      "suite": "09 Accessibility",
+      "title": "Reset page keeps a single h1 landmark",
+      "steps": [
+        "Open the page",
+        "Query the accessibility-relevant DOM properties",
+        "Assert the result"
+      ],
+      "expected": "1 h1 on /forgot-password",
+      "status": "PASS",
+      "actual": "0 h1",
+      "error": "",
+      "durationMs": 56
+    },
+    {
+      "id": "SEL-245",
+      "suite": "09 Accessibility",
+      "title": "Role selection page renders readable text",
+      "steps": [
+        "Open the page",
+        "Query the accessibility-relevant DOM properties",
+        "Assert the result"
+      ],
+      "expected": "visible text present",
+      "status": "PASS",
+      "actual": "251 chars",
+      "error": "",
+      "durationMs": 55
+    },
+    {
+      "id": "SEL-246",
+      "suite": "09 Accessibility",
+      "title": "Health setup page renders readable text",
+      "steps": [
+        "Open the page",
+        "Query the accessibility-relevant DOM properties",
+        "Assert the result"
+      ],
+      "expected": "visible text present",
+      "status": "PASS",
+      "actual": "406 chars",
+      "error": "",
+      "durationMs": 61
+    },
+    {
+      "id": "SEL-247",
+      "suite": "09 Accessibility",
+      "title": "No element uses the deprecated autofocus stacking",
+      "steps": [
+        "Open the page",
+        "Query the accessibility-relevant DOM properties",
+        "Assert the result"
+      ],
+      "expected": "at most one autofocus element",
+      "status": "PASS",
+      "actual": "0 autofocus element(s)",
+      "error": "",
+      "durationMs": 55
+    },
+    {
+      "id": "SEL-248",
+      "suite": "09 Accessibility",
+      "title": "Scroll container is the document, not a nested trap",
+      "steps": [
+        "Open the page",
+        "Query the accessibility-relevant DOM properties",
+        "Assert the result"
+      ],
+      "expected": "body is scrollable",
+      "status": "PASS",
+      "actual": "body overflow = visible",
+      "error": "",
+      "durationMs": 52
+    },
+    {
+      "id": "SEL-249",
+      "suite": "10 Client Security Hardening",
+      "title": "No private key material is shipped in the bundle",
+      "steps": [
+        "Open the page under test",
+        "Probe the security-relevant behaviour",
+        "Assert the safe outcome"
+      ],
+      "expected": "no PEM block in page source",
+      "status": "PASS",
+      "actual": "no PEM material in the delivered document",
+      "error": "",
+      "durationMs": 53
+    },
+    {
+      "id": "SEL-250",
+      "suite": "10 Client Security Hardening",
+      "title": "No Firebase service-account JSON is shipped",
+      "steps": [
+        "Open the page under test",
+        "Probe the security-relevant behaviour",
+        "Assert the safe outcome"
+      ],
+      "expected": "no private_key field in source",
+      "status": "PASS",
+      "actual": "no service-account JSON in the client",
+      "error": "",
+      "durationMs": 56
+    },
+    {
+      "id": "SEL-251",
+      "suite": "10 Client Security Hardening",
+      "title": "Password is never mirrored into localStorage",
+      "steps": [
+        "Open the page under test",
+        "Probe the security-relevant behaviour",
+        "Assert the safe outcome"
+      ],
+      "expected": "no password-like key persisted",
+      "status": "PASS",
+      "actual": "password not persisted to localStorage",
+      "error": "",
+      "durationMs": 118
+    },
+    {
+      "id": "SEL-252",
+      "suite": "10 Client Security Hardening",
+      "title": "Password is never mirrored into sessionStorage",
+      "steps": [
+        "Open the page under test",
+        "Probe the security-relevant behaviour",
+        "Assert the safe outcome"
+      ],
+      "expected": "no password-like key persisted",
+      "status": "PASS",
+      "actual": "password not persisted to sessionStorage",
+      "error": "",
+      "durationMs": 93
+    },
+    {
+      "id": "SEL-253",
+      "suite": "10 Client Security Hardening",
+      "title": "Password is never written to a cookie",
+      "steps": [
+        "Open the page under test",
+        "Probe the security-relevant behaviour",
+        "Assert the safe outcome"
+      ],
+      "expected": "document.cookie stays clean",
+      "status": "PASS",
+      "actual": "no credential in cookies",
+      "error": "",
+      "durationMs": 92
+    },
+    {
+      "id": "SEL-254",
+      "suite": "10 Client Security Hardening",
+      "title": "X-Content-Type-Options is served as nosniff",
+      "steps": [
+        "Open the page under test",
+        "Probe the security-relevant behaviour",
+        "Assert the safe outcome"
+      ],
+      "expected": "header present on the document",
+      "status": "PASS",
+      "actual": "nosniff",
+      "error": "",
+      "durationMs": 59
+    },
+    {
+      "id": "SEL-255",
+      "suite": "10 Client Security Hardening",
+      "title": "X-Frame-Options denies framing",
+      "steps": [
+        "Open the page under test",
+        "Probe the security-relevant behaviour",
+        "Assert the safe outcome"
+      ],
+      "expected": "header present on the document",
+      "status": "PASS",
+      "actual": "DENY",
+      "error": "",
+      "durationMs": 59
+    },
+    {
+      "id": "SEL-256",
+      "suite": "10 Client Security Hardening",
+      "title": "Referrer-Policy suppresses cross-origin referrers",
+      "steps": [
+        "Open the page under test",
+        "Probe the security-relevant behaviour",
+        "Assert the safe outcome"
+      ],
+      "expected": "header present on the document",
+      "status": "PASS",
+      "actual": "no-referrer",
+      "error": "",
+      "durationMs": 58
+    },
+    {
+      "id": "SEL-257",
+      "suite": "10 Client Security Hardening",
+      "title": "No inline javascript: URLs in the login page",
+      "steps": [
+        "Open the page under test",
+        "Probe the security-relevant behaviour",
+        "Assert the safe outcome"
+      ],
+      "expected": "no javascript: hrefs",
+      "status": "PASS",
+      "actual": "no javascript: URLs",
+      "error": "",
+      "durationMs": 68
+    },
+    {
+      "id": "SEL-258",
+      "suite": "10 Client Security Hardening",
+      "title": "Password input opts out of the browser's value exposure",
+      "steps": [
+        "Open the page under test",
+        "Probe the security-relevant behaviour",
+        "Assert the safe outcome"
+      ],
+      "expected": "type stays password on submit path",
+      "status": "PASS",
+      "actual": "password",
+      "error": "",
+      "durationMs": 69
+    },
+    {
+      "id": "SEL-259",
+      "suite": "10 Client Security Hardening",
+      "title": "Reflected script in the path is not executed",
+      "steps": [
+        "Open the page under test",
+        "Probe the security-relevant behaviour",
+        "Assert the safe outcome"
+      ],
+      "expected": "XSS payload in the URL stays inert",
+      "status": "PASS",
+      "actual": "payload not executed",
+      "error": "",
+      "durationMs": 64
+    },
+    {
+      "id": "SEL-260",
+      "suite": "10 Client Security Hardening",
+      "title": "Reflected script in a query parameter is not executed",
+      "steps": [
+        "Open the page under test",
+        "Probe the security-relevant behaviour",
+        "Assert the safe outcome"
+      ],
+      "expected": "XSS payload in ?q stays inert",
+      "status": "PASS",
+      "actual": "payload not executed",
+      "error": "",
+      "durationMs": 62
+    },
+    {
+      "id": "SEL-261",
+      "suite": "10 Client Security Hardening",
+      "title": "Script payload typed into the email field is not executed",
+      "steps": [
+        "Open the page under test",
+        "Probe the security-relevant behaviour",
+        "Assert the safe outcome"
+      ],
+      "expected": "stored input stays inert",
+      "status": "PASS",
+      "actual": "input treated as text, not markup",
+      "error": "",
+      "durationMs": 112
+    },
+    {
+      "id": "SEL-262",
+      "suite": "10 Client Security Hardening",
+      "title": "Directory traversal on the asset server is refused",
+      "steps": [
+        "Open the page under test",
+        "Probe the security-relevant behaviour",
+        "Assert the safe outcome"
+      ],
+      "expected": "../ escape returns non-200",
+      "status": "PASS",
+      "actual": "traversal blocked (status 404)",
+      "error": "",
+      "durationMs": 65
+    },
+    {
+      "id": "SEL-263",
+      "suite": "10 Client Security Hardening",
+      "title": "No debug hooks are exposed on window",
+      "steps": [
+        "Open the page under test",
+        "Probe the security-relevant behaviour",
+        "Assert the safe outcome"
+      ],
+      "expected": "no __REDUX_DEVTOOLS/__DEV__ globals",
+      "status": "PASS",
+      "actual": "no debug globals on window",
+      "error": "",
+      "durationMs": 70
+    },
+    {
+      "id": "SEL-264",
+      "suite": "10 Client Security Hardening",
+      "title": "Login page loads no third-party origins",
+      "steps": [
+        "Open the page under test",
+        "Probe the security-relevant behaviour",
+        "Assert the safe outcome"
+      ],
+      "expected": "all requests are same-origin",
+      "status": "PASS",
+      "actual": "no third-party requests on the login screen",
+      "error": "",
+      "durationMs": 63
+    },
+    {
+      "id": "SEL-265",
+      "suite": "11 Performance Budget",
+      "title": "Login page reaches DOMContentLoaded within budget",
+      "steps": [
+        "Open the page",
+        "Read the Navigation/Resource Timing entries",
+        "Assert against the budget"
+      ],
+      "expected": "< 10000 ms",
+      "status": "PASS",
+      "actual": "41 ms",
+      "error": "",
+      "durationMs": 58
+    },
+    {
+      "id": "SEL-266",
+      "suite": "11 Performance Budget",
+      "title": "Login page fires the load event within budget",
+      "steps": [
+        "Open the page",
+        "Read the Navigation/Resource Timing entries",
+        "Assert against the budget"
+      ],
+      "expected": "< 15000 ms",
+      "status": "PASS",
+      "actual": "40 ms",
+      "error": "",
+      "durationMs": 58
+    },
+    {
+      "id": "SEL-267",
+      "suite": "11 Performance Budget",
+      "title": "Server responds to the document request quickly",
+      "steps": [
+        "Open the page",
+        "Read the Navigation/Resource Timing entries",
+        "Assert against the budget"
+      ],
+      "expected": "TTFB < 2000 ms",
+      "status": "PASS",
+      "actual": "1 ms",
+      "error": "",
+      "durationMs": 56
+    },
+    {
+      "id": "SEL-268",
+      "suite": "11 Performance Budget",
+      "title": "DOM stays within a maintainable node budget",
+      "steps": [
+        "Open the page",
+        "Read the Navigation/Resource Timing entries",
+        "Assert against the budget"
+      ],
+      "expected": "< 3000 nodes",
+      "status": "PASS",
+      "actual": "43 nodes",
+      "error": "",
+      "durationMs": 88
+    },
+    {
+      "id": "SEL-269",
+      "suite": "11 Performance Budget",
+      "title": "Login screen requests a bounded number of resources",
+      "steps": [
+        "Open the page",
+        "Read the Navigation/Resource Timing entries",
+        "Assert against the budget"
+      ],
+      "expected": "< 60 requests",
+      "status": "PASS",
+      "actual": "2 requests",
+      "error": "",
+      "durationMs": 60
+    },
+    {
+      "id": "SEL-270",
+      "suite": "11 Performance Budget",
+      "title": "First Paint occurs within budget",
+      "steps": [
+        "Open the page",
+        "Read the Navigation/Resource Timing entries",
+        "Assert against the budget"
+      ],
+      "expected": "< 10000 ms",
+      "status": "PASS",
+      "actual": "0 ms",
+      "error": "",
+      "durationMs": 67
+    },
+    {
+      "id": "SEL-271",
+      "suite": "11 Performance Budget",
+      "title": "First Contentful Paint occurs within budget",
+      "steps": [
+        "Open the page",
+        "Read the Navigation/Resource Timing entries",
+        "Assert against the budget"
+      ],
+      "expected": "< 10000 ms",
+      "status": "PASS",
+      "actual": "0 ms",
+      "error": "",
+      "durationMs": 66
+    },
+    {
+      "id": "SEL-272",
+      "suite": "11 Performance Budget",
+      "title": "Total transferred bytes stay within budget",
+      "steps": [
+        "Open the page",
+        "Read the Navigation/Resource Timing entries",
+        "Assert against the budget"
+      ],
+      "expected": "< 8 MB",
+      "status": "PASS",
+      "actual": "1.32 MB",
+      "error": "",
+      "durationMs": 58
+    },
+    {
+      "id": "SEL-273",
+      "suite": "11 Performance Budget",
+      "title": "Route change to /forgot-password is instant",
+      "steps": [
+        "Open the page",
+        "Read the Navigation/Resource Timing entries",
+        "Assert against the budget"
+      ],
+      "expected": "< 5000 ms client-side transition",
+      "status": "PASS",
+      "actual": "33 ms",
+      "error": "",
+      "durationMs": 89
+    },
+    {
+      "id": "SEL-274",
+      "suite": "11 Performance Budget",
+      "title": "Guard redirect completes quickly",
+      "steps": [
+        "Open the page",
+        "Read the Navigation/Resource Timing entries",
+        "Assert against the budget"
+      ],
+      "expected": "< 15000 ms to reach /login",
+      "status": "PASS",
+      "actual": "56 ms",
+      "error": "",
+      "durationMs": 61
+    },
+    {
+      "id": "SEL-275",
+      "suite": "11 Performance Budget",
+      "title": "No single resource dominates the load",
+      "steps": [
+        "Open the page",
+        "Read the Navigation/Resource Timing entries",
+        "Assert against the budget"
+      ],
+      "expected": "largest asset < 5 MB",
+      "status": "PASS",
+      "actual": "1.29 MB largest asset",
+      "error": "",
+      "durationMs": 56
+    },
+    {
+      "id": "SEL-276",
+      "suite": "11 Performance Budget",
+      "title": "Repeat navigation benefits from the HTTP cache path",
+      "steps": [
+        "Open the page",
+        "Read the Navigation/Resource Timing entries",
+        "Assert against the budget"
+      ],
+      "expected": "second load not slower than 3x the first",
+      "status": "PASS",
+      "actual": "first 40 ms, second 39 ms",
+      "error": "",
+      "durationMs": 110
+    },
+    {
+      "id": "SEL-277",
+      "suite": "12 Error Handling & Resilience",
+      "title": "Missing asset returns 404 rather than the SPA shell",
+      "steps": [
+        "Induce the failure condition",
+        "Observe how the client reacts",
+        "Assert graceful handling"
+      ],
+      "expected": "/nope.js is a 404",
+      "status": "PASS",
+      "actual": "status 404",
+      "error": "",
+      "durationMs": 58
+    },
+    {
+      "id": "SEL-278",
+      "suite": "12 Error Handling & Resilience",
+      "title": "Unknown route serves the SPA shell, not a 404",
+      "steps": [
+        "Induce the failure condition",
+        "Observe how the client reacts",
+        "Assert graceful handling"
+      ],
+      "expected": "HTML shell returned for /unknown",
+      "status": "PASS",
+      "actual": "status 200",
+      "error": "",
+      "durationMs": 55
+    },
+    {
+      "id": "SEL-279",
+      "suite": "12 Error Handling & Resilience",
+      "title": "App survives a blocked network call",
+      "steps": [
+        "Induce the failure condition",
+        "Observe how the client reacts",
+        "Assert graceful handling"
+      ],
+      "expected": "no unhandled rejection crashes the tree",
+      "status": "PASS",
+      "actual": "app remained mounted",
+      "error": "",
+      "durationMs": 61
+    },
+    {
+      "id": "SEL-280",
+      "suite": "12 Error Handling & Resilience",
+      "title": "App survives a cleared localStorage",
+      "steps": [
+        "Induce the failure condition",
+        "Observe how the client reacts",
+        "Assert graceful handling"
+      ],
+      "expected": "tree stays mounted after storage wipe",
+      "status": "PASS",
+      "actual": "app booted with empty storage",
+      "error": "",
+      "durationMs": 110
+    },
+    {
+      "id": "SEL-281",
+      "suite": "12 Error Handling & Resilience",
+      "title": "App survives corrupt localStorage values",
+      "steps": [
+        "Induce the failure condition",
+        "Observe how the client reacts",
+        "Assert graceful handling"
+      ],
+      "expected": "malformed JSON does not break boot",
+      "status": "PASS",
+      "actual": "app booted despite corrupt storage",
+      "error": "",
+      "durationMs": 109
+    },
+    {
+      "id": "SEL-282",
+      "suite": "12 Error Handling & Resilience",
+      "title": "Rapid repeated navigation does not break the router",
+      "steps": [
+        "Induce the failure condition",
+        "Observe how the client reacts",
+        "Assert graceful handling"
+      ],
+      "expected": "10 navigations settle on /login",
+      "status": "PASS",
+      "actual": "router settled correctly",
+      "error": "",
+      "durationMs": 531
+    },
+    {
+      "id": "SEL-283",
+      "suite": "12 Error Handling & Resilience",
+      "title": "Double-clicking submit does not duplicate the form",
+      "steps": [
+        "Induce the failure condition",
+        "Observe how the client reacts",
+        "Assert graceful handling"
+      ],
+      "expected": "still exactly one form",
+      "status": "PASS",
+      "actual": "single form retained",
+      "error": "",
+      "durationMs": 170
+    },
+    {
+      "id": "SEL-284",
+      "suite": "12 Error Handling & Resilience",
+      "title": "Failed sign-in keeps the user on the login route",
+      "steps": [
+        "Induce the failure condition",
+        "Observe how the client reacts",
+        "Assert graceful handling"
+      ],
+      "expected": "pathname stays /login",
+      "status": "PASS",
+      "actual": "user retained on /login",
+      "error": "",
+      "durationMs": 1647
+    },
+    {
+      "id": "SEL-285",
+      "suite": "12 Error Handling & Resilience",
+      "title": "Failed sign-in does not expose a stack trace",
+      "steps": [
+        "Induce the failure condition",
+        "Observe how the client reacts",
+        "Assert graceful handling"
+      ],
+      "expected": "no raw error object rendered",
+      "status": "PASS",
+      "actual": "no stack trace surfaced",
+      "error": "",
+      "durationMs": 1664
+    },
+    {
+      "id": "SEL-286",
+      "suite": "12 Error Handling & Resilience",
+      "title": "Failed sign-in re-enables the submit button",
+      "steps": [
+        "Induce the failure condition",
+        "Observe how the client reacts",
+        "Assert graceful handling"
+      ],
+      "expected": "button is interactive again",
+      "status": "PASS",
+      "actual": "submit re-enabled",
+      "error": "",
+      "durationMs": 2152
+    },
+    {
+      "id": "SEL-287",
+      "suite": "12 Error Handling & Resilience",
+      "title": "Window resize during render does not detach the tree",
+      "steps": [
+        "Induce the failure condition",
+        "Observe how the client reacts",
+        "Assert graceful handling"
+      ],
+      "expected": "root survives 3 resizes",
+      "status": "PASS",
+      "actual": "tree intact across resizes",
+      "error": "",
+      "durationMs": 497
+    },
+    {
+      "id": "SEL-288",
+      "suite": "12 Error Handling & Resilience",
+      "title": "Back navigation from the very first entry is safe",
+      "steps": [
+        "Induce the failure condition",
+        "Observe how the client reacts",
+        "Assert graceful handling"
+      ],
+      "expected": "no crash when history is empty",
+      "status": "PASS",
+      "actual": "app stable",
+      "error": "",
+      "durationMs": 129
+    },
+    {
+      "id": "SEL-289",
+      "suite": "13 Browser Storage",
+      "title": "localStorage is available to the app",
+      "steps": [
+        "Open the app",
+        "Exercise the storage API",
+        "Assert the observed value"
+      ],
+      "expected": "setItem/getItem round-trips",
+      "status": "PASS",
+      "actual": "read/write confirmed",
+      "error": "",
+      "durationMs": 57
+    },
+    {
+      "id": "SEL-290",
+      "suite": "13 Browser Storage",
+      "title": "sessionStorage is available to the app",
+      "steps": [
+        "Open the app",
+        "Exercise the storage API",
+        "Assert the observed value"
+      ],
+      "expected": "setItem/getItem round-trips",
+      "status": "PASS",
+      "actual": "read/write confirmed",
+      "error": "",
+      "durationMs": 53
+    },
+    {
+      "id": "SEL-291",
+      "suite": "13 Browser Storage",
+      "title": "No stored key is literally named password",
+      "steps": [
+        "Open the app",
+        "Exercise the storage API",
+        "Assert the observed value"
+      ],
+      "expected": "no obvious credential key",
+      "status": "PASS",
+      "actual": "no credential-named keys",
+      "error": "",
+      "durationMs": 57
+    },
+    {
+      "id": "SEL-292",
+      "suite": "13 Browser Storage",
+      "title": "Storage survives a client-side route change",
+      "steps": [
+        "Open the app",
+        "Exercise the storage API",
+        "Assert the observed value"
+      ],
+      "expected": "value persists across navigation",
+      "status": "PASS",
+      "actual": "value persisted",
+      "error": "",
+      "durationMs": 92
+    },
+    {
+      "id": "SEL-293",
+      "suite": "13 Browser Storage",
+      "title": "sessionStorage is cleared by a fresh browsing context",
+      "steps": [
+        "Open the app",
+        "Exercise the storage API",
+        "Assert the observed value"
+      ],
+      "expected": "probe key absent after reset",
+      "status": "PASS",
+      "actual": "session storage empty",
+      "error": "",
+      "durationMs": 60
+    },
+    {
+      "id": "SEL-294",
+      "suite": "13 Browser Storage",
+      "title": "Removing a key actually deletes it",
+      "steps": [
+        "Open the app",
+        "Exercise the storage API",
+        "Assert the observed value"
+      ],
+      "expected": "getItem returns null",
+      "status": "PASS",
+      "actual": "key removed",
+      "error": "",
+      "durationMs": 57
+    },
+    {
+      "id": "SEL-295",
+      "suite": "13 Browser Storage",
+      "title": "Storage accepts a realistic settings payload",
+      "steps": [
+        "Open the app",
+        "Exercise the storage API",
+        "Assert the observed value"
+      ],
+      "expected": "2KB JSON round-trips",
+      "status": "PASS",
+      "actual": "2KB payload round-tripped",
+      "error": "",
+      "durationMs": 53
+    },
+    {
+      "id": "SEL-296",
+      "suite": "13 Browser Storage",
+      "title": "Storage keys are origin-scoped",
+      "steps": [
+        "Open the app",
+        "Exercise the storage API",
+        "Assert the observed value"
+      ],
+      "expected": "origin matches the test server",
+      "status": "PASS",
+      "actual": "http://127.0.0.1:54521",
+      "error": "",
+      "durationMs": 80
+    },
+    {
+      "id": "SEL-297",
+      "suite": "13 Browser Storage",
+      "title": "Cookies are not used to carry the session on the client",
+      "steps": [
+        "Open the app",
+        "Exercise the storage API",
+        "Assert the observed value"
+      ],
+      "expected": "no session cookie set pre-auth",
+      "status": "PASS",
+      "actual": "no cookies set",
+      "error": "",
+      "durationMs": 59
+    },
+    {
+      "id": "SEL-298",
+      "suite": "13 Browser Storage",
+      "title": "Firebase persistence does not pre-seed a signed-in user",
+      "steps": [
+        "Open the app",
+        "Exercise the storage API",
+        "Assert the observed value"
+      ],
+      "expected": "no auth user before sign-in",
+      "status": "PASS",
+      "actual": "signed-out state confirmed",
+      "error": "",
+      "durationMs": 62
+    },
+    {
+      "id": "SEL-299",
+      "suite": "13 Browser Storage",
+      "title": "Storage writes from one route are visible on another",
+      "steps": [
+        "Open the app",
+        "Exercise the storage API",
+        "Assert the observed value"
+      ],
+      "expected": "cross-route read succeeds",
+      "status": "PASS",
+      "actual": "value shared across routes",
+      "error": "",
+      "durationMs": 126
+    },
+    {
+      "id": "SEL-300",
+      "suite": "13 Browser Storage",
+      "title": "Clearing storage leaves the app in the signed-out state",
+      "steps": [
+        "Open the app",
+        "Exercise the storage API",
+        "Assert the observed value"
+      ],
+      "expected": "login form still rendered",
+      "status": "PASS",
+      "actual": "signed-out state preserved",
+      "error": "",
+      "durationMs": 111
+    }
+  ]
+}

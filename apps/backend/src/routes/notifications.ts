@@ -1,10 +1,27 @@
 import { Router } from "express";
+import { timingSafeEqual } from "crypto";
 import { requireAuth } from "../middleware/auth";
 import { ENV } from "../config/env";
 import { sendExpoPush } from "../services/pushService";
 import { scanForMissedDoses } from "../services/missedDoseService";
 
 export const notificationRoutes = Router();
+
+/**
+ * Constant-time string compare.
+ *
+ * `!==` on a secret leaks its length and, on most engines, its shared prefix
+ * through timing. The lengths are compared first because timingSafeEqual throws
+ * on mismatched buffer lengths — that check is itself length-leaking, which is
+ * acceptable here (the length of a shared machine secret is not the sensitive
+ * part) and unavoidable without padding.
+ */
+function timingSafeEqualStr(a: string, b: string): boolean {
+  const bufA = Buffer.from(a, "utf8");
+  const bufB = Buffer.from(b, "utf8");
+  if (bufA.length !== bufB.length) return false;
+  return timingSafeEqual(bufA, bufB);
+}
 
 // POST /api/notifications/send
 // Fires a single Expo push. Still behind requireAuth — an open push endpoint is
@@ -31,8 +48,21 @@ notificationRoutes.post("/send", requireAuth, async (req, res) => {
 // secret header instead of a Firebase token, because the caller is a machine
 // with no user identity to verify.
 notificationRoutes.post("/scan-missed", async (req, res) => {
+  // Fail closed when no secret is configured. ENV.CRON_SECRET has no fallback
+  // (MG-SEC-001), so an unconfigured deployment disables the manual trigger
+  // entirely instead of accepting a default value published in this repo. The
+  // in-process 60s scanner is unaffected — it never comes through this route.
+  if (!ENV.CRON_SECRET) {
+    console.warn("[notifications] scan-missed called but CRON_SECRET is not set — refusing");
+    res.status(503).json({ error: "Manual scan trigger is not configured" });
+    return;
+  }
+
   const secret = req.headers["x-cron-secret"];
-  if (secret !== ENV.CRON_SECRET) { res.status(401).json({ error: "Unauthorized" }); return; }
+  if (typeof secret !== "string" || !timingSafeEqualStr(secret, ENV.CRON_SECRET)) {
+    res.status(401).json({ error: "Unauthorized" });
+    return;
+  }
 
   try {
     const summary = await scanForMissedDoses();

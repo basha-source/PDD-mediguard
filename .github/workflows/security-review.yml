@@ -1,0 +1,566 @@
+name: MediGuard — DevSecOps Security Review
+
+# Framework-agnostic security pipeline. It detects the backend stack rather than
+# assuming one, so the same workflow keeps working if the API is rewritten in
+# Python, Go or .NET — each scanner step is gated on what was actually found.
+#
+# Gate policy: the build fails ONLY on CRITICAL findings. Highs and mediums are
+# reported and uploaded but do not block, so the pipeline is usable from day one
+# on a codebase that has a backlog.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      target_url:
+        description: "Optional live API base URL to run the dynamic (DAST) phase against. Leave blank to skip."
+        required: false
+        default: ""
+
+concurrency:
+  group: security-review-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  # ══════════════════════════════════════════════════════════════════════════
+  # PHASE 1 — Detect the backend technology
+  # ══════════════════════════════════════════════════════════════════════════
+  detect:
+    name: Phase 1 — Detect backend stack
+    runs-on: ubuntu-latest
+    outputs:
+      stack: ${{ steps.detect.outputs.stack }}
+      has_node: ${{ steps.detect.outputs.has_node }}
+      has_python: ${{ steps.detect.outputs.has_python }}
+      has_docker: ${{ steps.detect.outputs.has_docker }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Detect stack
+        id: detect
+        run: |
+          STACK=""
+          HAS_NODE=false
+          HAS_PYTHON=false
+          HAS_DOCKER=false
+
+          # Node / JS ecosystems
+          if [ -f package.json ]; then
+            HAS_NODE=true
+            grep -q '"express"'  package.json apps/*/package.json 2>/dev/null && STACK="$STACK express"
+            grep -q '"@nestjs'   package.json apps/*/package.json 2>/dev/null && STACK="$STACK nestjs"
+            grep -q '"fastify"'  package.json apps/*/package.json 2>/dev/null && STACK="$STACK fastify"
+            grep -q '"next"'     package.json apps/*/package.json 2>/dev/null && STACK="$STACK nextjs"
+          fi
+
+          # Python
+          if ls requirements*.txt pyproject.toml apps/*/requirements*.txt >/dev/null 2>&1; then
+            HAS_PYTHON=true
+            grep -rqi 'fastapi' requirements*.txt apps/*/requirements*.txt 2>/dev/null && STACK="$STACK fastapi"
+            grep -rqi 'django'  requirements*.txt apps/*/requirements*.txt 2>/dev/null && STACK="$STACK django"
+            grep -rqi '^flask'  requirements*.txt apps/*/requirements*.txt 2>/dev/null && STACK="$STACK flask"
+          fi
+
+          # Other ecosystems — detected so the summary is honest even though
+          # this repo has none of them.
+          [ -f pom.xml ] || [ -f build.gradle ] && STACK="$STACK java-spring"
+          [ -f go.mod ]        && STACK="$STACK go"
+          [ -f composer.json ] && STACK="$STACK php-laravel"
+          [ -f Gemfile ]       && STACK="$STACK ruby-rails"
+          ls *.csproj **/*.csproj >/dev/null 2>&1 && STACK="$STACK dotnet"
+
+          [ -f Dockerfile ] || ls apps/*/Dockerfile >/dev/null 2>&1 && HAS_DOCKER=true
+
+          STACK="$(echo "$STACK" | xargs)"
+          [ -z "$STACK" ] && STACK="unknown"
+
+          echo "stack=$STACK"          >> "$GITHUB_OUTPUT"
+          echo "has_node=$HAS_NODE"    >> "$GITHUB_OUTPUT"
+          echo "has_python=$HAS_PYTHON" >> "$GITHUB_OUTPUT"
+          echo "has_docker=$HAS_DOCKER" >> "$GITHUB_OUTPUT"
+
+          echo "### Phase 1 — Detected stack" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Property | Value |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| --- | --- |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Frameworks | \`$STACK\` |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Node.js ecosystem | $HAS_NODE |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Python ecosystem | $HAS_PYTHON |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Container build | $HAS_DOCKER |" >> "$GITHUB_STEP_SUMMARY"
+
+  # ══════════════════════════════════════════════════════════════════════════
+  # PHASES 2, 3, 6, 7, 8 — Inventory, SAST, reports
+  # ══════════════════════════════════════════════════════════════════════════
+  assessment:
+    name: Phases 2-3, 6-8 — Inventory, SAST & reports
+    runs-on: ubuntu-latest
+    needs: detect
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Enable pnpm
+        run: corepack enable
+
+      - name: Install workspace dependencies
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Install security suite dependencies
+        working-directory: security-tests
+        run: npm install --no-audit --no-fund
+
+      - name: Run the assessment (fails only on CRITICAL)
+        id: scan
+        working-directory: security-tests
+        run: node scan.js
+
+      - name: Publish results to the job summary
+        if: always()
+        run: |
+          python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json, os
+          p = "Vulnerability Test Results/scan-results.json"
+          if not os.path.exists(p):
+              print("### Security assessment did not produce results\n")
+              raise SystemExit(0)
+
+          d = json.load(open(p, encoding="utf-8"))
+          confirmed = [f for f in d["findings"] if f["verifyStatus"] == "CONFIRMED"]
+          by = lambda s: [f for f in confirmed if f["severity"] == s]
+
+          print("## Security Assessment Results\n")
+          print(f"### Overall score: {d['score']}/100\n")
+          print("| Severity | Count |")
+          print("| --- | ---: |")
+          for s in ("CRITICAL", "HIGH", "MEDIUM", "LOW"):
+              print(f"| {s.title()} | {len(by(s))} |")
+          print(f"| **Total** | **{len(confirmed)}** |\n")
+
+          eps = d["endpoints"]
+          unauth = [e for e in eps if e["auth"] == "No"]
+          print("### Attack surface\n")
+          print(f"- **{len(eps)}** endpoints discovered")
+          print(f"- **{len(unauth)}** require no authentication")
+          print(f"- **{len([e for e in eps if e['rateLimited'] == 'No'])}** are not rate limited\n")
+
+          if by("CRITICAL"):
+              print("### ❌ Critical findings — build failed\n")
+              for f in by("CRITICAL"):
+                  print(f"- **{f['id']}** — {f['title']}")
+                  print(f"  - `{f['file']}`")
+              print()
+          else:
+              print("### ✅ No critical findings — gate passed\n")
+
+          if by("HIGH"):
+              print("<details><summary>High-severity findings (reported, not blocking)</summary>\n")
+              for f in by("HIGH"):
+                  print(f"- **{f['id']}** — {f['title']} (`{f['file']}`)")
+              print("\n</details>\n")
+
+          dc = d["deps"]["counts"]
+          print("### Dependency advisories\n")
+          print(f"critical {dc.get('critical',0)} · high {dc.get('high',0)} · "
+                f"moderate {dc.get('moderate',0)} · low {dc.get('low',0)}\n")
+          print("Full reports are in the **security-review-reports** artifact on this run.\n")
+          PY
+
+      - name: Upload reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: security-review-reports
+          path: |
+            Vulnerability Test Results/*.xlsx
+            Vulnerability Test Results/*.md
+            Vulnerability Test Results/*.json
+          if-no-files-found: warn
+          retention-days: 90
+
+  # ══════════════════════════════════════════════════════════════════════════
+  # PHASE 3b — Secret scanning (Gitleaks)
+  # ══════════════════════════════════════════════════════════════════════════
+  secrets:
+    name: Phase 3b — Secret scan (Gitleaks)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_ENABLE_UPLOAD_ARTIFACT: "true"
+          GITLEAKS_ENABLE_SUMMARY: "true"
+
+      - name: Note on expected matches
+        if: always()
+        run: |
+          {
+            echo "### Phase 3b — Secret scan"
+            echo ""
+            echo "Gitleaks flags the Firebase client API keys in \`apps/mobile/eas.json\` and"
+            echo "\`apps/mobile/google-services.json\`. These are **identifiers, not secrets** —"
+            echo "Google publishes them in every web and Android app, and \`google-services.json\`"
+            echo "is normally committed. They are tracked as **MG-SEC-017**, whose fix is key"
+            echo "*restriction* in Cloud Console (package name + SHA-1 for Android, HTTP referrer"
+            echo "for web) plus Firebase App Check — not removal from git history."
+            echo ""
+            echo "This step is \`continue-on-error\` for that reason. Any *new* match that is not"
+            echo "one of those two files should be treated as a real leak and rotated."
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  # ══════════════════════════════════════════════════════════════════════════
+  # PHASE 3c — Semgrep SAST
+  # ══════════════════════════════════════════════════════════════════════════
+  semgrep:
+    name: Phase 3c — Semgrep SAST
+    runs-on: ubuntu-latest
+    needs: detect
+    timeout-minutes: 15
+    container:
+      image: semgrep/semgrep
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run Semgrep with the security audit rulesets
+        continue-on-error: true
+        run: |
+          semgrep --config=p/security-audit \
+                  --config=p/secrets \
+                  --config=p/owasp-top-ten \
+                  --config=p/javascript \
+                  --config=p/typescript \
+                  --sarif --output=semgrep.sarif \
+                  --metrics=off \
+                  --exclude=node_modules --exclude=dist --exclude='*.min.js' \
+                  --exclude=selenium-tests --exclude=appium-tests \
+                  . || true
+
+          semgrep --config=p/security-audit --config=p/owasp-top-ten \
+                  --json --output=semgrep.json --metrics=off \
+                  --exclude=node_modules --exclude=dist \
+                  --exclude=selenium-tests --exclude=appium-tests \
+                  . || true
+
+      - name: Summarise Semgrep results
+        if: always()
+        run: |
+          python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json, os, collections
+          print("### Phase 3c — Semgrep SAST\n")
+          if not os.path.exists("semgrep.json"):
+              print("Semgrep produced no output.\n"); raise SystemExit(0)
+          d = json.load(open("semgrep.json", encoding="utf-8"))
+          results = d.get("results", [])
+          if not results:
+              print("No Semgrep findings.\n"); raise SystemExit(0)
+          sev = collections.Counter(r["extra"]["metadata"].get("impact",
+                    r["extra"].get("severity", "INFO")) for r in results)
+          print("| Impact | Count |"); print("| --- | ---: |")
+          for k, v in sev.most_common():
+              print(f"| {k} | {v} |")
+          print(f"\n**{len(results)}** total findings.\n")
+          print("<details><summary>Top 25</summary>\n")
+          for r in results[:25]:
+              print(f"- `{r['path']}:{r['start']['line']}` — {r['extra']['message'].splitlines()[0][:140]}")
+          print("\n</details>\n")
+          PY
+
+      - name: Upload Semgrep SARIF to code scanning
+        if: always()
+        continue-on-error: true
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: semgrep.sarif
+          category: semgrep
+
+      - name: Upload Semgrep artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: semgrep-results
+          path: |
+            semgrep.sarif
+            semgrep.json
+          if-no-files-found: warn
+
+  # ══════════════════════════════════════════════════════════════════════════
+  # PHASE 5 — Dependency & container scanning (Trivy)
+  # ══════════════════════════════════════════════════════════════════════════
+  dependencies:
+    name: Phase 5 — Dependency scan (Trivy + audit)
+    runs-on: ubuntu-latest
+    needs: detect
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Enable pnpm
+        run: corepack enable
+
+      - name: pnpm audit (Node ecosystem)
+        if: needs.detect.outputs.has_node == 'true'
+        continue-on-error: true
+        run: |
+          pnpm install --no-frozen-lockfile
+          echo "### Phase 5 — pnpm audit" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          pnpm audit --audit-level=moderate 2>&1 | head -80 >> "$GITHUB_STEP_SUMMARY" || true
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+
+      - name: pip-audit (Python ecosystem)
+        if: needs.detect.outputs.has_python == 'true'
+        continue-on-error: true
+        run: |
+          python3 -m pip install --quiet pip-audit
+          echo "### Phase 5 — pip-audit (apps/ml-service)" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          pip-audit -r apps/ml-service/requirements-core.txt 2>&1 | head -60 >> "$GITHUB_STEP_SUMMARY" || true
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Trivy filesystem scan
+        continue-on-error: true
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          format: sarif
+          output: trivy.sarif
+          severity: CRITICAL,HIGH,MEDIUM
+          ignore-unfixed: true
+          skip-dirs: node_modules,dist,apps/ml-service/data,apps/ml-service/.venv
+
+      - name: Upload Trivy SARIF to code scanning
+        if: always()
+        continue-on-error: true
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: trivy.sarif
+          category: trivy
+
+      - name: Upload dependency artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dependency-scan-results
+          path: trivy.sarif
+          if-no-files-found: warn
+
+  # ══════════════════════════════════════════════════════════════════════════
+  # PHASE 5b — Dependency Review (PRs only)
+  # ══════════════════════════════════════════════════════════════════════════
+  dependency-review:
+    name: Phase 5b — Dependency review (PR gate)
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Review new dependencies introduced by this PR
+        uses: actions/dependency-review-action@v4
+        with:
+          fail-on-severity: critical
+          comment-summary-in-pr: always
+
+  # ══════════════════════════════════════════════════════════════════════════
+  # PHASE 4 — Dynamic API testing (opt-in only)
+  # ══════════════════════════════════════════════════════════════════════════
+  dast:
+    name: Phase 4 — Dynamic API tests
+    runs-on: ubuntu-latest
+    needs: detect
+    if: needs.detect.outputs.has_node == 'true'
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Enable pnpm
+        run: corepack enable
+
+      - name: Install and build
+        run: |
+          pnpm install --no-frozen-lockfile
+          pnpm --filter @mediguard/backend build
+
+      - name: Start a disposable local API
+        # Deliberately local-only. A target_url supplied via workflow_dispatch is
+        # echoed for the record but never attacked: probing a deployed service
+        # from CI needs an explicit engagement window, and this API proxies
+        # openFDA, UPCitemdb and Expo — flooding those is an attack on third
+        # parties, not a test of MediGuard.
+        env:
+          FIREBASE_SERVICE_ACCOUNT_KEY: ci-placeholder
+          GOOGLE_MAPS_API_KEY: ci-placeholder
+          CRON_SECRET: ci-dast-secret
+          MISSED_DOSE_SCAN_ENABLED: "false"
+          PORT: "4000"
+        run: |
+          node apps/backend/dist/index.js &
+          echo $! > /tmp/api.pid
+          for i in $(seq 1 30); do
+            curl -sf http://127.0.0.1:4000/health > /dev/null && break
+            sleep 1
+          done
+
+      - name: Authentication and authorization probes
+        run: |
+          BASE=http://127.0.0.1:4000
+          pass=0; fail=0
+          check() {
+            local name="$1" expected="$2" actual="$3"
+            if [ "$actual" = "$expected" ]; then
+              echo "  PASS  $name (HTTP $actual)"; pass=$((pass+1))
+            else
+              echo "  FAIL  $name (expected $expected, got $actual)"; fail=$((fail+1))
+            fi
+          }
+
+          echo "Authentication:"
+          check "No token on a protected route -> 401" 401 \
+            "$(curl -s -o /dev/null -w '%{http_code}' -X POST $BASE/api/notifications/send \
+               -H 'content-type: application/json' -d '{"token":"x","title":"t","body":"b"}')"
+          check "Malformed bearer token -> 401" 401 \
+            "$(curl -s -o /dev/null -w '%{http_code}' -X POST $BASE/api/notifications/send \
+               -H 'authorization: Bearer not-a-real-token' -H 'content-type: application/json' \
+               -d '{"token":"x","title":"t","body":"b"}')"
+          check "Empty bearer token -> 401" 401 \
+            "$(curl -s -o /dev/null -w '%{http_code}' -X POST $BASE/api/notifications/send \
+               -H 'authorization: Bearer ' -H 'content-type: application/json' -d '{}')"
+
+          echo "Authorization (MG-SEC-002 regression):"
+          check "revoke-tokens without a token -> 401" 401 \
+            "$(curl -s -o /dev/null -w '%{http_code}' -X POST $BASE/api/auth/revoke-tokens \
+               -H 'content-type: application/json' -d '{"uid":"victim-uid"}')"
+
+          echo "Shared-secret gate (MG-SEC-001 regression):"
+          check "scan-missed with the old published default -> 401" 401 \
+            "$(curl -s -o /dev/null -w '%{http_code}' -X POST $BASE/api/notifications/scan-missed \
+               -H 'x-cron-secret: dev-cron-secret')"
+          check "scan-missed with no secret header -> 401" 401 \
+            "$(curl -s -o /dev/null -w '%{http_code}' -X POST $BASE/api/notifications/scan-missed)"
+
+          echo "Injection probes (detection only, non-destructive):"
+          for payload in "' OR '1'='1" "1;cat /etc/passwd" "../../../../etc/passwd" '{"$ne":null}'; do
+            code="$(curl -s -o /dev/null -w '%{http_code}' -G $BASE/api/interactions/check \
+                    --data-urlencode "drug1=$payload" --data-urlencode 'drug2=aspirin')"
+            if [ "$code" = "500" ]; then
+              echo "  FAIL  payload caused a 500: $payload"; fail=$((fail+1))
+            else
+              echo "  PASS  handled without a server error (HTTP $code): $payload"; pass=$((pass+1))
+            fi
+          done
+
+          echo "Error handling:"
+          check "Unknown route -> 404" 404 "$(curl -s -o /dev/null -w '%{http_code}' $BASE/api/nope)"
+          check "Health is public -> 200" 200 "$(curl -s -o /dev/null -w '%{http_code}' $BASE/health)"
+
+          {
+            echo "### Phase 4 — Dynamic API probes (local instance)"
+            echo ""
+            echo "Passed: **$pass** · Failed: **$fail**"
+            echo ""
+            echo "Probes cover missing/invalid/empty bearer tokens, the two fixed critical"
+            echo "findings as regression checks, four injection payload classes, and error"
+            echo "handling. Run against \`127.0.0.1\` only — see \`security-review.md\` Phase 4"
+            echo "for why the deployed service and the upstream third-party APIs are excluded."
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          if [ -n "${{ github.event.inputs.target_url }}" ]; then
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "> A \`target_url\` was supplied (\`${{ github.event.inputs.target_url }}\`) but was **not** scanned." >> "$GITHUB_STEP_SUMMARY"
+            echo "> Live testing of a deployed environment requires an explicit engagement window." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+          [ "$fail" -eq 0 ]
+
+      - name: Security header check
+        if: always()
+        run: |
+          BASE=http://127.0.0.1:4000
+          echo "### Security headers on API responses" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Header | Present |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| --- | --- |" >> "$GITHUB_STEP_SUMMARY"
+          headers="$(curl -sI $BASE/health)"
+          for h in x-content-type-options x-frame-options strict-transport-security referrer-policy content-security-policy; do
+            if echo "$headers" | grep -qi "^$h:"; then
+              echo "| \`$h\` | ✅ |" >> "$GITHUB_STEP_SUMMARY"
+            else
+              echo "| \`$h\` | ❌ missing (MG-SEC-007) |" >> "$GITHUB_STEP_SUMMARY"
+            fi
+          done
+
+      - name: Stop the API
+        if: always()
+        run: kill "$(cat /tmp/api.pid)" 2>/dev/null || true
+
+  # ══════════════════════════════════════════════════════════════════════════
+  # Final gate
+  # ══════════════════════════════════════════════════════════════════════════
+  gate:
+    name: Security gate (fails only on CRITICAL)
+    runs-on: ubuntu-latest
+    needs: [detect, assessment, secrets, semgrep, dependencies, dast]
+    if: always()
+
+    steps:
+      - name: Evaluate
+        run: |
+          {
+            echo "## Security gate"
+            echo ""
+            echo "| Phase | Result |"
+            echo "| --- | --- |"
+            echo "| 1 — Stack detection (\`${{ needs.detect.outputs.stack }}\`) | ${{ needs.detect.result }} |"
+            echo "| 2/3/6/7/8 — Inventory, SAST, reports | ${{ needs.assessment.result }} |"
+            echo "| 3b — Secret scan | ${{ needs.secrets.result }} |"
+            echo "| 3c — Semgrep | ${{ needs.semgrep.result }} |"
+            echo "| 4 — Dynamic API probes | ${{ needs.dast.result }} |"
+            echo "| 5 — Dependency scan | ${{ needs.dependencies.result }} |"
+            echo ""
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          # Only the assessment job can fail the build, and it only exits
+          # non-zero on a CRITICAL finding. Everything else is advisory.
+          if [ "${{ needs.assessment.result }}" != "success" ]; then
+            echo "❌ CRITICAL findings present — failing the build." >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+
+          if [ "${{ needs.dast.result }}" = "failure" ]; then
+            echo "❌ A dynamic security probe regressed — failing the build." >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+
+          echo "✅ No critical findings. Highs and mediums are reported in the artifacts and do not block." >> "$GITHUB_STEP_SUMMARY"

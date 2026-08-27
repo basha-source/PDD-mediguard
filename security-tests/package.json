@@ -1,0 +1,14 @@
+{
+  "name": "@mediguard/security-tests",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Security assessment: SAST with per-finding verification, endpoint inventory, secret scan, dependency audit",
+  "type": "commonjs",
+  "scripts": {
+    "scan": "node scan.js",
+    "scan:offline": "node scan.js --no-audit"
+  },
+  "dependencies": {
+    "exceljs": "^4.4.0"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "@mediguard/load-tests",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Baseline and load performance tests for the MediGuard backend API",
+  "type": "commonjs",
+  "scripts": {
+    "test": "node baseline-load-test.js",
+    "test:quick": "DURATION=10 node baseline-load-test.js"
+  },
+  "dependencies": {
+    "autocannon": "^7.15.0",
+    "exceljs": "^4.4.0"
+  }
+}

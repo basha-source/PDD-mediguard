@@ -1,0 +1,16 @@
+{
+  "name": "@mediguard/selenium-tests",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Selenium WebDriver E2E functional test suite for the MediGuard web frontend",
+  "type": "commonjs",
+  "scripts": {
+    "test": "node run.js",
+    "test:headed": "HEADLESS=false node run.js",
+    "test:login": "node tests/login-tests.js"
+  },
+  "dependencies": {
+    "exceljs": "^4.4.0",
+    "selenium-webdriver": "^4.27.0"
+  }
+}

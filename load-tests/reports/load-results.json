@@ -1,0 +1,1062 @@
+{
+  "scenarios": [
+    {
+      "name": "Health check endpoint",
+      "endpoint": "GET /health",
+      "description": "Liveness probe — in-process JSON response, no I/O. The purest measure of framework overhead.",
+      "connections": 100,
+      "duration": 60,
+      "totalRequests": 800938,
+      "rpsMean": 13349.47,
+      "rpsMin": 12199,
+      "rpsMax": 14350,
+      "latencyMean": 6.99,
+      "latencyMin": 1,
+      "latencyMax": 30,
+      "latencyP50": 7,
+      "latencyP90": 8,
+      "latencyP99": 10,
+      "throughputKBs": 3963.08,
+      "errors": 0,
+      "timeouts": 0,
+      "non2xx": 0,
+      "samples": [
+        {
+          "second": 1,
+          "requests": 13067
+        },
+        {
+          "second": 2,
+          "requests": 14263
+        },
+        {
+          "second": 3,
+          "requests": 14350
+        },
+        {
+          "second": 4,
+          "requests": 13801
+        },
+        {
+          "second": 5,
+          "requests": 13998
+        },
+        {
+          "second": 6,
+          "requests": 13759
+        },
+        {
+          "second": 7,
+          "requests": 14090
+        },
+        {
+          "second": 8,
+          "requests": 14140
+        },
+        {
+          "second": 9,
+          "requests": 13766
+        },
+        {
+          "second": 10,
+          "requests": 13914
+        },
+        {
+          "second": 11,
+          "requests": 14001
+        },
+        {
+          "second": 12,
+          "requests": 14248
+        },
+        {
+          "second": 13,
+          "requests": 13960
+        },
+        {
+          "second": 14,
+          "requests": 13113
+        },
+        {
+          "second": 15,
+          "requests": 13834
+        },
+        {
+          "second": 16,
+          "requests": 13723
+        },
+        {
+          "second": 17,
+          "requests": 13192
+        },
+        {
+          "second": 18,
+          "requests": 13950
+        },
+        {
+          "second": 19,
+          "requests": 13853
+        },
+        {
+          "second": 20,
+          "requests": 13750
+        },
+        {
+          "second": 21,
+          "requests": 13746
+        },
+        {
+          "second": 22,
+          "requests": 13572
+        },
+        {
+          "second": 23,
+          "requests": 13718
+        },
+        {
+          "second": 24,
+          "requests": 13694
+        },
+        {
+          "second": 25,
+          "requests": 12865
+        },
+        {
+          "second": 26,
+          "requests": 13590
+        },
+        {
+          "second": 27,
+          "requests": 13400
+        },
+        {
+          "second": 28,
+          "requests": 13363
+        },
+        {
+          "second": 29,
+          "requests": 13256
+        },
+        {
+          "second": 30,
+          "requests": 13391
+        },
+        {
+          "second": 31,
+          "requests": 13261
+        },
+        {
+          "second": 32,
+          "requests": 13443
+        },
+        {
+          "second": 33,
+          "requests": 13478
+        },
+        {
+          "second": 34,
+          "requests": 13201
+        },
+        {
+          "second": 35,
+          "requests": 12199
+        },
+        {
+          "second": 36,
+          "requests": 13130
+        },
+        {
+          "second": 37,
+          "requests": 13133
+        },
+        {
+          "second": 38,
+          "requests": 13190
+        },
+        {
+          "second": 39,
+          "requests": 13223
+        },
+        {
+          "second": 40,
+          "requests": 12948
+        },
+        {
+          "second": 41,
+          "requests": 12750
+        },
+        {
+          "second": 42,
+          "requests": 13147
+        },
+        {
+          "second": 43,
+          "requests": 12990
+        },
+        {
+          "second": 44,
+          "requests": 12406
+        },
+        {
+          "second": 45,
+          "requests": 13228
+        },
+        {
+          "second": 46,
+          "requests": 13286
+        },
+        {
+          "second": 47,
+          "requests": 13260
+        },
+        {
+          "second": 48,
+          "requests": 13752
+        },
+        {
+          "second": 49,
+          "requests": 13008
+        },
+        {
+          "second": 50,
+          "requests": 12675
+        },
+        {
+          "second": 51,
+          "requests": 13378
+        },
+        {
+          "second": 52,
+          "requests": 12824
+        },
+        {
+          "second": 53,
+          "requests": 13354
+        },
+        {
+          "second": 54,
+          "requests": 12587
+        },
+        {
+          "second": 55,
+          "requests": 12633
+        },
+        {
+          "second": 56,
+          "requests": 12216
+        },
+        {
+          "second": 57,
+          "requests": 12618
+        },
+        {
+          "second": 58,
+          "requests": 12861
+        },
+        {
+          "second": 59,
+          "requests": 12403
+        },
+        {
+          "second": 60,
+          "requests": 12989
+        }
+      ]
+    },
+    {
+      "name": "API root / status",
+      "endpoint": "GET /",
+      "description": "Service banner route. Same handler shape as /health, exercised separately to confirm routing cost is flat.",
+      "connections": 100,
+      "duration": 60,
+      "totalRequests": 782236,
+      "rpsMean": 13037.6,
+      "rpsMin": 11848,
+      "rpsMax": 13715,
+      "latencyMean": 7.17,
+      "latencyMin": 1,
+      "latencyMax": 29,
+      "latencyP50": 7,
+      "latencyP90": 8,
+      "latencyP99": 10,
+      "throughputKBs": 4660,
+      "errors": 0,
+      "timeouts": 0,
+      "non2xx": 0,
+      "samples": [
+        {
+          "second": 1,
+          "requests": 12947
+        },
+        {
+          "second": 2,
+          "requests": 12710
+        },
+        {
+          "second": 3,
+          "requests": 12840
+        },
+        {
+          "second": 4,
+          "requests": 12529
+        },
+        {
+          "second": 5,
+          "requests": 13140
+        },
+        {
+          "second": 6,
+          "requests": 12145
+        },
+        {
+          "second": 7,
+          "requests": 13110
+        },
+        {
+          "second": 8,
+          "requests": 12661
+        },
+        {
+          "second": 9,
+          "requests": 13174
+        },
+        {
+          "second": 10,
+          "requests": 12750
+        },
+        {
+          "second": 11,
+          "requests": 12689
+        },
+        {
+          "second": 12,
+          "requests": 13045
+        },
+        {
+          "second": 13,
+          "requests": 12713
+        },
+        {
+          "second": 14,
+          "requests": 12054
+        },
+        {
+          "second": 15,
+          "requests": 12635
+        },
+        {
+          "second": 16,
+          "requests": 12675
+        },
+        {
+          "second": 17,
+          "requests": 13389
+        },
+        {
+          "second": 18,
+          "requests": 12627
+        },
+        {
+          "second": 19,
+          "requests": 13549
+        },
+        {
+          "second": 20,
+          "requests": 12893
+        },
+        {
+          "second": 21,
+          "requests": 13130
+        },
+        {
+          "second": 22,
+          "requests": 13676
+        },
+        {
+          "second": 23,
+          "requests": 13417
+        },
+        {
+          "second": 24,
+          "requests": 13715
+        },
+        {
+          "second": 25,
+          "requests": 13450
+        },
+        {
+          "second": 26,
+          "requests": 13219
+        },
+        {
+          "second": 27,
+          "requests": 13560
+        },
+        {
+          "second": 28,
+          "requests": 13080
+        },
+        {
+          "second": 29,
+          "requests": 12963
+        },
+        {
+          "second": 30,
+          "requests": 12844
+        },
+        {
+          "second": 31,
+          "requests": 12689
+        },
+        {
+          "second": 32,
+          "requests": 12830
+        },
+        {
+          "second": 33,
+          "requests": 13257
+        },
+        {
+          "second": 34,
+          "requests": 13415
+        },
+        {
+          "second": 35,
+          "requests": 12639
+        },
+        {
+          "second": 36,
+          "requests": 11848
+        },
+        {
+          "second": 37,
+          "requests": 12245
+        },
+        {
+          "second": 38,
+          "requests": 12687
+        },
+        {
+          "second": 39,
+          "requests": 13073
+        },
+        {
+          "second": 40,
+          "requests": 13285
+        },
+        {
+          "second": 41,
+          "requests": 13046
+        },
+        {
+          "second": 42,
+          "requests": 12970
+        },
+        {
+          "second": 43,
+          "requests": 13119
+        },
+        {
+          "second": 44,
+          "requests": 12731
+        },
+        {
+          "second": 45,
+          "requests": 12515
+        },
+        {
+          "second": 46,
+          "requests": 13271
+        },
+        {
+          "second": 47,
+          "requests": 13340
+        },
+        {
+          "second": 48,
+          "requests": 13381
+        },
+        {
+          "second": 49,
+          "requests": 13200
+        },
+        {
+          "second": 50,
+          "requests": 13236
+        },
+        {
+          "second": 51,
+          "requests": 13655
+        },
+        {
+          "second": 52,
+          "requests": 13438
+        },
+        {
+          "second": 53,
+          "requests": 13084
+        },
+        {
+          "second": 54,
+          "requests": 13342
+        },
+        {
+          "second": 55,
+          "requests": 13475
+        },
+        {
+          "second": 56,
+          "requests": 13532
+        },
+        {
+          "second": 57,
+          "requests": 13471
+        },
+        {
+          "second": 58,
+          "requests": 13288
+        },
+        {
+          "second": 59,
+          "requests": 13404
+        },
+        {
+          "second": 60,
+          "requests": 13441
+        }
+      ]
+    },
+    {
+      "name": "Unmatched route (404 path)",
+      "endpoint": "GET /api/does-not-exist",
+      "description": "Express fall-through. Confirms the 404 path does not cost more than a matched route — a common DoS amplifier.",
+      "connections": 100,
+      "duration": 60,
+      "totalRequests": 966700,
+      "rpsMean": 16112.54,
+      "rpsMin": 13773,
+      "rpsMax": 16847,
+      "latencyMean": 5.7,
+      "latencyMin": 1,
+      "latencyMax": 28,
+      "latencyP50": 6,
+      "latencyP90": 6,
+      "latencyP99": 8,
+      "throughputKBs": 7253.27,
+      "errors": 0,
+      "timeouts": 0,
+      "non2xx": 966700,
+      "samples": [
+        {
+          "second": 1,
+          "requests": 16202
+        },
+        {
+          "second": 2,
+          "requests": 16650
+        },
+        {
+          "second": 3,
+          "requests": 15920
+        },
+        {
+          "second": 4,
+          "requests": 16190
+        },
+        {
+          "second": 5,
+          "requests": 16237
+        },
+        {
+          "second": 6,
+          "requests": 16203
+        },
+        {
+          "second": 7,
+          "requests": 16807
+        },
+        {
+          "second": 8,
+          "requests": 16231
+        },
+        {
+          "second": 9,
+          "requests": 16150
+        },
+        {
+          "second": 10,
+          "requests": 16557
+        },
+        {
+          "second": 11,
+          "requests": 16359
+        },
+        {
+          "second": 12,
+          "requests": 16770
+        },
+        {
+          "second": 13,
+          "requests": 16065
+        },
+        {
+          "second": 14,
+          "requests": 15401
+        },
+        {
+          "second": 15,
+          "requests": 16350
+        },
+        {
+          "second": 16,
+          "requests": 16656
+        },
+        {
+          "second": 17,
+          "requests": 16757
+        },
+        {
+          "second": 18,
+          "requests": 16271
+        },
+        {
+          "second": 19,
+          "requests": 16561
+        },
+        {
+          "second": 20,
+          "requests": 16121
+        },
+        {
+          "second": 21,
+          "requests": 16250
+        },
+        {
+          "second": 22,
+          "requests": 16629
+        },
+        {
+          "second": 23,
+          "requests": 16111
+        },
+        {
+          "second": 24,
+          "requests": 15378
+        },
+        {
+          "second": 25,
+          "requests": 15417
+        },
+        {
+          "second": 26,
+          "requests": 15257
+        },
+        {
+          "second": 27,
+          "requests": 14089
+        },
+        {
+          "second": 28,
+          "requests": 13773
+        },
+        {
+          "second": 29,
+          "requests": 15603
+        },
+        {
+          "second": 30,
+          "requests": 16156
+        },
+        {
+          "second": 31,
+          "requests": 15358
+        },
+        {
+          "second": 32,
+          "requests": 16356
+        },
+        {
+          "second": 33,
+          "requests": 16638
+        },
+        {
+          "second": 34,
+          "requests": 16357
+        },
+        {
+          "second": 35,
+          "requests": 16287
+        },
+        {
+          "second": 36,
+          "requests": 16345
+        },
+        {
+          "second": 37,
+          "requests": 15988
+        },
+        {
+          "second": 38,
+          "requests": 15891
+        },
+        {
+          "second": 39,
+          "requests": 16450
+        },
+        {
+          "second": 40,
+          "requests": 16135
+        },
+        {
+          "second": 41,
+          "requests": 16200
+        },
+        {
+          "second": 42,
+          "requests": 16719
+        },
+        {
+          "second": 43,
+          "requests": 16257
+        },
+        {
+          "second": 44,
+          "requests": 15779
+        },
+        {
+          "second": 45,
+          "requests": 16304
+        },
+        {
+          "second": 46,
+          "requests": 16567
+        },
+        {
+          "second": 47,
+          "requests": 16673
+        },
+        {
+          "second": 48,
+          "requests": 16847
+        },
+        {
+          "second": 49,
+          "requests": 16324
+        },
+        {
+          "second": 50,
+          "requests": 15867
+        },
+        {
+          "second": 51,
+          "requests": 16423
+        },
+        {
+          "second": 52,
+          "requests": 16077
+        },
+        {
+          "second": 53,
+          "requests": 16426
+        },
+        {
+          "second": 54,
+          "requests": 16377
+        },
+        {
+          "second": 55,
+          "requests": 16045
+        },
+        {
+          "second": 56,
+          "requests": 14986
+        },
+        {
+          "second": 57,
+          "requests": 14603
+        },
+        {
+          "second": 58,
+          "requests": 16497
+        },
+        {
+          "second": 59,
+          "requests": 16691
+        },
+        {
+          "second": 60,
+          "requests": 16112
+        }
+      ]
+    },
+    {
+      "name": "Unsupported method on a real route",
+      "endpoint": "POST /health",
+      "description": "POST against a GET-only route. Exercises the router's rejection path under the same concurrency.",
+      "connections": 100,
+      "duration": 60,
+      "totalRequests": 722452,
+      "rpsMean": 12041.47,
+      "rpsMin": 9688,
+      "rpsMax": 12647,
+      "latencyMean": 7.83,
+      "latencyMin": 1,
+      "latencyMax": 27,
+      "latencyP50": 8,
+      "latencyP90": 8,
+      "latencyP99": 11,
+      "throughputKBs": 5291.4,
+      "errors": 0,
+      "timeouts": 0,
+      "non2xx": 722452,
+      "samples": [
+        {
+          "second": 1,
+          "requests": 11155
+        },
+        {
+          "second": 2,
+          "requests": 12198
+        },
+        {
+          "second": 3,
+          "requests": 12114
+        },
+        {
+          "second": 4,
+          "requests": 12233
+        },
+        {
+          "second": 5,
+          "requests": 11897
+        },
+        {
+          "second": 6,
+          "requests": 11805
+        },
+        {
+          "second": 7,
+          "requests": 11370
+        },
+        {
+          "second": 8,
+          "requests": 11426
+        },
+        {
+          "second": 9,
+          "requests": 12196
+        },
+        {
+          "second": 10,
+          "requests": 12336
+        },
+        {
+          "second": 11,
+          "requests": 12336
+        },
+        {
+          "second": 12,
+          "requests": 12155
+        },
+        {
+          "second": 13,
+          "requests": 11808
+        },
+        {
+          "second": 14,
+          "requests": 9688
+        },
+        {
+          "second": 15,
+          "requests": 12068
+        },
+        {
+          "second": 16,
+          "requests": 12065
+        },
+        {
+          "second": 17,
+          "requests": 11398
+        },
+        {
+          "second": 18,
+          "requests": 11933
+        },
+        {
+          "second": 19,
+          "requests": 12255
+        },
+        {
+          "second": 20,
+          "requests": 11748
+        },
+        {
+          "second": 21,
+          "requests": 12187
+        },
+        {
+          "second": 22,
+          "requests": 11885
+        },
+        {
+          "second": 23,
+          "requests": 11876
+        },
+        {
+          "second": 24,
+          "requests": 12279
+        },
+        {
+          "second": 25,
+          "requests": 12208
+        },
+        {
+          "second": 26,
+          "requests": 12052
+        },
+        {
+          "second": 27,
+          "requests": 12221
+        },
+        {
+          "second": 28,
+          "requests": 12328
+        },
+        {
+          "second": 29,
+          "requests": 12460
+        },
+        {
+          "second": 30,
+          "requests": 12437
+        },
+        {
+          "second": 31,
+          "requests": 12176
+        },
+        {
+          "second": 32,
+          "requests": 12186
+        },
+        {
+          "second": 33,
+          "requests": 12025
+        },
+        {
+          "second": 34,
+          "requests": 11929
+        },
+        {
+          "second": 35,
+          "requests": 12084
+        },
+        {
+          "second": 36,
+          "requests": 12258
+        },
+        {
+          "second": 37,
+          "requests": 12190
+        },
+        {
+          "second": 38,
+          "requests": 12154
+        },
+        {
+          "second": 39,
+          "requests": 12647
+        },
+        {
+          "second": 40,
+          "requests": 12556
+        },
+        {
+          "second": 41,
+          "requests": 12046
+        },
+        {
+          "second": 42,
+          "requests": 12280
+        },
+        {
+          "second": 43,
+          "requests": 11918
+        },
+        {
+          "second": 44,
+          "requests": 10556
+        },
+        {
+          "second": 45,
+          "requests": 11986
+        },
+        {
+          "second": 46,
+          "requests": 12180
+        },
+        {
+          "second": 47,
+          "requests": 12332
+        },
+        {
+          "second": 48,
+          "requests": 12151
+        },
+        {
+          "second": 49,
+          "requests": 12257
+        },
+        {
+          "second": 50,
+          "requests": 12437
+        },
+        {
+          "second": 51,
+          "requests": 12030
+        },
+        {
+          "second": 52,
+          "requests": 11946
+        },
+        {
+          "second": 53,
+          "requests": 12253
+        },
+        {
+          "second": 54,
+          "requests": 12282
+        },
+        {
+          "second": 55,
+          "requests": 12510
+        },
+        {
+          "second": 56,
+          "requests": 12460
+        },
+        {
+          "second": 57,
+          "requests": 12249
+        },
+        {
+          "second": 58,
+          "requests": 12084
+        },
+        {
+          "second": 59,
+          "requests": 12119
+        },
+        {
+          "second": 60,
+          "requests": 12054
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "total": 300,
+    "passed": 300,
+    "failed": 0,
+    "passRate": "100.00%"
+  }
+}

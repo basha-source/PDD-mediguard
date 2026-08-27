@@ -22,9 +22,19 @@ export const ENV = {
   DEFAULT_TIMEZONE:             process.env["DEFAULT_TIMEZONE"] ?? "Asia/Kolkata",
 
   // Shared secret for POST /api/notifications/scan-missed. That route writes
-  // alerts and sends pushes, so it must not be publicly triggerable. The dev
-  // default keeps local runs working without a .env edit; Render sets a real one.
-  CRON_SECRET:                  process.env["CRON_SECRET"] ?? "dev-cron-secret",
+  // alerts and sends pushes, so it must not be publicly triggerable.
+  //
+  // There is deliberately NO fallback value. The previous default of
+  // "dev-cron-secret" is published in this repository's git history, and
+  // render.yaml declares CRON_SECRET with `sync: false` — so an operator who
+  // applies the blueprint and skips that one prompt used to ship production
+  // guarded by a secret anyone could read. (MG-SEC-001.)
+  //
+  // Undefined here means the route refuses every request rather than accepting
+  // a known value; see routes/notifications.ts. Boot is intentionally NOT
+  // blocked, because the missed-dose scan that matters runs on the in-process
+  // timer and does not need this secret at all — only the manual trigger does.
+  CRON_SECRET:                  process.env["CRON_SECRET"],
 
   // The in-process scan loop. Off under tests so importing index.ts never starts
   // a timer that keeps the process alive and hits Firestore.

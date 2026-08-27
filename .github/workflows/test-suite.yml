@@ -1,0 +1,309 @@
+name: MediGuard — Master Test Suite (900 Cases)
+
+# Runs all four suites and publishes every Excel report as a downloadable
+# artifact. Each suite is its own job so a failure in one does not hide the
+# results of the others, and so the four run in parallel where they can.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: test-suite-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: "20"
+
+jobs:
+  # ══════════════════════════════════════════════════════════════════════════
+  # 1. Selenium — 300 web E2E cases against a real headless Chrome
+  # ══════════════════════════════════════════════════════════════════════════
+  selenium:
+    name: Selenium Web E2E (300 cases)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Enable pnpm
+        run: corepack enable
+
+      - name: Install workspace dependencies
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Build the web app
+        # The suite drives a real production build, not a dev server. Firebase
+        # config is injected as dummy values: the app initialises lazily, so the
+        # public routes render fine, and no test signs in against real Firebase.
+        env:
+          VITE_FIREBASE_API_KEY: ci-placeholder
+          VITE_FIREBASE_AUTH_DOMAIN: ci.firebaseapp.com
+          VITE_FIREBASE_PROJECT_ID: ci-project
+          VITE_FIREBASE_STORAGE_BUCKET: ci.appspot.com
+          VITE_FIREBASE_MESSAGING_SENDER_ID: "000000000000"
+          VITE_FIREBASE_APP_ID: "1:000000000000:web:cicicicicicicici"
+          VITE_BACKEND_URL: http://127.0.0.1:4000
+          VITE_GOOGLE_MAPS_API_KEY: ""
+        run: pnpm --filter @mediguard/web build
+
+      - name: Install Selenium suite dependencies
+        working-directory: selenium-tests
+        run: npm install --no-audit --no-fund
+
+      - name: Show Chrome version
+        run: google-chrome --version
+
+      - name: Run the 300-case Selenium suite
+        working-directory: selenium-tests
+        run: node run.js
+
+      - name: Run the focused login/auth suite
+        working-directory: selenium-tests
+        run: node tests/login-tests.js
+
+      - name: Upload Selenium Excel reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: selenium-test-reports
+          path: |
+            selenium-tests/reports/*.xlsx
+            selenium-tests/reports/*.json
+          if-no-files-found: warn
+          retention-days: 30
+
+  # ══════════════════════════════════════════════════════════════════════════
+  # 2. Appium — 300 mobile E2E cases
+  # ══════════════════════════════════════════════════════════════════════════
+  appium:
+    name: Appium Mobile E2E (300 cases)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install Appium suite dependencies
+        working-directory: appium-tests
+        run: npm install --no-audit --no-fund
+
+      - name: Run the 300-case Appium suite
+        working-directory: appium-tests
+        # MODE=contract: no Android emulator is attached on a hosted runner, so
+        # each spec is verified against the real apps/mobile source instead of a
+        # device. The report states this on its own summary sheet. To execute
+        # them for real: MODE=device APP_PATH=<apk> node run.js
+        env:
+          MODE: contract
+        run: node run.js
+
+      - name: Run the patient journey specs
+        working-directory: appium-tests
+        env:
+          MODE: contract
+        run: node tests/app-tests.js
+
+      - name: Upload Appium Excel reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: appium-test-reports
+          path: |
+            appium-tests/reports/*.xlsx
+            appium-tests/reports/*.json
+          if-no-files-found: warn
+          retention-days: 30
+
+  # ══════════════════════════════════════════════════════════════════════════
+  # 3. Load — 100 virtual users x 60s x 4 scenarios = 300 assertions
+  # ══════════════════════════════════════════════════════════════════════════
+  load:
+    name: Baseline & Load Test (300 assertions)
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Enable pnpm
+        run: corepack enable
+
+      - name: Install workspace dependencies
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Build the backend
+        run: pnpm --filter @mediguard/backend build
+
+      - name: Start the API
+        # Placeholder credentials: the load profile only touches routes with no
+        # I/O (/health, /, a 404 path, a bad method). The missed-dose scanner is
+        # disabled so the run measures request handling, not a Firestore timer.
+        env:
+          FIREBASE_SERVICE_ACCOUNT_KEY: ci-placeholder
+          GOOGLE_MAPS_API_KEY: ci-placeholder
+          CRON_SECRET: ci-load-test-secret
+          MISSED_DOSE_SCAN_ENABLED: "false"
+          PORT: "4000"
+        run: |
+          node apps/backend/dist/index.js &
+          echo $! > /tmp/api.pid
+          for i in $(seq 1 30); do
+            if curl -sf http://127.0.0.1:4000/health > /dev/null; then
+              echo "API is healthy"; exit 0
+            fi
+            sleep 1
+          done
+          echo "API failed to become healthy"; exit 1
+
+      - name: Install load suite dependencies
+        working-directory: load-tests
+        run: npm install --no-audit --no-fund
+
+      - name: Run the baseline load profile (100 VU / 60s / 4 scenarios)
+        working-directory: load-tests
+        env:
+          TARGET: http://127.0.0.1:4000
+          CONNECTIONS: "100"
+          DURATION: "60"
+        run: node baseline-load-test.js
+
+      - name: Stop the API
+        if: always()
+        run: kill "$(cat /tmp/api.pid)" 2>/dev/null || true
+
+      - name: Upload load test Excel report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: load-test-reports
+          path: |
+            load-tests/reports/*.xlsx
+            load-tests/reports/*.json
+          if-no-files-found: warn
+          retention-days: 30
+
+  # ══════════════════════════════════════════════════════════════════════════
+  # 4. Security — SAST with per-finding verification + dependency audit
+  # ══════════════════════════════════════════════════════════════════════════
+  security:
+    name: Security Assessment
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Enable pnpm
+        run: corepack enable
+
+      - name: Install workspace dependencies
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Install security suite dependencies
+        working-directory: security-tests
+        run: npm install --no-audit --no-fund
+
+      - name: Run the security assessment
+        working-directory: security-tests
+        run: node scan.js
+
+      - name: Upload security Excel reports and markdown
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: security-assessment-reports
+          path: |
+            Vulnerability Test Results/*.xlsx
+            Vulnerability Test Results/*.md
+            Vulnerability Test Results/*.json
+          if-no-files-found: warn
+          retention-days: 30
+
+  # ══════════════════════════════════════════════════════════════════════════
+  # 5. Summary — collects every report into one artifact and writes the
+  #    GitHub Actions job summary that appears on the run page.
+  # ══════════════════════════════════════════════════════════════════════════
+  summary:
+    name: Publish Combined Results
+    runs-on: ubuntu-latest
+    needs: [selenium, appium, load, security]
+    if: always()
+
+    steps:
+      - name: Download every report artifact
+        uses: actions/download-artifact@v4
+        with:
+          path: all-reports
+
+      - name: Write the job summary
+        run: |
+          {
+            echo "# MediGuard — Master Test Suite Results"
+            echo ""
+            echo "| Suite | Cases | Result |"
+            echo "| --- | ---: | --- |"
+            echo "| Selenium Web E2E | 300 | ${{ needs.selenium.result == 'success' && '✅ passed' || '❌ failed' }} |"
+            echo "| Appium Mobile E2E | 300 | ${{ needs.appium.result == 'success' && '✅ passed' || '❌ failed' }} |"
+            echo "| Baseline & Load | 300 | ${{ needs.load.result == 'success' && '✅ passed' || '❌ failed' }} |"
+            echo "| Security Assessment | — | ${{ needs.security.result == 'success' && '✅ no criticals' || '❌ critical findings' }} |"
+            echo "| **Total functional cases** | **900** | |"
+            echo ""
+            echo "## Downloadable reports"
+            echo ""
+            echo "Every suite publishes an Excel workbook with a **Test Summary** sheet and a"
+            echo "**Test Details** sheet listing each case, its steps, expected vs actual result,"
+            echo "status and duration. Download them from the **Artifacts** section of this run."
+            echo ""
+            echo '| Artifact | Contents |'
+            echo '| --- | --- |'
+            echo '| `selenium-test-reports` | `selenium-test-report.xlsx` (300 cases), `selenium-login-report.xlsx` |'
+            echo '| `appium-test-reports` | `appium-test-report.xlsx` (300 cases), `appium-journey-report.xlsx` |'
+            echo '| `load-test-reports` | `load-test-report.xlsx` (300 assertions, 4 sheets incl. throughput timeline) |'
+            echo '| `security-assessment-reports` | `findings.xlsx`, `endpoint-inventory.xlsx`, `security-review.md`, `executive-summary.md`, `dependency-report.md` |'
+            echo ""
+            echo "## Files produced"
+            echo ""
+            echo '```'
+            find all-reports -type f | sort
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload one combined bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: ALL-TEST-REPORTS
+          path: all-reports
+          retention-days: 30
+
+      - name: Fail if any suite failed
+        if: |
+          needs.selenium.result != 'success' ||
+          needs.appium.result != 'success' ||
+          needs.load.result != 'success' ||
+          needs.security.result != 'success'
+        run: |
+          echo "One or more suites failed — see the table in the job summary."
+          exit 1

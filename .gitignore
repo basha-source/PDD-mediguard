@@ -54,3 +54,14 @@ android/
 # ── Firebase service account key (if saved as file) ───────
 *service-account*.json
 *firebase-adminsdk*.json
+
+# ── Test suite dependencies (each suite installs its own) ────────────────
+selenium-tests/node_modules/
+appium-tests/node_modules/
+load-tests/node_modules/
+security-tests/node_modules/
+
+# tsc emits .js beside the .tsx sources during `pnpm --filter @mediguard/web build`
+# (the web tsconfig has no noEmit). Those are build output, not source.
+apps/web/src/**/*.js
+apps/mobile/src/**/*.js
