@@ -311,3 +311,40 @@ export async function getWellnessReminderTime(): Promise<{ hour: number; minute:
     return null;
   }
 }
+
+// ── Push token + timezone persistence ─────────────────────────────────────────
+// ADD-ONLY: registerForPushNotifications() fetches a token but never stored it,
+// so the backend missed-dose cron had no address to push to. This writes the
+// two fields it reads — users/{uid}.pushToken and users/{uid}.timezone.
+//
+// Safe when the token is null: in Expo Go the whole expo-notifications module is
+// skipped (see IS_EXPO_GO above) and the register call returns null by design.
+// The timezone is still written in that case, because the cron needs it to know
+// when a wall-clock dose time actually fell due.
+export async function savePushTokenForUser(userId: string): Promise<string | null> {
+  if (!userId) return null;
+
+  let token: string | null = null;
+  try {
+    token = await registerForPushNotifications();
+  } catch {
+    token = null;
+  }
+
+  let timezone = "";
+  try {
+    timezone = Intl.DateTimeFormat().resolvedOptions().timeZone ?? "";
+  } catch { /* Intl unavailable — skip the field */ }
+
+  const patch: { pushToken?: string; timezone?: string } = {};
+  if (token)    patch.pushToken = token;
+  if (timezone) patch.timezone  = timezone;
+  if (Object.keys(patch).length === 0) return null;
+
+  try {
+    await updateDoc(doc(getDb(), FIRESTORE.USERS, userId), patch);
+  } catch {
+    // non-critical — silently fail, exactly like saveFcmToken
+  }
+  return token;
+}

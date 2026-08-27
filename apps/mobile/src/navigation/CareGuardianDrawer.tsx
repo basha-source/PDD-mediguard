@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createStackNavigator }  from "@react-navigation/stack";
 import { useNavigation }          from "@react-navigation/native";
 import {
@@ -11,15 +11,18 @@ import { Colors }             from "@mediguard/shared";
 import { useAuthStore }       from "@/store/authStore";
 import { signOutUser }        from "@mediguard/firebase";
 import { DrawerContext }      from "./drawerContext";
+import { savePushTokenForUser } from "@/services/notifications";
 
 import { CareGuardianTabs }       from "./CareGuardianTabs";
 import { CGPatientMonitorScreen } from "@/screens/careGuardian/CGPatientMonitorScreen";
+import { CGLinkPatientScreen } from "@/screens/careGuardian/CGLinkPatientScreen";
 import { CGAlertScreen }          from "@/screens/careGuardian/CGAlertScreen";
 
 export type CGStackParams = {
-  Main:          undefined;
+  Main:           undefined;
+  LinkPatient:    undefined;
   PatientMonitor: undefined;
-  Alerts:        undefined;
+  Alerts:         undefined;
 };
 
 const Stack    = createStackNavigator<CGStackParams>();
@@ -68,6 +71,11 @@ function CGSideDrawer({ onClose }: { onClose: () => void }) {
         </TouchableOpacity>
 
         <Text style={d.sectionTitle}>Monitoring</Text>
+
+        <TouchableOpacity style={d.item} onPress={() => goTo("LinkPatient")} activeOpacity={0.7}>
+          <Ionicons name="person-add-outline" size={17} color="#78909C" style={{ width: 24 }} />
+          <Text style={d.itemTxt}>Link Patient</Text>
+        </TouchableOpacity>
 
         <TouchableOpacity style={d.item} onPress={() => goTo("PatientMonitor")} activeOpacity={0.7}>
           <Ionicons name="pulse-outline" size={17} color="#78909C" style={{ width: 24 }} />
@@ -169,9 +177,20 @@ const p = StyleSheet.create({
 
 // ─── Stack navigator (exported as CareGuardianDrawer to match RootNavigator) ──
 export function CareGuardianDrawer() {
+  const guardianId = useAuthStore((s) => s.user?.id);
+
+  // This navigator only mounts once RootNavigator has an authenticated user with
+  // role === "careGuardian", so it is the single narrowest place that covers both
+  // a fresh CG login and a restored session — no login screen needs touching.
+  useEffect(() => {
+    if (!guardianId) return;
+    savePushTokenForUser(guardianId).catch(() => {});
+  }, [guardianId]);
+
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false, animationEnabled: true }}>
+    <Stack.Navigator screenOptions={{ headerShown: false, animation: "default" }}>
       <Stack.Screen name="Main"          component={CGTabsWithDrawer} />
+      <Stack.Screen name="LinkPatient"   component={CGLinkPatientScreen} />
       <Stack.Screen name="PatientMonitor" component={CGPatientMonitorScreen} />
       <Stack.Screen name="Alerts"        component={CGAlertScreen} />
     </Stack.Navigator>

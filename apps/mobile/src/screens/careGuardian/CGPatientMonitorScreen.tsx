@@ -11,18 +11,17 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { Colors, FIRESTORE } from "@mediguard/shared";
+import type { WellnessLog } from "@mediguard/shared";
 import { getDb } from "@mediguard/firebase";
 import {
   collection,
   query,
   where,
-  getDocs,
+  orderBy,
   onSnapshot,
-  addDoc,
-  getDoc,
-  doc,
 } from "firebase/firestore";
 import { useAuthStore } from "@/store/authStore";
+import { callPatient, describeFirestoreError, fetchLinkedPatient, isCallable } from "@/utils/carePatient";
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 
@@ -39,6 +38,13 @@ type DoseEntry = {
 };
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
+
+/** YYYY-MM-DD for `n` days before today, in the device's local calendar. */
+function daysAgoString(n: number): string {
+  const d = new Date();
+  d.setDate(d.getDate() - n);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
 
 function getTimeAgo(isoString: string): string {
   const diff = Date.now() - new Date(isoString).getTime();
@@ -153,6 +159,101 @@ function DoseCard({ entry }: { entry: DoseEntry }) {
   );
 }
 
+// ─── Wellness ─────────────────────────────────────────────────────────────────
+
+/** Filled/empty dots for a 1..5 rating. */
+function Dots({ value, max, color }: { value: number; max: number; color: string }) {
+  return (
+    <View style={s.dotRow}>
+      {Array.from({ length: max }, (_, i) => (
+        <View key={i} style={[s.dot, { backgroundColor: i < value ? color : Colors.primaryPale }]} />
+      ))}
+    </View>
+  );
+}
+
+function WellnessSection({ logs, error, patientName }: { logs: WellnessLog[]; error: string | null; patientName: string }) {
+  const today   = todayString();
+  const entry   = logs.find((l) => l.date === today);
+  // Pain runs the other way to mood/energy: 0 is good, 10 is severe.
+  const painCol = !entry ? Colors.textSecondary : entry.pain >= 7 ? Colors.alertRed : entry.pain >= 4 ? Colors.orange : Colors.primary;
+
+  return (
+    <View style={s.wellCard}>
+      <View style={s.wellHead}>
+        <Ionicons name="heart-outline" size={17} color={TEAL} />
+        <Text style={s.wellTitle}>Today's Wellness</Text>
+      </View>
+
+      {error ? (
+        <Text style={s.wellEmpty}>{error}</Text>
+      ) : !entry ? (
+        <Text style={s.wellEmpty}>
+          {patientName} hasn't filled in today's wellness log yet.
+        </Text>
+      ) : (
+        <>
+          <View style={s.wellRow}>
+            <Text style={s.wellLabel}>Mood</Text>
+            <Dots value={entry.mood} max={5} color={Colors.primary} />
+            <Text style={s.wellVal}>{entry.mood}/5</Text>
+          </View>
+          <View style={s.wellRow}>
+            <Text style={s.wellLabel}>Energy</Text>
+            <Dots value={entry.energy} max={5} color={Colors.orange} />
+            <Text style={s.wellVal}>{entry.energy}/5</Text>
+          </View>
+          <View style={s.wellRow}>
+            <Text style={s.wellLabel}>Pain</Text>
+            <View style={s.painTrack}>
+              <View style={[s.painFill, { width: `${(entry.pain / 10) * 100}%`, backgroundColor: painCol }]} />
+            </View>
+            <Text style={[s.wellVal, { color: painCol }]}>{entry.pain}/10</Text>
+          </View>
+          <View style={s.wellRow}>
+            <Text style={s.wellLabel}>Sleep</Text>
+            <View style={{ flex: 1 }} />
+            <Text style={s.wellVal}>{entry.sleepHours} hrs</Text>
+          </View>
+          {!!entry.notes?.trim() && (
+            <Text style={s.wellNote}>“{entry.notes.trim()}”</Text>
+          )}
+        </>
+      )}
+
+      {/* 7-day mood trend — a single day says little; the run is the signal. */}
+      {!error && logs.length > 0 && (
+        <>
+          <View style={s.wellDivider} />
+          <Text style={s.trendLabel}>Mood · last 7 days</Text>
+          <View style={s.trendRow}>
+            {Array.from({ length: 7 }, (_, i) => {
+              const date = daysAgoString(6 - i);
+              const log  = logs.find((l) => l.date === date);
+              return (
+                <View key={date} style={s.trendCol}>
+                  <View style={s.trendTrack}>
+                    <View
+                      style={[
+                        s.trendBar,
+                        {
+                          height: log ? `${(log.mood / 5) * 100}%` : 3,
+                          backgroundColor: log ? Colors.primary : Colors.primaryPale,
+                        },
+                      ]}
+                    />
+                  </View>
+                  <Text style={s.trendDay}>{date.slice(8)}</Text>
+                </View>
+              );
+            })}
+          </View>
+        </>
+      )}
+    </View>
+  );
+}
+
 // ─── Main Screen ──────────────────────────────────────────────────────────────
 
 export function CGPatientMonitorScreen() {
@@ -162,39 +263,35 @@ export function CGPatientMonitorScreen() {
   const [loading, setLoading] = useState(true);
   const [patientId, setPatientId] = useState<string | null>(null);
   const [patientName, setPatientName] = useState("Patient");
+  const [patientPhone, setPatientPhone] = useState<string | undefined>(undefined);
   const [doseLogs, setDoseLogs] = useState<DoseEntry[]>([]);
   const [lastActive, setLastActive] = useState<string | null>(null);
-  const [sendingReminder, setSendingReminder] = useState(false);
+  // Last 7 days of wellness, oldest first — the trend needs the run, not just today.
+  const [wellness, setWellness] = useState<WellnessLog[]>([]);
+  const [wellnessError, setWellnessError] = useState<string | null>(null);
 
   // ── Step 1: Fetch linked patient ──────────────────────────────────────────
   useEffect(() => {
     if (!user?.id) return;
 
     let unsubscribeDoses: (() => void) | null = null;
+    let unsubscribeWellness: (() => void) | null = null;
 
     async function fetchPatient() {
       try {
         const db = getDb();
-        const linksSnap = await getDocs(
-          query(
-            collection(db, FIRESTORE.CG_LINKS),
-            where("guardianId", "==", user!.id)
-          )
-        );
+        const linked = await fetchLinkedPatient(user!.id);
 
-        if (linksSnap.empty) {
+        if (!linked) {
           setPatientId(null);
           setLoading(false);
           return;
         }
 
-        const linkedPatientId = linksSnap.docs[0]!.data().patientId as string;
+        const linkedPatientId = linked.id;
         setPatientId(linkedPatientId);
-
-        // Get patient name
-        const patientDoc = await getDoc(doc(db, FIRESTORE.USERS, linkedPatientId));
-        const name = (patientDoc.data()?.name as string) ?? "Patient";
-        setPatientName(name);
+        setPatientName(linked.name);
+        setPatientPhone(linked.phone);
 
         // ── Step 2: Live dose logs for today ────────────────────────────────
         const today = todayString();
@@ -229,6 +326,28 @@ export function CGPatientMonitorScreen() {
             setLoading(false);
           }
         );
+        // ── Step 3: Last 7 days of wellness ─────────────────────────────────
+        // Equality on userId + a range on date is exactly the existing
+        // (userId ASC, date ASC) composite index, so no new index is needed.
+        unsubscribeWellness = onSnapshot(
+          query(
+            collection(db, FIRESTORE.WELLNESS_LOGS),
+            where("userId", "==", linkedPatientId),
+            where("date", ">=", daysAgoString(6)),
+            orderBy("date", "asc"),
+          ),
+          (snap) => {
+            setWellness(snap.docs.map((d) => ({ id: d.id, ...(d.data() as Omit<WellnessLog, "id">) })));
+            setWellnessError(null);
+          },
+          (err) => {
+            // An unreadable log is not an absent one — say so rather than
+            // implying the patient simply never filled it in.
+            console.warn("[CGPatientMonitor] wellness listener error:", err);
+            setWellness([]);
+            setWellnessError(describeFirestoreError(err));
+          },
+        );
       } catch {
         setLoading(false);
       }
@@ -238,44 +357,9 @@ export function CGPatientMonitorScreen() {
 
     return () => {
       unsubscribeDoses?.();
+      unsubscribeWellness?.();
     };
   }, [user?.id]);
-
-  // ── Step 3: Send Reminder ─────────────────────────────────────────────────
-  const handleSendReminder = useCallback(() => {
-    if (!patientId) return;
-
-    Alert.alert(
-      "Send Reminder",
-      `Send a medicine reminder to ${patientName}?`,
-      [
-        { text: "Cancel", style: "cancel" },
-        {
-          text: "Send",
-          style: "default",
-          onPress: async () => {
-            setSendingReminder(true);
-            try {
-              const db = getDb();
-              await addDoc(collection(db, FIRESTORE.NOTIFICATIONS), {
-                userId: patientId,
-                title: "Reminder from Care Guardian",
-                body: "Your Care Guardian is reminding you to take your medicine.",
-                type: "careGuardian",
-                read: false,
-                createdAt: new Date().toISOString(),
-              });
-              Alert.alert("Sent!", `Reminder delivered to ${patientName}.`);
-            } catch {
-              Alert.alert("Error", "Failed to send reminder. Please try again.");
-            } finally {
-              setSendingReminder(false);
-            }
-          },
-        },
-      ]
-    );
-  }, [patientId, patientName]);
 
   // ── Render ─────────────────────────────────────────────────────────────────
 
@@ -302,6 +386,16 @@ export function CGPatientMonitorScreen() {
             <Text style={s.headerSubtitle}>{lastActiveLabel}</Text>
           ) : null}
         </View>
+        {patientId ? (
+          <TouchableOpacity
+            style={[s.headerCallBtn, !isCallable(patientPhone) && s.headerCallBtnOff]}
+            onPress={() => callPatient(patientPhone, patientName)}
+            disabled={!isCallable(patientPhone)}
+            activeOpacity={0.85}
+          >
+            <Ionicons name="call" size={18} color={Colors.white} />
+          </TouchableOpacity>
+        ) : null}
       </View>
 
       {/* Body */}
@@ -329,7 +423,10 @@ export function CGPatientMonitorScreen() {
             contentContainerStyle={s.listContent}
             showsVerticalScrollIndicator={false}
             ListHeaderComponent={
-              <Text style={s.dateLabel}>{todayLabel()}</Text>
+              <>
+                <WellnessSection logs={wellness} error={wellnessError} patientName={patientName} />
+                <Text style={s.dateLabel}>{todayLabel()}</Text>
+              </>
             }
             ListEmptyComponent={
               <View style={s.emptyCard}>
@@ -343,24 +440,6 @@ export function CGPatientMonitorScreen() {
             renderItem={({ item }) => <DoseCard entry={item} />}
           />
 
-          {/* Send Reminder — fixed below list */}
-          <View style={s.reminderWrap}>
-            <TouchableOpacity
-              style={[s.reminderBtn, sendingReminder && s.reminderBtnDisabled]}
-              onPress={handleSendReminder}
-              activeOpacity={0.8}
-              disabled={sendingReminder}
-            >
-              {sendingReminder ? (
-                <ActivityIndicator size="small" color={Colors.white} />
-              ) : (
-                <>
-                  <Ionicons name="notifications-outline" size={18} color={Colors.white} style={s.reminderIcon} />
-                  <Text style={s.reminderText}>SEND REMINDER TO PATIENT</Text>
-                </>
-              )}
-            </TouchableOpacity>
-          </View>
         </View>
       )}
     </View>
@@ -370,6 +449,27 @@ export function CGPatientMonitorScreen() {
 // ─── Styles ───────────────────────────────────────────────────────────────────
 
 const s = StyleSheet.create({
+  // Wellness
+  wellCard:    { backgroundColor: Colors.card, borderRadius: 16, padding: 16, marginBottom: 18, shadowColor: "#000", shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.06, shadowRadius: 8, elevation: 2 },
+  wellHead:    { flexDirection: "row", alignItems: "center", gap: 7, marginBottom: 12 },
+  wellTitle:   { fontSize: 15, fontWeight: "700", color: Colors.textPrimary },
+  wellEmpty:   { fontSize: 13, color: Colors.textSecondary, lineHeight: 19 },
+  wellRow:     { flexDirection: "row", alignItems: "center", gap: 10, marginBottom: 10 },
+  wellLabel:   { fontSize: 13, color: Colors.textSecondary, width: 54 },
+  wellVal:     { fontSize: 13, fontWeight: "700", color: Colors.textPrimary, minWidth: 52, textAlign: "right" },
+  dotRow:      { flexDirection: "row", gap: 5, flex: 1 },
+  dot:         { width: 13, height: 13, borderRadius: 7 },
+  painTrack:   { flex: 1, height: 7, borderRadius: 4, backgroundColor: Colors.primaryPale, overflow: "hidden" },
+  painFill:    { height: "100%", borderRadius: 4 },
+  wellNote:    { fontSize: 12, fontStyle: "italic", color: Colors.textSecondary, marginTop: 4, lineHeight: 18 },
+  wellDivider: { height: 1, backgroundColor: Colors.primaryPale, marginVertical: 14 },
+  trendLabel:  { fontSize: 11, fontWeight: "600", color: Colors.textSecondary, textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 10 },
+  trendRow:    { flexDirection: "row", justifyContent: "space-between", alignItems: "flex-end" },
+  trendCol:    { flex: 1, alignItems: "center", gap: 5 },
+  trendTrack:  { width: 16, height: 42, borderRadius: 5, backgroundColor: Colors.bg, justifyContent: "flex-end", overflow: "hidden" },
+  trendBar:    { width: "100%", borderRadius: 5 },
+  trendDay:    { fontSize: 10, color: Colors.textSecondary },
+
   root: {
     flex: 1,
     backgroundColor: Colors.bg,
@@ -400,6 +500,17 @@ const s = StyleSheet.create({
     fontSize: 12,
     color: "rgba(255,255,255,0.75)",
     marginTop: 2,
+  },
+  headerCallBtn: {
+    width: 38,
+    height: 38,
+    borderRadius: 19,
+    backgroundColor: "rgba(255,255,255,0.22)",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  headerCallBtnOff: {
+    opacity: 0.4,
   },
 
   // Loading / empty
@@ -508,38 +619,4 @@ const s = StyleSheet.create({
     fontWeight: "600",
   },
 
-  // Reminder button
-  reminderWrap: {
-    paddingHorizontal: 16,
-    paddingVertical: 14,
-    backgroundColor: Colors.bg,
-    borderTopWidth: 1,
-    borderTopColor: "rgba(0,0,0,0.06)",
-  },
-  reminderBtn: {
-    backgroundColor: TEAL,
-    borderRadius: 14,
-    paddingVertical: 15,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 8,
-    shadowColor: TEAL,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 4,
-  },
-  reminderBtnDisabled: {
-    opacity: 0.65,
-  },
-  reminderIcon: {
-    marginRight: 2,
-  },
-  reminderText: {
-    color: Colors.white,
-    fontSize: 14,
-    fontWeight: "700",
-    letterSpacing: 0.5,
-  },
 });

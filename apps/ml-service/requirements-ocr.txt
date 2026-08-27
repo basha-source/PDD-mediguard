@@ -1,0 +1,14 @@
+# Feature 1/2 text extraction.
+#
+# paddlepaddle 3.1+ is the first line with cp313 wheels; the older 2.6.2 pin
+# stopped at cp312 and simply could not install on a 3.13 dev machine, which
+# is why /ocr had never run locally. paddleocr stays on the 2.x line because
+# app/ocr/engine.py uses its 2.x API (use_angle_cls / .ocr(cls=True)); 3.x
+# renames those and pulls in the much heavier paddlex stack.
+#
+# NOTE (Windows dev only): paddle and torch each bundle an Intel OpenMP/MKL
+# runtime and the first one loaded wins the DLL search, so importing paddle
+# before torch breaks torch with WinError 127. engine.py imports torch first
+# to keep both alive in one process -- see the comment there.
+paddlepaddle==3.1.1
+paddleocr==2.10.0

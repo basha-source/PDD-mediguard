@@ -13,6 +13,11 @@ export type User = {
   emergencyContact?: string;
   careGuardianCode?: string;
   profilePhotoURL?: string;
+  // Expo push token, saved on login so the backend can reach this device.
+  pushToken?: string;
+  // IANA zone (e.g. "Asia/Kolkata"). medicine.schedule times are wall-clock in
+  // this zone; the backend falls back to DEFAULT_TIMEZONE when it is absent.
+  timezone?: string;
   createdAt: string;
 };
 
@@ -90,6 +95,35 @@ export type CareGuardianLink = {
   guardianId: string;
   code: string;
   linkedAt: string;
+};
+
+/**
+ * One missed dose, escalated to the linked guardian.
+ *
+ * Written ONLY by the backend cron (via the Admin SDK, which bypasses rules).
+ * The doc ID is deterministic — CARE_GUARDIAN.alertId() — so a re-run of the
+ * scan can never raise a second alert for the same dose. Everything the
+ * guardian needs to act is denormalised onto the doc, so the guardian never
+ * has to read the patient's own medicine or doseLog records.
+ */
+export type MissedDoseAlert = {
+  id: string;
+  patientId: string;
+  guardianId: string;
+  patientName: string;
+  /** Patient's emergencyContact, copied here to power the one-tap Call action. */
+  patientPhone?: string;
+  medicineId: string;
+  medicineName: string;
+  dosage?: string;
+  /** ISO instant the dose was due. */
+  scheduledTime: string;
+  /** YYYY-MM-DD in the patient's own timezone. */
+  date: string;
+  /** ISO instant the scan flagged it. */
+  detectedAt: string;
+  acknowledged: boolean;
+  acknowledgedAt?: string;
 };
 
 export type Notification = {

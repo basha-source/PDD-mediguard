@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { signOut } from "firebase/auth";
 import { doc, updateDoc, setDoc } from "firebase/firestore";
 import { auth, db } from "@/config/firebaseServices";
-import { FIRESTORE } from "@mediguard/shared";
+import { FIRESTORE, withoutHealthSentinels } from "@mediguard/shared";
 import { useAuthStore } from "@/store/authStore";
 
 function resizeToDataURL(file: File, size = 200, quality = 0.75): Promise<string> {
@@ -42,6 +42,11 @@ export function ProfilePage() {
   const initials = user?.name
     ? user.name.trim().split(/\s+/).map((w) => w[0]).join("").toUpperCase().slice(0, 2)
     : (user?.email ?? "U").slice(0, 2).toUpperCase();
+
+  // "Normal"/"None" are the form's "nothing to declare" sentinels, not entries —
+  // a red "None" pill would read as a real allergen.
+  const conditions = withoutHealthSentinels(user?.conditions);
+  const allergies  = withoutHealthSentinels(user?.allergies);
 
   async function handlePhotoChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -183,21 +188,21 @@ export function ProfilePage() {
           ))}
         </div>
 
-        {(user?.conditions?.length ?? 0) > 0 && (
+        {conditions.length > 0 && (
           <div className="mt-3">
             <p className="text-xs text-text-secondary mb-1.5">Conditions</p>
             <div className="flex flex-wrap gap-1.5">
-              {user?.conditions?.map((c) => (
+              {conditions.map((c) => (
                 <span key={c} className="px-2.5 py-0.5 bg-primary-pale text-primary text-xs rounded-full font-medium">{c}</span>
               ))}
             </div>
           </div>
         )}
-        {(user?.allergies?.length ?? 0) > 0 && (
+        {allergies.length > 0 && (
           <div className="mt-3">
             <p className="text-xs text-text-secondary mb-1.5">Allergies</p>
             <div className="flex flex-wrap gap-1.5">
-              {user?.allergies?.map((a) => (
+              {allergies.map((a) => (
                 <span key={a} className="px-2.5 py-0.5 bg-red-50 text-alert-red text-xs rounded-full font-medium">{a}</span>
               ))}
             </div>

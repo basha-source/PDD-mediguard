@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { askMediGuardAI } from "@/services/gemini";
+import { askMediGuardAI } from "@/services/assistant";
 import { useAuthStore } from "@/store/authStore";
 
 type Message = { role: "user" | "assistant"; text: string; ts: number };

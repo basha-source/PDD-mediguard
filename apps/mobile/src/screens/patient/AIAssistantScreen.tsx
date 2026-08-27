@@ -46,6 +46,25 @@ const WELCOME_MESSAGE: ChatMessage = {
   createdAt: "",
 };
 
+// The backend's worst case for /ask is 25s + 3s retry delay + 25s = 53s (see
+// apps/backend/src/services/mlService.ts). This budget must stay strictly
+// larger: aborting first would replace the real reason for a failure with a
+// misleading "took too long" and hide it from us entirely.
+const REQUEST_TIMEOUT_MS = 60_000;
+
+// The backend reduces every /ask failure to a `code` (see backend routes/ai.ts).
+// One generic sentence for all of them made this screen impossible to debug —
+// a stopped AI service and an unbuilt search index both read as "try again".
+// Each code gets its own line: specific enough to tell us what actually broke,
+// but written for a patient, so nothing here sounds alarming or technical.
+const ERROR_MESSAGES: Record<string, string> = {
+  warming_up:    "The assistant is still starting up. Please try again in a few seconds.",
+  index_missing: "My medical reference isn't ready yet, so I can't answer questions just now. Please try again a little later.",
+  unreachable:   "I can't reach the assistant right now. Please check your connection and try again.",
+  timeout:       "That's taking longer than usual to answer. Please try again.",
+  unknown:       "Something went wrong while working out an answer. Please try again.",
+};
+
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export function AIAssistantScreen() {
@@ -121,7 +140,11 @@ export function AIAssistantScreen() {
     }
 
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 20_000);
+    const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+
+    // Resolves to the assistant's answer, or to the reason we could not get one.
+    let reply: string;
+    let isAnswer = false;
 
     try {
       const res = await fetch(`${ENV.BACKEND_URL}/api/ai/ask`, {
@@ -131,41 +154,52 @@ export function AIAssistantScreen() {
         signal: controller.signal,
       });
       clearTimeout(timeoutId);
-      const data = await res.json();
-      const answer = data.answer ?? "I couldn't process your question. Please try again.";
 
-      const aiMsg: ChatMessage = {
-        id: (Date.now() + 1).toString(),
-        role: "assistant",
-        text: answer,
-        createdAt: new Date().toISOString(),
-      };
+      // Parse the body even when the status is an error — the reason for the
+      // failure lives in that body, and reading it is the whole point.
+      const data: Record<string, any> = await res.json().catch(() => ({}));
 
-      setMessages((prev) => [...prev, aiMsg]);
-      scrollToBottom();
-
-      if (user) {
-        addDoc(collection(getDb(), "chatHistory"), {
-          userId: user.id, role: "assistant", text: answer, createdAt: aiMsg.createdAt,
-        }).catch(() => {});
+      if (res.ok && typeof data.answer === "string" && data.answer.trim()) {
+        reply = data.answer;
+        isAnswer = true;
+      } else {
+        const code = typeof data.code === "string" ? data.code : "unknown";
+        // `detail` is developer material — it goes to the log, never the bubble.
+        console.warn(
+          `[AI] /ask ${res.status} (${code}):`,
+          JSON.stringify(data.detail ?? data.error ?? null),
+        );
+        reply = ERROR_MESSAGES[code] ?? ERROR_MESSAGES["unknown"]!;
       }
     } catch (err: any) {
       clearTimeout(timeoutId);
-      const isTimeout = err?.name === "AbortError";
-      const errMsg: ChatMessage = {
-        id: (Date.now() + 1).toString(),
-        role: "assistant",
-        text: isTimeout
-          ? "Request timed out. Please check your connection and try again."
-          : "Service temporarily unavailable. Please try again.",
-        createdAt: new Date().toISOString(),
-      };
-      setMessages((prev) => [...prev, errMsg]);
-      scrollToBottom();
-    } finally {
-      setLoading(false);
-      sendingRef.current = false;
+      // fetch itself threw: either our own abort fired, or the phone never
+      // reached the backend at all (wrong LAN IP, server not running, no Wi-Fi).
+      reply = err?.name === "AbortError"
+        ? ERROR_MESSAGES["timeout"]!
+        : ERROR_MESSAGES["unreachable"]!;
     }
+
+    const aiMsg: ChatMessage = {
+      id: (Date.now() + 1).toString(),
+      role: "assistant",
+      text: reply,
+      createdAt: new Date().toISOString(),
+    };
+
+    setMessages((prev) => [...prev, aiMsg]);
+    scrollToBottom();
+
+    // Only real answers are persisted — a transient outage should not come back
+    // as part of the conversation the next time the user opens this screen.
+    if (user && isAnswer) {
+      addDoc(collection(getDb(), "chatHistory"), {
+        userId: user.id, role: "assistant", text: reply, createdAt: aiMsg.createdAt,
+      }).catch(() => {});
+    }
+
+    setLoading(false);
+    sendingRef.current = false;
   }
 
   // ── Derived display list (prepend welcome when empty) ──────────────────────

@@ -21,18 +21,35 @@ export function ProfileScreen() {
   useEffect(() => {
     async function ensureCgCode() {
       if (!user || user.role !== "patient") return;
+      const db = getDb();
+
+      // Publish code -> patientId so a Care Guardian who knows only the MG-XXXX
+      // code can resolve the patient by document ID. Security rules cannot
+      // authorise a query, so the old `where("careGuardianCode","==",code)`
+      // lookup against /users was always denied and linking could never succeed.
+      async function publishCode(code: string) {
+        await setDoc(
+          doc(db, FIRESTORE.PATIENT_CODES, code),
+          { patientId: user!.id, createdAt: new Date().toISOString() },
+          { merge: true }
+        );
+      }
+
       if (user.careGuardianCode) {
         setCgCode(user.careGuardianCode);
+        // Backfill: patients who got a code before the directory existed still
+        // need an entry, otherwise their guardian can never link to them.
+        publishCode(user.careGuardianCode).catch(() => {});
         return;
       }
       try {
         const code = "MG-" + Math.random().toString(36).substring(2, 6).toUpperCase();
-        const db = getDb();
         await setDoc(
           doc(db, FIRESTORE.USERS, user.id),
           { careGuardianCode: code },
           { merge: true }
         );
+        await publishCode(code);
         setCgCode(code);
         setUser({ ...user, careGuardianCode: code });
       } catch {

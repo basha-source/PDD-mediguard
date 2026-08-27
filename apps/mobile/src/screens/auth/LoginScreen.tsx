@@ -263,7 +263,19 @@ export function LoginScreen() {
       if (!snap.exists()) nav.navigate("RoleSelection");
     } catch (e: any) {
       const code = e?.code ?? "";
-      console.error("[MediGuard] Sign-in error:", code, e?.message, e);
+      // A wrong password is a normal outcome, not a crash. console.error trips
+      // LogBox's full-screen red box in dev, which made a simple typo look like
+      // an app failure — the message below already tells the user what to do.
+      // Note Firebase folds "wrong password" AND "no such account" into
+      // auth/invalid-credential when email-enumeration protection is on.
+      const EXPECTED = [
+        "auth/invalid-credential",
+        "auth/user-not-found",
+        "auth/wrong-password",
+        "auth/invalid-email",
+      ];
+      if (EXPECTED.includes(code)) console.warn("[MediGuard] Sign-in rejected:", code);
+      else console.error("[MediGuard] Sign-in error:", code, e?.message, e);
       setError(
         code === "auth/invalid-credential"     ? "Incorrect email or password" :
         code === "auth/user-not-found"         ? "No account with this email" :

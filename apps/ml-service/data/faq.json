@@ -1,0 +1,177 @@
+[
+  {
+    "topic": "Expiry",
+    "question": "Is it safe to take medicine after the expiry date?",
+    "answer": "No. The expiry date is the last day the manufacturer guarantees the medicine's full strength and safety. After that date a medicine may lose potency, and a few (such as some liquid antibiotics and eye drops) can degrade into harmful products. Do not take expired medicine; replace it and dispose of the old pack safely."
+  },
+  {
+    "topic": "Expiry",
+    "question": "What does EXP or Use before on a medicine pack mean?",
+    "answer": "EXP, Exp. Date, Use before and Best before all mark the expiry date. When only a month and year are printed, the medicine is considered usable through the last day of that month. MFG or MFD is the manufacturing date, not the expiry date."
+  },
+  {
+    "topic": "Expiry",
+    "question": "How should I dispose of expired or unused medicines?",
+    "answer": "Do not flush medicines or throw loose tablets in the bin. Use a pharmacy take-back or drug disposal programme where one exists. Otherwise mix the medicine with an unappealing substance such as used tea leaves or soil, seal it in a bag, and discard it with household waste after scratching out the personal details on the label."
+  },
+  {
+    "topic": "Storage",
+    "question": "How should I store my medicines?",
+    "answer": "Store most medicines in a cool, dry place below 25 degrees Celsius, away from direct sunlight and moisture. Bathrooms and kitchens are poor choices because of heat and humidity. Keep medicines in their original packaging so the batch number and expiry date stay readable, and always out of reach of children."
+  },
+  {
+    "topic": "Storage",
+    "question": "Which medicines need to be kept in the refrigerator?",
+    "answer": "Insulin, many vaccines, some eye drops, certain reconstituted liquid antibiotics, and some biological injections need refrigeration between 2 and 8 degrees Celsius. Do not freeze them. Check the label or ask your pharmacist, and never assume a medicine needs the fridge unless it says so."
+  },
+  {
+    "topic": "Missed dose",
+    "question": "What should I do if I miss a dose?",
+    "answer": "As a general rule, take the missed dose as soon as you remember. If it is almost time for the next dose, skip the missed one and continue with your normal schedule. Never take two doses at once to make up for a missed dose. Some medicines, such as contraceptives and anticoagulants, have specific missed-dose instructions, so check the leaflet or ask your pharmacist."
+  },
+  {
+    "topic": "Missed dose",
+    "question": "What happens if I accidentally take a double dose?",
+    "answer": "A single extra dose of most routine medicines is often harmless, but it can be dangerous with paracetamol, blood thinners, diabetes medicines, heart medicines and sedatives. Contact a doctor or poison control centre straight away if you have taken an extra dose, and take the pack with you so the exact medicine and strength can be identified."
+  },
+  {
+    "topic": "Adherence",
+    "question": "Why should I finish a full course of antibiotics?",
+    "answer": "Stopping antibiotics early because you feel better can leave the hardier bacteria alive, which allows the infection to return and encourages antibiotic resistance. Take the full course exactly as prescribed unless your doctor tells you to stop."
+  },
+  {
+    "topic": "Adherence",
+    "question": "Can I stop taking my medicine when I feel better?",
+    "answer": "Not without medical advice. Many medicines for blood pressure, diabetes, thyroid conditions, epilepsy and depression control a condition rather than cure it, and stopping suddenly can cause the condition to rebound or trigger withdrawal effects. Always ask your doctor before stopping."
+  },
+  {
+    "topic": "Administration",
+    "question": "Should I take my medicine before or after food?",
+    "answer": "It depends on the medicine. Some are taken on an empty stomach because food reduces absorption, while others are taken with food to reduce stomach irritation. Check the label instructions, and if it does not say, ask your pharmacist rather than guessing."
+  },
+  {
+    "topic": "Administration",
+    "question": "Can I crush or split my tablets?",
+    "answer": "Not always. Modified-release, enteric-coated and capsule-shaped tablets are designed to release the drug slowly or past the stomach, and crushing them can release the whole dose at once. Only split a tablet along a score line, and ask your pharmacist before crushing anything."
+  },
+  {
+    "topic": "Administration",
+    "question": "How should I measure liquid medicine doses?",
+    "answer": "Use the measuring cup, oral syringe or spoon supplied with the medicine. Household teaspoons vary widely in size and are a common cause of dosing errors, especially for children. Shake the bottle if the label tells you to, and check the strength printed on the label before every dose."
+  },
+  {
+    "topic": "Interactions",
+    "question": "What is a drug interaction?",
+    "answer": "A drug interaction happens when one medicine changes how another medicine works, either raising its effect to unsafe levels or reducing it so it no longer works. Interactions can also involve food, alcohol, herbal products and supplements. Keep an up-to-date list of everything you take and show it at every appointment."
+  },
+  {
+    "topic": "Interactions",
+    "question": "Can I drink alcohol while taking medication?",
+    "answer": "Alcohol interacts with many medicines. It increases drowsiness with sedatives, antihistamines and painkillers, raises the risk of liver damage with paracetamol, and increases bleeding risk with anticoagulants and anti-inflammatories. Check the label for an alcohol warning and ask your doctor if you are unsure."
+  },
+  {
+    "topic": "Interactions",
+    "question": "Are herbal supplements safe to take with prescription medicines?",
+    "answer": "Not automatically. St John's wort reduces the effect of many prescription medicines including contraceptives and antidepressants, and ginkgo, garlic and fish oil can increase bleeding risk. Tell your doctor and pharmacist about every supplement you take."
+  },
+  {
+    "topic": "Interactions",
+    "question": "Why does grapefruit juice matter with some medicines?",
+    "answer": "Grapefruit and grapefruit juice block an enzyme in the gut that breaks down certain medicines, which can raise blood levels of those medicines to unsafe levels. This affects some statins, calcium channel blockers and immunosuppressants. Check the leaflet for a grapefruit warning."
+  },
+  {
+    "topic": "Side effects",
+    "question": "What should I do if I get side effects from a medicine?",
+    "answer": "Mild side effects such as slight nausea or drowsiness often settle in a few days. Stop the medicine and seek medical help immediately for signs of a serious reaction: rash or hives, swelling of the face, lips or tongue, difficulty breathing, severe dizziness, or unusual bleeding. Report persistent side effects to your doctor rather than stopping on your own."
+  },
+  {
+    "topic": "Side effects",
+    "question": "How do I tell an allergy apart from a side effect?",
+    "answer": "A side effect is an unwanted but expected effect of the medicine, such as drowsiness or an upset stomach. An allergy is an immune reaction, typically causing rash, itching, hives, swelling or breathing difficulty, and it can worsen quickly on re-exposure. A suspected allergy should be recorded in your medical records so the medicine is avoided in future."
+  },
+  {
+    "topic": "Safety",
+    "question": "Can I take someone else's prescription medicine?",
+    "answer": "No. A prescription is matched to one person's diagnosis, weight, kidney and liver function, allergies and other medicines. The same drug at the same strength can be unsafe for a different person, and taking it can also mask a condition that needs proper diagnosis."
+  },
+  {
+    "topic": "Safety",
+    "question": "Are generic medicines as good as branded ones?",
+    "answer": "Yes. A generic contains the same active ingredient at the same strength and must meet the same regulatory standards for quality and bioequivalence as the branded product. Only inactive ingredients such as colours and fillers differ, which occasionally matters for a specific allergy."
+  },
+  {
+    "topic": "Safety",
+    "question": "How do I know if a medicine is counterfeit?",
+    "answer": "Warning signs include spelling errors on the pack, a missing or unreadable batch number or expiry date, broken seals, tablets of an unusual colour, smell or texture, and a price far below normal. Buy only from licensed pharmacies, and report a suspect pack to the pharmacy and the drug regulator."
+  },
+  {
+    "topic": "Paracetamol",
+    "question": "What is the maximum safe daily dose of paracetamol?",
+    "answer": "For most healthy adults the limit is 4000 mg in 24 hours, usually taken as 500 to 1000 mg every four to six hours with at least four hours between doses. Exceeding it can cause severe liver damage. Many combination cold and flu remedies also contain paracetamol, so check every product you take to avoid doubling up."
+  },
+  {
+    "topic": "Children",
+    "question": "Can I give adult medicine to a child at a smaller dose?",
+    "answer": "No. Children's doses are calculated by weight and age, and some medicines, such as aspirin for children with a viral illness, are unsafe at any dose. Use paediatric formulations and the dosing device provided, and confirm the dose with a doctor or pharmacist."
+  },
+  {
+    "topic": "Pregnancy",
+    "question": "Which medicines should be avoided in pregnancy?",
+    "answer": "Several medicines can harm a developing baby, including some acne treatments, certain anti-epileptics, some blood pressure medicines and anti-inflammatories in late pregnancy. No medicine, including over-the-counter and herbal products, should be taken in pregnancy or while breastfeeding without checking with a doctor or pharmacist first."
+  },
+  {
+    "topic": "Travel",
+    "question": "How should I carry medicines when travelling?",
+    "answer": "Keep medicines in your hand luggage in their original labelled packaging, carry a copy of the prescription or a doctor's letter, and take enough for the trip plus a few extra days. Check the rules of the destination country, since some common medicines are restricted. Protect temperature-sensitive medicines such as insulin with a cool pack."
+  },
+  {
+    "topic": "App",
+    "question": "How does MediGuard detect the expiry date on a medicine pack?",
+    "answer": "MediGuard reads the pack with an on-device camera scan, extracts the printed text with an OCR model, then applies a date parser that recognises EXP, Use before and Best before labels while ignoring the MFG manufacturing date. The result is normalised to a full calendar date, and a month-only date is treated as the last day of that month."
+  },
+  {
+    "topic": "App",
+    "question": "What should I do if MediGuard reads a medicine name incorrectly?",
+    "answer": "Edit the detected details on the confirmation screen before saving. Scanned text from curved, glossy or handwritten packaging is not always perfect, so MediGuard asks you to confirm the name, strength and expiry date rather than saving them silently."
+  },
+  {
+    "topic": "Safety",
+    "question": "What information should I keep about each medicine I take?",
+    "answer": "Record the brand and generic name, the strength, how much you take and how often, why you take it, who prescribed it, the start date and the expiry date. Bring this list to every medical appointment, hospital visit and pharmacy consultation, since it is the fastest way to prevent duplicate prescriptions and interactions."
+  },
+  {
+    "topic": "Safety",
+    "question": "What is polypharmacy and why does it matter?",
+    "answer": "Polypharmacy means taking several medicines at once, commonly five or more. It raises the risk of interactions, side effects and dosing mistakes, particularly in older adults. A periodic medication review with a doctor or pharmacist can identify medicines that are no longer needed."
+  },
+  {
+    "topic": "Side effects",
+    "question": "Why do some medicines cause drowsiness and what should I avoid?",
+    "answer": "Antihistamines, sedatives, some antidepressants, strong painkillers and anti-seizure medicines can slow reaction time. Do not drive or operate machinery until you know how a new medicine affects you, and avoid combining it with alcohol or other sedating medicines."
+  },
+  {
+    "topic": "Interactions",
+    "question": "Can I take two painkillers at the same time?",
+    "answer": "Paracetamol and an anti-inflammatory such as ibuprofen work by different mechanisms and are sometimes used together under medical advice. Taking two anti-inflammatories together, for example ibuprofen with naproxen or aspirin, raises the risk of stomach bleeding and kidney damage and should be avoided. Check active ingredients before combining any products."
+  },
+  {
+    "topic": "Administration",
+    "question": "Does it matter what time of day I take my medicine?",
+    "answer": "For some medicines it does. Statins are often taken at night, diuretics in the morning to avoid night-time urination, and thyroid tablets on an empty stomach before breakfast. Taking a medicine at the same time each day also keeps blood levels steady and makes the dose easier to remember."
+  },
+  {
+    "topic": "Storage",
+    "question": "Can I keep tablets in a weekly pill organiser?",
+    "answer": "Usually yes, and it helps with adherence, but there are exceptions. Medicines that absorb moisture, dissolve rapidly, or come in blister packs with a desiccant should stay in their original packaging. Ask your pharmacist before transferring any medicine, and never mix different medicines in an unlabelled container."
+  },
+  {
+    "topic": "Safety",
+    "question": "What should I do in a suspected medicine overdose?",
+    "answer": "Call emergency services or a poison control centre immediately, even if the person seems well, because symptoms of a paracetamol or slow-release overdose can be delayed by hours. Do not induce vomiting unless told to. Take the medicine packaging with you so the drug, strength and quantity can be identified."
+  },
+  {
+    "topic": "Vaccines",
+    "question": "Do vaccines have expiry dates and do they lose effect?",
+    "answer": "Yes. Vaccines have an expiry date and are highly sensitive to temperature. A vaccine that has been frozen, overheated or kept beyond its expiry date may not produce protection and should not be given. Keep vaccination records with dates so booster doses are given on time."
+  }
+]

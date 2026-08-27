@@ -1,0 +1,182 @@
+name,generic,strength,dosage_form,manufacturer
+Dolo 650,Paracetamol,650 mg,TABLET,Micro Labs
+Dolo 500,Paracetamol,500 mg,TABLET,Micro Labs
+Calpol 500,Paracetamol,500 mg,TABLET,GlaxoSmithKline
+Calpol 650,Paracetamol,650 mg,TABLET,GlaxoSmithKline
+Crocin Advance,Paracetamol,500 mg,TABLET,GlaxoSmithKline
+Crocin Pain Relief,Paracetamol,650 mg,TABLET,GlaxoSmithKline
+Metacin,Paracetamol,500 mg,TABLET,Themis Medicare
+Pacimol,Paracetamol,650 mg,TABLET,Ipca Laboratories
+Combiflam,Ibuprofen and Paracetamol,400 mg; 325 mg,TABLET,Sanofi India
+Brufen 400,Ibuprofen,400 mg,TABLET,Abbott India
+Ibugesic Plus,Ibuprofen and Paracetamol,400 mg; 325 mg,TABLET,Cipla
+Voveran SR 100,Diclofenac Sodium,100 mg,TABLET,Novartis India
+Volini Gel,Diclofenac Diethylamine,1.16 % w/w,GEL,Sun Pharmaceutical
+Zerodol SP,Aceclofenac Paracetamol and Serratiopeptidase,100 mg; 325 mg; 15 mg,TABLET,Ipca Laboratories
+Zerodol P,Aceclofenac and Paracetamol,100 mg; 325 mg,TABLET,Ipca Laboratories
+Nise,Nimesulide,100 mg,TABLET,Dr Reddys Laboratories
+Augmentin 625 Duo,Amoxycillin and Potassium Clavulanate,500 mg; 125 mg,TABLET,GlaxoSmithKline
+Augmentin 1 GM,Amoxycillin and Potassium Clavulanate,875 mg; 125 mg,TABLET,GlaxoSmithKline
+Clavam 625,Amoxycillin and Potassium Clavulanate,500 mg; 125 mg,TABLET,Alkem Laboratories
+Moxikind CV 625,Amoxycillin and Potassium Clavulanate,500 mg; 125 mg,TABLET,Mankind Pharma
+Mox 500,Amoxycillin,500 mg,CAPSULE,Ranbaxy
+Novamox 500,Amoxycillin,500 mg,CAPSULE,Cipla
+Azithral 500,Azithromycin,500 mg,TABLET,Alembic Pharmaceuticals
+Azee 500,Azithromycin,500 mg,TABLET,Cipla
+Zithrox 500,Azithromycin,500 mg,TABLET,Mankind Pharma
+Taxim O 200,Cefixime,200 mg,TABLET,Alkem Laboratories
+Zifi 200,Cefixime,200 mg,TABLET,FDC Limited
+Cefspan 200,Cefixime,200 mg,CAPSULE,Lupin
+Monocef,Ceftriaxone,1 g,INJECTION,Aristo Pharmaceuticals
+Ciplox 500,Ciprofloxacin,500 mg,TABLET,Cipla
+Cifran 500,Ciprofloxacin,500 mg,TABLET,Ranbaxy
+Levoflox 500,Levofloxacin,500 mg,TABLET,Cipla
+Norflox 400,Norfloxacin,400 mg,TABLET,Cipla
+Metrogyl 400,Metronidazole,400 mg,TABLET,JB Chemicals
+Flagyl 400,Metronidazole,400 mg,TABLET,Abbott India
+Doxy 1,Doxycycline,100 mg,TABLET,USV
+Pan 40,Pantoprazole,40 mg,TABLET,Alkem Laboratories
+Pantop 40,Pantoprazole,40 mg,TABLET,Aristo Pharmaceuticals
+Pantocid 40,Pantoprazole,40 mg,TABLET,Sun Pharmaceutical
+Omez 20,Omeprazole,20 mg,CAPSULE,Dr Reddys Laboratories
+Ocid 20,Omeprazole,20 mg,CAPSULE,Zydus Cadila
+Razo 20,Rabeprazole,20 mg,TABLET,Dr Reddys Laboratories
+Rantac 150,Ranitidine,150 mg,TABLET,JB Chemicals
+Digene,Antacid Gel,,TABLET,Abbott India
+Gelusil MPS,Magaldrate and Simethicone,400 mg; 20 mg,TABLET,Pfizer India
+Cyclopam,Dicyclomine and Paracetamol,20 mg; 500 mg,TABLET,Indoco Remedies
+Meftal Spas,Mefenamic Acid and Dicyclomine,250 mg; 10 mg,TABLET,Blue Cross Laboratories
+Meftal Forte,Mefenamic Acid,500 mg,TABLET,Blue Cross Laboratories
+Domstal,Domperidone,10 mg,TABLET,Torrent Pharmaceuticals
+Emeset 4,Ondansetron,4 mg,TABLET,Cipla
+Vomikind MD 4,Ondansetron,4 mg,TABLET,Mankind Pharma
+Eldoper,Loperamide,2 mg,CAPSULE,Micro Labs
+Cetzine,Cetirizine,10 mg,TABLET,GlaxoSmithKline
+Cetcip 10,Cetirizine,10 mg,TABLET,Cipla
+Alerid,Cetirizine,10 mg,TABLET,Cipla
+Allegra 120,Fexofenadine,120 mg,TABLET,Sanofi India
+Montair LC,Montelukast and Levocetirizine,10 mg; 5 mg,TABLET,Cipla
+Levocet M,Levocetirizine and Montelukast,5 mg; 10 mg,TABLET,Mankind Pharma
+Avil 25,Pheniramine Maleate,25 mg,TABLET,Sanofi India
+Sinarest,Paracetamol Phenylephrine and Chlorpheniramine,500 mg; 10 mg; 2 mg,TABLET,Centaur Pharmaceuticals
+Cheston Cold,Cetirizine Paracetamol and Phenylephrine,5 mg; 325 mg; 10 mg,TABLET,Cipla
+Ascoril LS,Levosalbutamol Ambroxol and Guaifenesin,1 mg; 30 mg; 50 mg,SYRUP,Glenmark Pharmaceuticals
+Benadryl Cough Formula,Diphenhydramine and Ammonium Chloride,14 mg; 138 mg,SYRUP,Johnson and Johnson
+Grilinctus,Chlorpheniramine and Dextromethorphan,,SYRUP,Franco Indian Pharmaceuticals
+Asthalin Inhaler,Salbutamol,100 mcg,INHALER,Cipla
+Foracort 200 Rotacaps,Formoterol and Budesonide,6 mcg; 200 mcg,CAPSULE,Cipla
+Seroflo 250,Salmeterol and Fluticasone,25 mcg; 250 mcg,INHALER,Cipla
+Deriphyllin Retard 150,Etofylline and Theophylline,,TABLET,Zydus Cadila
+Telma 40,Telmisartan,40 mg,TABLET,Glenmark Pharmaceuticals
+Telma H,Telmisartan and Hydrochlorothiazide,40 mg; 12.5 mg,TABLET,Glenmark Pharmaceuticals
+Amlokind AT,Amlodipine and Atenolol,5 mg; 50 mg,TABLET,Mankind Pharma
+Amlopres 5,Amlodipine,5 mg,TABLET,Cipla
+Stamlo 5,Amlodipine,5 mg,TABLET,Dr Reddys Laboratories
+Losar 50,Losartan Potassium,50 mg,TABLET,Unichem Laboratories
+Envas 5,Enalapril,5 mg,TABLET,Cadila Pharmaceuticals
+Concor 5,Bisoprolol,5 mg,TABLET,Merck India
+Metolar XR 50,Metoprolol,50 mg,TABLET,Cipla
+Ecosprin 75,Aspirin,75 mg,TABLET,USV
+Ecosprin AV 75,Aspirin and Atorvastatin,75 mg; 20 mg,CAPSULE,USV
+Clopitab 75,Clopidogrel,75 mg,TABLET,Lupin
+Atorva 10,Atorvastatin,10 mg,TABLET,Zydus Cadila
+Atorlip 10,Atorvastatin,10 mg,TABLET,Cipla
+Rosuvas 10,Rosuvastatin,10 mg,TABLET,Sun Pharmaceutical
+Storvas 20,Atorvastatin,20 mg,TABLET,Ranbaxy
+Glycomet 500,Metformin,500 mg,TABLET,USV
+Glycomet GP2,Glimepiride and Metformin,2 mg; 500 mg,TABLET,USV
+Gluconorm G2,Glimepiride and Metformin,2 mg; 500 mg,TABLET,Lupin
+Amaryl 2,Glimepiride,2 mg,TABLET,Sanofi India
+Janumet 50/500,Sitagliptin and Metformin,50 mg; 500 mg,TABLET,MSD India
+Istamet 50/500,Sitagliptin and Metformin,50 mg; 500 mg,TABLET,USV
+Galvus Met 50/500,Vildagliptin and Metformin,50 mg; 500 mg,TABLET,Novartis India
+Lantus,Insulin Glargine,100 IU/mL,INJECTION,Sanofi India
+Huminsulin 30/70,Insulin Human,100 IU/mL,INJECTION,Eli Lilly India
+Mixtard 30,Insulin Human,100 IU/mL,INJECTION,Novo Nordisk India
+Thyronorm 50,Levothyroxine,50 mcg,TABLET,Abbott India
+Eltroxin 100,Levothyroxine,100 mcg,TABLET,GlaxoSmithKline
+Neomercazole 5,Carbimazole,5 mg,TABLET,Abbott India
+Shelcal 500,Calcium Carbonate and Vitamin D3,500 mg; 250 IU,TABLET,Torrent Pharmaceuticals
+Calcimax 500,Calcium and Vitamin D3,500 mg; 250 IU,TABLET,Meyer Organics
+Uprise D3 60K,Cholecalciferol,60000 IU,CAPSULE,Alkem Laboratories
+Calcirol Sachet,Cholecalciferol,60000 IU,GRANULE,Cadila Healthcare
+Becosules,B Complex with Vitamin C,,CAPSULE,Pfizer India
+Neurobion Forte,B Complex,,TABLET,Merck India
+Zincovit,Multivitamin and Zinc,,TABLET,Apex Laboratories
+Limcee 500,Ascorbic Acid,500 mg,TABLET,Abbott India
+Autrin,Ferrous Fumarate and Folic Acid,,CAPSULE,Pfizer India
+Livogen,Ferrous Fumarate and Folic Acid,152 mg; 1.5 mg,TABLET,Merck India
+Orofer XT,Ferrous Ascorbate and Folic Acid,100 mg; 1.5 mg,TABLET,Emcure Pharmaceuticals
+Dexorange,Iron and Vitamin B12,,SYRUP,Franco Indian Pharmaceuticals
+Alprax 0.25,Alprazolam,0.25 mg,TABLET,Torrent Pharmaceuticals
+Restyl 0.5,Alprazolam,0.5 mg,TABLET,Cipla
+Etizola 0.5,Etizolam,0.5 mg,TABLET,Alkem Laboratories
+Nexito 10,Escitalopram,10 mg,TABLET,Sun Pharmaceutical
+Cipralex 10,Escitalopram,10 mg,TABLET,Lundbeck India
+Prodep 20,Fluoxetine,20 mg,CAPSULE,Sun Pharmaceutical
+Sertima 50,Sertraline,50 mg,TABLET,Intas Pharmaceuticals
+Amitone 10,Amitriptyline,10 mg,TABLET,Intas Pharmaceuticals
+Gabapin 300,Gabapentin,300 mg,CAPSULE,Intas Pharmaceuticals
+Pregabid 75,Pregabalin,75 mg,CAPSULE,Intas Pharmaceuticals
+Eptoin 100,Phenytoin,100 mg,TABLET,Abbott India
+Levipil 500,Levetiracetam,500 mg,TABLET,Intas Pharmaceuticals
+Encorate Chrono 500,Sodium Valproate,500 mg,TABLET,Sun Pharmaceutical
+Wysolone 10,Prednisolone,10 mg,TABLET,Wyeth India
+Omnacortil 10,Prednisolone,10 mg,TABLET,Macleods Pharmaceuticals
+Medrol 8,Methylprednisolone,8 mg,TABLET,Pfizer India
+Defcort 6,Deflazacort,6 mg,TABLET,Macleods Pharmaceuticals
+Betnovate N,Betamethasone and Neomycin,0.1 % w/w; 0.5 % w/w,CREAM,GlaxoSmithKline
+Candid B,Clotrimazole and Beclomethasone,1 % w/w; 0.025 % w/w,CREAM,Glenmark Pharmaceuticals
+Clobetasol Cream,Clobetasol Propionate,0.05 % w/w,CREAM,Sun Pharmaceutical
+Soframycin,Framycetin Sulphate,1 % w/w,CREAM,Sanofi India
+Neosporin,Neomycin Polymyxin B and Bacitracin,,OINTMENT,Pfizer India
+T Bact,Mupirocin,2 % w/w,OINTMENT,GlaxoSmithKline
+Fluconazole 150,Fluconazole,150 mg,TABLET,Cipla
+Forcan 150,Fluconazole,150 mg,TABLET,Cipla
+Itraconazole 100,Itraconazole,100 mg,CAPSULE,Glenmark Pharmaceuticals
+Acivir 400,Acyclovir,400 mg,TABLET,Cipla
+Zovirax Cream,Acyclovir,5 % w/w,CREAM,GlaxoSmithKline
+Ivermectol 12,Ivermectin,12 mg,TABLET,Sun Pharmaceutical
+Albendazole 400,Albendazole,400 mg,TABLET,Cipla
+Zentel,Albendazole,400 mg,TABLET,GlaxoSmithKline
+Lariago 250,Chloroquine,250 mg,TABLET,Ipca Laboratories
+Malarone,Atovaquone and Proguanil,250 mg; 100 mg,TABLET,GlaxoSmithKline
+Urimax D,Tamsulosin and Dutasteride,0.4 mg; 0.5 mg,TABLET,Cipla
+Silodal 8,Silodosin,8 mg,CAPSULE,Sun Pharmaceutical
+Finast 5,Finasteride,5 mg,TABLET,Dr Reddys Laboratories
+Zyloric 100,Allopurinol,100 mg,TABLET,GlaxoSmithKline
+Febustat 40,Febuxostat,40 mg,TABLET,Sun Pharmaceutical
+Colchicine 0.5,Colchicine,0.5 mg,TABLET,Cipla
+Lasix 40,Furosemide,40 mg,TABLET,Sanofi India
+Dytor 10,Torsemide,10 mg,TABLET,Cipla
+Aldactone 25,Spironolactone,25 mg,TABLET,RPG Life Sciences
+Nicip Plus,Nimesulide and Paracetamol,100 mg; 325 mg,TABLET,Cipla
+Sumo,Nimesulide and Paracetamol,100 mg; 325 mg,TABLET,Alkem Laboratories
+Spasmo Proxyvon Plus,Tramadol Paracetamol and Dicyclomine,,CAPSULE,Wockhardt
+Ultracet,Tramadol and Paracetamol,37.5 mg; 325 mg,TABLET,Janssen India
+Tramazac 50,Tramadol,50 mg,CAPSULE,Zydus Cadila
+ORS Powder,Oral Rehydration Salts,,POWDER,FDC Limited
+Electral Powder,Oral Rehydration Salts,,POWDER,FDC Limited
+Enterogermina,Bacillus Clausii Spores,2 billion spores,SUSPENSION,Sanofi India
+Vizylac,Lactic Acid Bacillus,,CAPSULE,Torrent Pharmaceuticals
+Sporlac DS,Lactic Acid Bacillus,120 million spores,TABLET,Sanzyme
+Liv 52,Herbal Hepatoprotective,,TABLET,Himalaya Wellness
+Cremaffin Plus,Liquid Paraffin Milk of Magnesia and Sodium Picosulphate,,SYRUP,Abbott India
+Duphalac,Lactulose,10 g/15 mL,SYRUP,Abbott India
+Softovac SF,Isabgol Husk,,POWDER,Torrent Pharmaceuticals
+Refresh Tears,Carboxymethylcellulose,0.5 % w/v,DROPS,Allergan India
+Moxifloxacin Eye Drops,Moxifloxacin,0.5 % w/v,DROPS,Cipla
+Ciplox Eye Drops,Ciprofloxacin,0.3 % w/v,DROPS,Cipla
+Otek AC Ear Drops,Clotrimazole and Lignocaine,,DROPS,Alkem Laboratories
+Otrivin Nasal Spray,Xylometazoline,0.1 % w/v,SPRAY,Novartis India
+Nasivion Nasal Drops,Oxymetazoline,0.05 % w/v,DROPS,Merck India
+Betadine Gargle,Povidone Iodine,2 % w/v,SOLUTION,Win Medicare
+Chlorhexidine Mouthwash,Chlorhexidine Gluconate,0.2 % w/v,SOLUTION,ICPA Health Products
+Unwanted 72,Levonorgestrel,1.5 mg,TABLET,Mankind Pharma
+i-Pill,Levonorgestrel,1.5 mg,TABLET,Piramal Healthcare
+Mala D,Levonorgestrel and Ethinyl Estradiol,0.15 mg; 0.03 mg,TABLET,Hindustan Latex
+Folvite 5,Folic Acid,5 mg,TABLET,Pfizer India
+Duphaston 10,Dydrogesterone,10 mg,TABLET,Abbott India
+Susten 200,Progesterone,200 mg,CAPSULE,Sun Pharmaceutical
+Tetanus Toxoid,Tetanus Toxoid Vaccine,0.5 mL,INJECTION,Serum Institute of India
+Rabipur,Rabies Vaccine,2.5 IU,INJECTION,Bharat Biotech

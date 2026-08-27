@@ -7,6 +7,8 @@ import { CameraView, useCameraPermissions } from "expo-camera";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "@mediguard/shared";
+import { useAuthStore } from "@/store/authStore";
+import { lookupBarcode } from "@/services/barcodeRegistry";
 import { ENV } from "@/config/env";
 
 type Mode = "barcode" | "packaging";
@@ -18,6 +20,19 @@ type ScanState =
   | { status: "ocr_fail" }
   | { status: "error"; message: string };
 
+// The backend reduces every /ocr failure to a `code` (see backend
+// routes/medicines.ts). One generic sentence for all of them made this screen
+// impossible to debug -- a dependency missing on the server and a real overload
+// both read as "the AI service is busy", which sent us looking in the wrong
+// place entirely. Each code gets its own line: honest about whether retrying
+// will help, but written for a patient, so nothing here sounds technical.
+const OCR_ERRORS: Record<string, string> = {
+  ocr_unavailable: "Box scanning isn't available on the server yet. Use Add Manually for now.",
+  unreachable:     "I can't reach the scanning service. Please check your connection and try again.",
+  timeout:         "That took longer than usual to read. Please try again.",
+  unknown:         "Something went wrong while reading the box. Please try again.",
+};
+
 export function ScannerScreen() {
   const [permission, requestPermission] = useCameraPermissions();
   const [mode, setMode]       = useState<Mode>("barcode");
@@ -26,18 +41,52 @@ export function ScannerScreen() {
   const [ocrRetrying, setOcrRetrying] = useState(false);
   const cameraRef             = useRef<CameraView>(null);
   const navigation            = useNavigation<any>();
+  const user                  = useAuthStore((s) => s.user);
 
-  const reset = useCallback(() => { setState({ status: "idle" }); setOcrRetrying(false); }, []);
+  // The barcode we scanned but could not resolve. A ref, not state: nothing
+  // renders it (the not_found panel already carries its own copy), so a re-render
+  // would be wasted, and keeping it out of the useCallback dep arrays is what
+  // lets handleCapture read the latest value instead of a stale closure.
+  const pendingBarcode        = useRef<string | undefined>(undefined);
+
+  const reset = useCallback(() => {
+    setState({ status: "idle" });
+    setOcrRetrying(false);
+    pendingBarcode.current = undefined;
+  }, []);
 
   const handleBarcodeScanned = useCallback(
     async ({ data }: { type: string; data: string }) => {
       if (state.status !== "idle") return;
       setState({ status: "loading" });
+      pendingBarcode.current = undefined;
       try {
+        // What we have already learned about this box outranks any catalogue —
+        // and costs no network. Never throws; null just means "not known yet".
+        if (user) {
+          const hit = await lookupBarcode(user.id, data);
+          if (hit) {
+            navigation.navigate("Inventory", {
+              screen: "AddMedicine",
+              params: {
+                prefillName:     hit.entry.name,
+                prefillDosage:   hit.entry.dosage,
+                prefillCategory: hit.entry.category,
+                barcode:         data,
+              },
+            });
+            setState({ status: "idle" });
+            return;
+          }
+        }
+
         const res = await fetch(
           `${ENV.BACKEND_URL}/api/medicines/lookup?barcode=${encodeURIComponent(data)}`
         );
         if (res.status === 404) {
+          // Hold on to it: "Scan Box Instead" and "Add Manually" both still need
+          // this barcode so the answer the user gives can be recorded against it.
+          pendingBarcode.current = data;
           setState({ status: "not_found", barcode: data });
           return;
         }
@@ -49,6 +98,7 @@ export function ScannerScreen() {
             prefillName:     med.name,
             prefillDosage:   med.dosage,
             prefillCategory: med.category,
+            barcode:         data,
           },
         });
         setState({ status: "idle" });
@@ -56,7 +106,7 @@ export function ScannerScreen() {
         setState({ status: "error", message: "Could not reach server. Try again." });
       }
     },
-    [state.status, navigation],
+    [state.status, navigation, user],
   );
 
   const handleCapture = useCallback(async () => {
@@ -88,19 +138,11 @@ export function ScannerScreen() {
       console.log(`[Scanner] response status: ${res.status}`);
 
       if (!res.ok) {
-        const errBody = await res.text();
-        console.log(`[Scanner] error body: ${errBody}`);
-        let friendlyMsg = "Something went wrong. Please try again.";
-        try {
-          const parsed = JSON.parse(errBody);
-          const detail = parsed?.detail ?? parsed?.error ?? "";
-          if (typeof detail === "string" && (detail.includes("busy") || detail.includes("high demand") || res.status === 503 || res.status === 429)) {
-            friendlyMsg = "The AI service is currently busy. Please wait a moment and retry.";
-          } else if (typeof detail === "string" && detail.length > 0) {
-            friendlyMsg = detail.length > 120 ? detail.slice(0, 120) + "…" : detail;
-          }
-        } catch { /* raw text fallback */ }
-        setState({ status: "error", message: friendlyMsg });
+        const body: Record<string, any> = await res.json().catch(() => ({}));
+        const code = typeof body.code === "string" ? body.code : "unknown";
+        // `detail` is developer material -- it goes to the log, never the panel.
+        console.warn(`[Scanner] /ocr ${res.status} (${code}):`, JSON.stringify(body.detail ?? body.error ?? null));
+        setState({ status: "error", message: OCR_ERRORS[code] ?? OCR_ERRORS["unknown"]! });
         return;
       }
       const data = await res.json() as {
@@ -116,8 +158,11 @@ export function ScannerScreen() {
             prefillDosage:   data.dosage,
             prefillCategory: data.category as any,
             prefillExpiry:   data.expiryDate ?? undefined,
+            // undefined when the user opened straight into "Scan Box" mode.
+            barcode:         pendingBarcode.current,
           },
         });
+        pendingBarcode.current = undefined;
         setState({ status: "idle" });
       } else {
         setState({ status: "ocr_fail" });
@@ -254,7 +299,10 @@ export function ScannerScreen() {
             <TouchableOpacity
               style={s.ghostBtn}
               onPress={() => {
-                navigation.navigate("Inventory", { screen: "AddMedicine", params: {} });
+                navigation.navigate("Inventory", {
+                  screen: "AddMedicine",
+                  params: { barcode: pendingBarcode.current },
+                });
                 reset();
               }}
             >
@@ -275,6 +323,18 @@ export function ScannerScreen() {
           >
             <TouchableOpacity style={s.primaryBtn} onPress={reset}>
               <Text style={s.primaryBtnText}>Try Again</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={s.ghostBtn}
+              onPress={() => {
+                navigation.navigate("Inventory", {
+                  screen: "AddMedicine",
+                  params: { barcode: pendingBarcode.current },
+                });
+                reset();
+              }}
+            >
+              <Text style={s.ghostBtnText}>Add Manually</Text>
             </TouchableOpacity>
           </ResultPanel>
         )}

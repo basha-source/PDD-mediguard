@@ -1,7 +1,9 @@
 # Render Blueprint for the MediGuard backend API.
 # Deploy: Render Dashboard → New → Blueprint → connect the GitHub repo → apply.
-# The three secret values below are marked `sync: false`, so Render prompts for
-# them in the UI instead of reading them from the repo (keeps secrets out of git).
+#
+# The AI/OCR work now runs in our own ML service (apps/ml-service), deployed
+# separately to a Hugging Face Space. This Node service is a thin proxy in front
+# of it, so the only value you must supply here is ML_SERVICE_URL.
 services:
   - type: web
     name: mediguard-api
@@ -19,12 +21,39 @@ services:
     envVars:
       - key: NODE_VERSION
         value: "20"
-      # The only real secret you must enter in the Render UI:
-      - key: GEMINI_API_KEY
+      # URL of the ML service Space, e.g. https://<user>-mediguard-ml.hf.space
+      - key: ML_SERVICE_URL
         sync: false
-      # Placeholders — not used by AI/OCR/barcode routes; env validation just
-      # requires them to be non-empty. Replace later if you wire up Maps / FCM.
+      # Placeholders — not used by the AI/OCR/barcode routes; env validation
+      # just requires them to be non-empty. Replace when wiring up Maps / FCM.
       - key: GOOGLE_MAPS_API_KEY
         value: "placeholder"
       - key: FIREBASE_SERVICE_ACCOUNT_KEY
         value: "placeholder"
+      # Care Guardian missed-dose scan. The scan runs in-process on a 60s timer
+      # (this service is always on, so no cron target is needed) — CRON_SECRET
+      # only guards the manual POST /api/notifications/scan-missed trigger.
+      - key: CRON_SECRET
+        sync: false
+      # Fallback zone for patients with no `timezone` on their user doc. Render
+      # runs UTC, but schedule times like "08:00" are patient wall-clock.
+      - key: DEFAULT_TIMEZONE
+        value: "Asia/Kolkata"
+
+  # Keeps the Hugging Face Space awake so the first scan of the day does not
+  # pay the ~30s cold start. Free Render cron jobs run on this schedule.
+  - type: cron
+    name: mediguard-ml-keepalive
+    runtime: node
+    plan: free
+    region: singapore
+    branch: main
+    rootDir: .
+    schedule: "*/10 * * * *"    # every 10 minutes
+    buildCommand: "echo no build needed"
+    startCommand: node -e "fetch(process.env.ML_SERVICE_URL + '/health').then(r => r.text()).then(t => console.log('ml health:', t)).catch(e => { console.error('ping failed:', e.message); process.exit(1); })"
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      - key: ML_SERVICE_URL
+        sync: false

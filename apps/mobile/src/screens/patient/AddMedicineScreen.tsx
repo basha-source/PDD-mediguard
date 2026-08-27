@@ -12,6 +12,7 @@ import { Colors, FIRESTORE, MedicineCategory } from "@mediguard/shared";
 import { useAuthStore } from "@/store/authStore";
 import { useMedicineStore } from "@/store/medicineStore";
 import { scheduleLowStockAlert, addInAppNotification } from "@/services/notifications";
+import { recordBarcode } from "@/services/barcodeRegistry";
 import { InventoryStackParams } from "@/navigation/PatientTabs";
 
 type Nav   = StackNavigationProp<InventoryStackParams, "AddMedicine">;
@@ -38,6 +39,14 @@ export function AddMedicineScreen() {
   const prefillDosage   = route.params?.prefillDosage;
   const prefillCategory = route.params?.prefillCategory;
   const prefillExpiry   = route.params?.prefillExpiry;
+
+  // The code this screen was reached from, when it was reached from a scan.
+  // Read off the params object directly because the stack's param list does not
+  // declare it yet; typed access is restored once ScannerScreen's change lands.
+  // On an edit the params carry nothing, so fall back to the code the medicine
+  // was originally stored with -- that is the barcode this form is describing.
+  const scannedBarcode = (route.params as { barcode?: string } | undefined)?.barcode;
+  const barcode        = scannedBarcode ?? existing?.barcode;
 
   const parseDate = (iso?: string) => {
     if (!iso) return { dd: "", mm: "", yyyy: "" };
@@ -95,17 +104,35 @@ export function AddMedicineScreen() {
         await updateDoc(doc(getDb(), FIRESTORE.MEDICINES, editId), {
           name: name.trim(), dosage: dosage.trim(), quantity: qty,
           expiryDate: isoDate, category, prescribedBy: prescribedBy.trim(),
+          // Spread rather than `barcode` outright: Firestore rejects undefined,
+          // and an edit with no code known must leave any stored one untouched.
+          ...(barcode ? { barcode } : {}),
         });
       } else {
         await addDoc(collection(getDb(), FIRESTORE.MEDICINES), {
           userId: user.id, name: name.trim(), dosage: dosage.trim(),
           quantity: qty, expiryDate: isoDate, category,
           prescribedBy: prescribedBy.trim(), addedAt: new Date().toISOString(),
+          ...(barcode ? { barcode } : {}),
         });
       }
       if (qty < 5) {
         scheduleLowStockAlert(name.trim()).catch(() => {});
         addInAppNotification(user.id, "Low Stock Alert", `${name.trim()} is running low (${qty} left). Time to reorder.`, "refill").catch(() => {});
+      }
+      // Teach the registry from the form, never from the prefill params. What
+      // OpenFDA or OCR guessed is only worth caching once a human has looked at
+      // it, and when the user overwrote that guess their correction is exactly
+      // the answer the next scan of this box should get -- recording the params
+      // instead would keep re-serving the wrong name forever. Runs for resolved
+      // hits too, so a second scan skips the network entirely.
+      //
+      // Fire-and-forget like the low-stock calls above: the medicine is already
+      // saved, so a registry write must never surface as "failed to save".
+      if (barcode) {
+        recordBarcode(user.id, barcode, {
+          name: name.trim(), dosage: dosage.trim(), category,
+        }).catch(() => {});
       }
       navigation.goBack();
     } catch {

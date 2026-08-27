@@ -1,41 +1,58 @@
 import { Router } from "express";
-import axios from "axios";
-import { API } from "@mediguard/shared";
-import { ENV } from "../config/env";
+import * as ml from "../services/mlService";
 
 export const aiRoutes = Router();
 
-// Models in preference order. gemini-2.0-flash / 1.5-* are intentionally excluded:
-// on the current free tier they return 429 (quota limit 0) or 404 (retired).
-// gemini-2.5-flash is the primary; gemini-flash-latest is a forward-compatible
-// fallback so this keeps working if the alias target changes.
-const AI_MODELS = ["gemini-2.5-flash", "gemini-flash-latest"];
+// ---------------------------------------------------------------------------
+// Failure classification.
+//
+// The app cannot show a patient a raw axios error, and it cannot reliably parse
+// `detail` either — that is a plain string for a transport failure but the
+// upstream JSON body for an HTTP error. So every failure is reduced here to one
+// of a small, stable set of codes the client switches on to pick its wording.
+// `detail` is still sent, but only as debugging material.
+// ---------------------------------------------------------------------------
+type AskFailure = "warming_up" | "index_missing" | "unreachable" | "timeout" | "unknown";
+
+function classify(err: any): AskFailure {
+  const status = err?.response?.status;
+  const upstream = String(err?.response?.data?.error ?? "");
+
+  // The ML service uses 503 for the two states it reports about itself:
+  // "assistant index not built" and "assistant is still warming up".
+  if (status === 503) {
+    if (upstream.includes("index"))   return "index_missing";
+    if (upstream.includes("warming")) return "warming_up";
+  }
+
+  // No response object at all means we never reached the service: it is not
+  // listening (ECONNREFUSED), the container never woke, or we gave up waiting.
+  if (!err?.response) {
+    return err?.code === "ECONNABORTED" || err?.code === "ETIMEDOUT"
+      ? "timeout"
+      : "unreachable";
+  }
+
+  // A gateway sits in front of the Space, so 502/504 means the gateway is up
+  // but the service behind it is not.
+  if (status === 502 || status === 504) return "unreachable";
+
+  return "unknown";
+}
 
 aiRoutes.post("/ask", async (req, res) => {
   const { question } = req.body as { question?: string };
   if (!question) { res.status(400).json({ error: "question required" }); return; }
 
-  const payload = {
-    contents: [{
-      parts: [{
-        text: `You are MediGuard AI. Answer briefly and safely. Always advise consulting a doctor.\n\nQuestion: ${question}`,
-      }],
-    }],
-  };
-
-  let lastError: unknown = "unknown";
-  for (const model of AI_MODELS) {
-    try {
-      const url = `${API.GEMINI_BASE}/models/${model}:generateContent?key=${ENV.GEMINI_API_KEY}`;
-      const { data } = await axios.post(url, payload, { timeout: 15_000 });
-      const answer = data.candidates?.[0]?.content?.parts?.[0]?.text ?? "Unable to respond.";
-      res.json({ answer });
-      return;
-    } catch (err: any) {
-      lastError = err?.response?.data ?? err?.message ?? "unknown";
-      console.error(`[AI] ${model} error:`, JSON.stringify(lastError));
-      // try next model
-    }
+  try {
+    // Retrieval-augmented answer from our own corpus. The success body must
+    // stay exactly { answer: string } — the app reads that field directly.
+    const { answer } = await ml.ask(question);
+    res.json({ answer });
+  } catch (err: any) {
+    const code = classify(err);
+    const detail = err?.response?.data ?? err?.message ?? "unknown";
+    console.error(`[AI] /ask failed (${code}):`, JSON.stringify(detail));
+    res.status(500).json({ error: "AI service temporarily unavailable", code, detail });
   }
-  res.status(500).json({ error: "AI service temporarily unavailable", detail: lastError });
 });

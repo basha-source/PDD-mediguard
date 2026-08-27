@@ -24,6 +24,9 @@ export type InventoryStackParams = {
     prefillDosage?:   string;
     prefillCategory?: MedicineCategory;
     prefillExpiry?:   string;
+    // Set whenever the medicine was reached from a scan, so the confirmed
+    // name can be written back against that barcode (services/barcodeRegistry).
+    barcode?:         string;
   };
 };
 

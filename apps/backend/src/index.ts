@@ -9,6 +9,7 @@ import { aiRoutes }           from "./routes/ai";
 import { notificationRoutes } from "./routes/notifications";
 import { authRoutes }         from "./routes/auth";
 import { ENV }                from "./config/env";
+import { startMissedDoseScanner } from "./services/missedDoseService";
 
 const app = express();
 
@@ -29,4 +30,9 @@ app.get("/", (_req, res) => res.json({
 
 app.get("/health", (_req, res) => res.json({ status: "ok", app: "MediGuard API" }));
 
-app.listen(ENV.PORT, () => console.log(`MediGuard API running on port ${ENV.PORT}`));
+app.listen(ENV.PORT, () => {
+  console.log(`MediGuard API running on port ${ENV.PORT}`);
+  // Started from inside listen() so merely importing this module (tests, tooling)
+  // never spins up a timer that hits Firestore every minute.
+  if (ENV.MISSED_DOSE_SCAN_ENABLED) startMissedDoseScanner();
+});

@@ -3,97 +3,214 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // ── Helpers ────────────────────────────────────────────────────────────────
-    function isAuth() {
-      return request.auth != null;
-    }
-    function isOwner(uid) {
-      return isAuth() && request.auth.uid == uid;
-    }
-    function isOwnerByField() {
-      return isAuth() && request.auth.uid == resource.data.userId;
-    }
-    function isOwnerByFieldIncoming() {
-      return isAuth() && request.auth.uid == request.resource.data.userId;
+    // ── Care Guardian ─────────────────────────────────────────────────────────
+    // A Care Guardian is linked to a patient by a careGuardianLinks document
+    // whose ID is deterministic: `{guardianId}_{patientId}` (CARE_GUARDIAN.linkId
+    // in packages/shared, written by CGLoginScreen). That determinism is the
+    // whole point: rules cannot run queries, so the only way to prove "the caller
+    // is this patient's guardian" is to look the link up by a known ID.
+    //
+    // COST: every exists() below is a *billed document read*, charged on top of
+    // the document(s) the request is actually reading — and on a list it is
+    // evaluated per candidate document. Deterministic link IDs hold that to
+    // exactly one extra read per evaluated doc; a random link ID would have made
+    // the check impossible to express at all.
+    //
+    // This grants READ ONLY. A guardian must never create, update or delete a
+    // patient's records, so isGuardianOf() appears in no write rule anywhere.
+    function isGuardianOf(patientUid) {
+      return request.auth != null
+             && exists(/databases/$(database)/documents/careGuardianLinks/$(request.auth.uid + '_' + patientUid));
     }
 
-    // ── Users ─────────────────────────────────────────────────────────────────
+    // `get` is split out from `list` so a linked guardian can read the patient's
+    // profile doc (name + emergency phone) without loosening the patient's own
+    // write rule, which stays strictly self-only.
     match /users/{userId} {
-      allow read, write: if isOwner(userId);
+      allow get:   if request.auth != null
+                   && (request.auth.uid == userId || isGuardianOf(userId));
+      allow list:  if request.auth != null && request.auth.uid == userId;
+      allow write: if request.auth != null && request.auth.uid == userId;
     }
 
-    // ── Medicines ─────────────────────────────────────────────────────────────
-    match /medicines/{docId} {
-      allow read: if isOwnerByField();
-      allow create: if isOwnerByFieldIncoming();
-      allow update, delete: if isOwnerByField();
+    // Private barcode -> medicine map, learned from confirmed scans.
+    // Rules do NOT cascade into subcollections, so the /users/{userId} rule
+    // above does not cover this path and it needs its own match block.
+    match /users/{userId}/barcodes/{code} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
     }
 
-    // ── Dose Logs ─────────────────────────────────────────────────────────────
-    match /doseLogs/{docId} {
-      allow read: if isOwnerByField();
-      allow create: if isOwnerByFieldIncoming();
-      allow update, delete: if isOwnerByField();
+    // Shared barcode registry. One vote document per user per barcode, and the
+    // document ID *is* the uid -- so a user can neither cast a second vote nor
+    // overwrite anyone else's, which is what keeps the tally honest.
+    // Reads are open to any signed-in user because the count is aggregated on
+    // the client; an entry is only served once enough users independently agree.
+    match /barcodeRegistry/{code}/votes/{uid} {
+      allow read:  if request.auth != null;
+      allow write: if request.auth != null && request.auth.uid == uid;
     }
 
-    // ── Vitals ────────────────────────────────────────────────────────────────
-    match /vitals/{docId} {
-      allow read: if isOwnerByField();
-      allow create: if isOwnerByFieldIncoming();
-      allow update, delete: if isOwnerByField();
+    match /medicines/{medId} {
+      allow get:    if request.auth != null
+                    && (resource == null || resource.data.userId == request.auth.uid);
+      allow list:   if request.auth != null && resource.data.userId == request.auth.uid;
+      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if request.auth != null && resource.data.userId == request.auth.uid;
     }
 
-    // ── Vaccinations ──────────────────────────────────────────────────────────
-    match /vaccinations/{docId} {
-      allow read: if isOwnerByField();
-      allow create: if isOwnerByFieldIncoming();
-      allow update, delete: if isOwnerByField();
+    match /doses/{doseId} {
+      allow get:    if request.auth != null
+                    && (resource == null || resource.data.userId == request.auth.uid);
+      allow list:   if request.auth != null && resource.data.userId == request.auth.uid;
+      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if request.auth != null && resource.data.userId == request.auth.uid;
     }
 
-    // ── Side Effects ──────────────────────────────────────────────────────────
-    match /sideEffects/{docId} {
-      allow read: if isOwnerByField();
-      allow create: if isOwnerByFieldIncoming();
-      allow update, delete: if isOwnerByField();
+    // A linked Care Guardian may READ the patient's dose logs (this is what
+    // CGPatientMonitorScreen's `where(userId == patient) where(date == today)`
+    // query needs). Writes stay strictly self-only.
+    match /doseLogs/{logId} {
+      allow get:    if request.auth != null
+                    && (resource == null
+                        || resource.data.userId == request.auth.uid
+                        || isGuardianOf(resource.data.userId));
+      allow list:   if request.auth != null
+                    && (resource.data.userId == request.auth.uid
+                        || isGuardianOf(resource.data.userId));
+      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if request.auth != null && resource.data.userId == request.auth.uid;
     }
 
-    // ── Family Members ────────────────────────────────────────────────────────
-    match /familyMembers/{docId} {
-      allow read: if isOwnerByField();
-      allow create: if isOwnerByFieldIncoming();
-      allow update, delete: if isOwnerByField();
+    match /vitals/{vitalId} {
+      allow get:    if request.auth != null
+                    && (resource == null || resource.data.userId == request.auth.uid);
+      allow list:   if request.auth != null && resource.data.userId == request.auth.uid;
+      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if request.auth != null && resource.data.userId == request.auth.uid;
     }
 
-    // ── Care Guardian Links ───────────────────────────────────────────────────
-    match /careGuardianLinks/{docId} {
-      allow read: if isAuth() && (
-        resource.data.userId == request.auth.uid ||
-        resource.data.careGuardianId == request.auth.uid
-      );
-      allow create: if isOwnerByFieldIncoming();
-      allow update, delete: if isOwnerByField();
+    match /vaccinations/{vaccId} {
+      allow get:    if request.auth != null
+                    && (resource == null || resource.data.userId == request.auth.uid);
+      allow list:   if request.auth != null && resource.data.userId == request.auth.uid;
+      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if request.auth != null && resource.data.userId == request.auth.uid;
     }
 
-    // ── Notifications ─────────────────────────────────────────────────────────
-    match /notifications/{docId} {
-      allow read: if isOwnerByField();
-      allow create: if isOwnerByFieldIncoming();
-      allow update, delete: if isOwnerByField();
+    match /sideEffects/{sideEffectId} {
+      allow get:    if request.auth != null
+                    && (resource == null || resource.data.userId == request.auth.uid);
+      allow list:   if request.auth != null && resource.data.userId == request.auth.uid;
+      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if request.auth != null && resource.data.userId == request.auth.uid;
     }
 
-    // ── Chat History ──────────────────────────────────────────────────────────
-    match /chatHistory/{docId} {
-      allow read: if isOwnerByField();
-      allow create: if isOwnerByFieldIncoming();
-      allow update, delete: if isOwnerByField();
+    match /familyMembers/{memberId} {
+      allow get:    if request.auth != null
+                    && (resource == null || resource.data.parentUserId == request.auth.uid);
+      allow list:   if request.auth != null && resource.data.parentUserId == request.auth.uid;
+      allow create: if request.auth != null && request.resource.data.parentUserId == request.auth.uid;
+      allow update, delete: if request.auth != null && resource.data.parentUserId == request.auth.uid;
     }
 
-    // ── Wellness Logs ─────────────────────────────────────────────────────────
-    // Doc ID is `{userId}_{date}`; each doc has a userId field.
-    match /wellnessLogs/{docId} {
-      allow read: if isOwnerByField();
-      allow create: if isOwnerByFieldIncoming();
-      allow update, delete: if isOwnerByField();
+    match /careGuardianLinks/{linkId} {
+      allow get:    if request.auth != null
+                    && (resource == null
+                        || resource.data.patientId == request.auth.uid
+                        || resource.data.guardianId == request.auth.uid);
+      allow list:   if request.auth != null
+                    && (resource.data.patientId == request.auth.uid
+                        || resource.data.guardianId == request.auth.uid);
+      allow create: if request.auth != null;
+      allow update, delete: if request.auth != null
+                            && (resource.data.patientId == request.auth.uid
+                                || resource.data.guardianId == request.auth.uid);
+    }
+
+    // A linked Care Guardian may READ the patient's notifications (this is what
+    // CGAlertScreen's `where(userId == patient) orderBy(createdAt desc)` query
+    // needs). Writes stay strictly self-only — a guardian cannot mark the
+    // patient's notifications read, nor write new ones into their feed.
+    match /notifications/{notifId} {
+      allow get:    if request.auth != null
+                    && (resource == null
+                        || resource.data.userId == request.auth.uid
+                        || isGuardianOf(resource.data.userId));
+      allow list:   if request.auth != null
+                    && (resource.data.userId == request.auth.uid
+                        || isGuardianOf(resource.data.userId));
+      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if request.auth != null && resource.data.userId == request.auth.uid;
+    }
+
+    // Missed-dose escalations. These documents are written ONLY by the backend
+    // cron through the Admin SDK, which bypasses security rules entirely —
+    // so there is deliberately NO `allow create` line here: every client-side
+    // create is denied outright. Clients only read, and the guardian may
+    // acknowledge.
+    match /missedDoseAlerts/{alertId} {
+      allow get:    if request.auth != null
+                    && (resource.data.guardianId == request.auth.uid
+                        || resource.data.patientId == request.auth.uid);
+      allow list:   if request.auth != null
+                    && (resource.data.guardianId == request.auth.uid
+                        || resource.data.patientId == request.auth.uid);
+
+      // Acknowledge only. The guardian may flip `acknowledged` / set
+      // `acknowledgedAt` and nothing else — affectedKeys().hasOnly() means any
+      // update that also touches patientId, medicineName, detectedAt, etc. is
+      // rejected, so an alert can never be rewritten into a different alert.
+      allow update: if request.auth != null
+                    && resource.data.guardianId == request.auth.uid
+                    && request.resource.data.diff(resource.data).affectedKeys()
+                         .hasOnly(['acknowledged', 'acknowledgedAt']);
+
+      // Alerts are an audit trail; nobody deletes them from a client.
+      allow delete: if false;
+    }
+
+    match /chatHistory/{chatId} {
+      allow get:    if request.auth != null
+                    && (resource == null || resource.data.userId == request.auth.uid);
+      allow list:   if request.auth != null && resource.data.userId == request.auth.uid;
+      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if request.auth != null && resource.data.userId == request.auth.uid;
+    }
+
+    // Doc ID is `{userId}_{date}` — check ID directly so get works even when the
+    // doc doesn't exist yet. A guardian is matched on the stored userId instead,
+    // since the id it would need to guess belongs to the patient, not to them.
+    match /wellnessLogs/{logId} {
+      allow get:    if request.auth != null
+                    && (logId.matches(request.auth.uid + '_.*')
+                        || (resource != null && isGuardianOf(resource.data.userId)));
+      allow list:   if request.auth != null
+                    && (resource.data.userId == request.auth.uid
+                        || isGuardianOf(resource.data.userId));
+      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if request.auth != null && resource.data.userId == request.auth.uid;
+    }
+
+    match /fcmTokens/{tokenId} {
+      allow read, write: if request.auth != null;
+    }
+
+    // Public MG-XXXX -> patientId directory. A guardian who knows only the code
+    // must be able to resolve the patient, and rules cannot authorise a query, so
+    // the code IS the document ID and any signed-in user may read one entry.
+    // Writes are restricted to the patient claiming the code for themselves:
+    // without this, any signed-in user could repoint someone else's code at their
+    // own uid and hijack the link. Codes are claim-once — no update, no delete —
+    // so a claimed code cannot be silently reassigned.
+    match /patientCodes/{code} {
+      allow get:    if request.auth != null;
+      allow list:   if false;
+      allow create: if request.auth != null
+                    && request.resource.data.patientId == request.auth.uid;
+      allow update: if request.auth != null
+                    && resource.data.patientId == request.auth.uid
+                    && request.resource.data.patientId == request.auth.uid;
+      allow delete: if false;
     }
   }
 }

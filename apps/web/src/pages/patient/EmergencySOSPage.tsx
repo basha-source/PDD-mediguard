@@ -1,3 +1,4 @@
+import { withoutHealthSentinels } from "@mediguard/shared";
 import { useAuthStore } from "@/store/authStore";
 
 export function EmergencySOSPage() {
@@ -36,8 +37,10 @@ export function EmergencySOSPage() {
         <div className="space-y-2 text-sm">
           {[
             ["Blood Group",  user?.bloodGroup ?? "Not set"],
-            ["Allergies",    user?.allergies?.join(", ") || "None recorded"],
-            ["Conditions",   user?.conditions?.join(", ") || "None recorded"],
+            // "None"/"Normal" are the form's "nothing to declare" sentinels —
+            // a responder must not read them as a recorded allergy/condition.
+            ["Allergies",    withoutHealthSentinels(user?.allergies).join(", ") || "None recorded"],
+            ["Conditions",   withoutHealthSentinels(user?.conditions).join(", ") || "None recorded"],
           ].map(([label, val]) => (
             <div key={label} className="flex justify-between py-2 border-b border-gray-50 last:border-0">
               <span className="text-text-secondary font-medium">{label}</span>

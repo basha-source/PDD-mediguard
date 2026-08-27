@@ -1,0 +1,9 @@
+.venv/
+__pycache__/
+*.pyc
+
+# Derived artefacts -- rebuilt by scripts/ and by the Dockerfile.
+# The inputs (data/faq.json, data/sources/*.csv) and the built medicines.db are
+# committed; these are large and reproducible, so they are not.
+data/index/
+data/corpus.jsonl

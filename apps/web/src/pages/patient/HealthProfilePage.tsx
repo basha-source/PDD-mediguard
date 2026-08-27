@@ -5,8 +5,10 @@ import { FIRESTORE } from "@mediguard/shared";
 import { useAuthStore } from "@/store/authStore";
 
 const BLOOD_GROUPS = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
-const COMMON_CONDITIONS = ["Diabetes", "Hypertension", "Asthma", "Heart Disease", "Arthritis", "Thyroid", "Kidney Disease"];
-const COMMON_ALLERGIES  = ["Penicillin", "Aspirin", "Ibuprofen", "Sulfa drugs", "Codeine", "Latex"];
+const NO_CONDITIONS = "Normal";
+const NO_ALLERGIES  = "None";
+const COMMON_CONDITIONS = ["Normal", "Diabetes", "Hypertension", "Asthma", "Heart Disease", "Arthritis", "Thyroid", "Kidney Disease"];
+const COMMON_ALLERGIES  = ["None", "Penicillin", "Aspirin", "Ibuprofen", "Sulfa drugs", "Codeine", "Latex"];
 
 export function HealthProfilePage() {
   const { user, setUser } = useAuthStore();
@@ -17,16 +19,30 @@ export function HealthProfilePage() {
   const [allergies, setAllergies]     = useState<string[]>(user?.allergies ?? []);
   const [emergency, setEmergency]     = useState(user?.emergencyContact ?? "");
   const [condInput, setCondInput]     = useState("");
+  const [condOther, setCondOther]     = useState(() => conditions.some((x) => !COMMON_CONDITIONS.includes(x)));
   const [allergyInput, setAllergyInput] = useState("");
+  const [allergyOther, setAllergyOther] = useState(() => allergies.some((x) => !COMMON_ALLERGIES.includes(x)));
   const [saving, setSaving]           = useState(false);
   const [saved, setSaved]             = useState(false);
 
-  function toggle(list: string[], setList: (v: string[]) => void, item: string) {
-    setList(list.includes(item) ? list.filter((x) => x !== item) : [...list, item]);
+  function toggle(list: string[], setList: (v: string[]) => void, item: string, sentinel: string, setInput: (v: string) => void, setOther: (v: boolean) => void) {
+    if (item === sentinel) { setList(list.includes(sentinel) ? [] : [sentinel]); setInput(""); setOther(false); return; }
+    const next = list.includes(item) ? list.filter((x) => x !== item) : [...list, item];
+    setList(next.filter((x) => x !== sentinel));
   }
-  function addCustom(input: string, list: string[], setList: (v: string[]) => void, setInput: (v: string) => void) {
+  function toggleOther(list: string[], setList: (v: string[]) => void, presets: string[], sentinel: string, open: boolean, setOpen: (v: boolean) => void, setInput: (v: string) => void) {
+    if (!open) { setOpen(true); setList(list.filter((x) => x !== sentinel)); return; }
+    if (list.some((x) => !presets.includes(x))) return;
+    setOpen(false); setInput("");
+  }
+  function addCustom(input: string, list: string[], setList: (v: string[]) => void, setInput: (v: string) => void, sentinel: string, presets: string[], setOther: (v: boolean) => void) {
     const val = input.trim();
-    if (val && !list.includes(val)) setList([...list, val]);
+    if (!val) return;
+    if (val.toLowerCase() === sentinel.toLowerCase()) { setList([sentinel]); setOther(false); setInput(""); return; }
+    if (list.some((x) => x.toLowerCase() === val.toLowerCase())) { setInput(""); return; }
+    const preset = presets.find((p) => p.toLowerCase() === val.toLowerCase());
+    if (preset) { toggle(list, setList, preset, sentinel, setInput, setOther); setInput(""); return; }
+    setList([...list.filter((x) => x !== sentinel), val]);
     setInput("");
   }
 
@@ -74,26 +90,34 @@ export function HealthProfilePage() {
           <label className="block text-xs font-medium mb-2">Medical Conditions</label>
           <div className="flex flex-wrap gap-2 mb-2">
             {COMMON_CONDITIONS.map((c) => (
-              <button type="button" key={c} onClick={() => toggle(conditions, setConditions, c)}
+              <button type="button" key={c} onClick={() => toggle(conditions, setConditions, c, NO_CONDITIONS, setCondInput, setCondOther)}
                 className={`px-3 py-1 rounded-full text-xs font-medium border transition-colors ${conditions.includes(c) ? "bg-primary text-white border-primary" : "border-gray-300 text-text-secondary hover:border-primary"}`}>
                 {c}
               </button>
             ))}
+            <button type="button" onClick={() => toggleOther(conditions, setConditions, COMMON_CONDITIONS, NO_CONDITIONS, condOther, setCondOther, setCondInput)}
+              className={`px-3 py-1 rounded-full text-xs font-medium border transition-colors ${condOther ? "bg-primary text-white border-primary" : "border-gray-300 text-text-secondary hover:border-primary"}`}>
+              Other
+            </button>
           </div>
-          <div className="flex gap-2">
-            <input value={condInput} onChange={(e) => setCondInput(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addCustom(condInput, conditions, setConditions, setCondInput))}
-              placeholder="Add custom…" className="flex-1 px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/40" />
-            <button type="button" onClick={() => addCustom(condInput, conditions, setConditions, setCondInput)} className="px-3 py-2 bg-primary text-white rounded-lg text-sm">+</button>
-          </div>
-          {conditions.length > 0 && (
-            <div className="flex flex-wrap gap-1.5 mt-2">
-              {conditions.map((c) => (
-                <span key={c} className="px-2 py-0.5 bg-primary-pale text-primary text-xs rounded-full flex items-center gap-1">
-                  {c} <button type="button" onClick={() => setConditions(conditions.filter((x) => x !== c))} className="hover:text-red-500">×</button>
-                </span>
-              ))}
-            </div>
+          {condOther && (
+            <>
+              <div className="flex gap-2">
+                <input value={condInput} onChange={(e) => setCondInput(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addCustom(condInput, conditions, setConditions, setCondInput, NO_CONDITIONS, COMMON_CONDITIONS, setCondOther))}
+                  placeholder="Add custom…" className="flex-1 px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/40" />
+                <button type="button" onClick={() => addCustom(condInput, conditions, setConditions, setCondInput, NO_CONDITIONS, COMMON_CONDITIONS, setCondOther)} className="px-3 py-2 bg-primary text-white rounded-lg text-sm">+</button>
+              </div>
+              {conditions.some((x) => !COMMON_CONDITIONS.includes(x)) && (
+                <div className="flex flex-wrap gap-1.5 mt-2">
+                  {conditions.filter((x) => !COMMON_CONDITIONS.includes(x)).map((c) => (
+                    <span key={c} className="px-2 py-0.5 bg-primary-pale text-primary text-xs rounded-full flex items-center gap-1">
+                      {c} <button type="button" onClick={() => setConditions(conditions.filter((x) => x !== c))} className="hover:text-red-500">×</button>
+                    </span>
+                  ))}
+                </div>
+              )}
+            </>
           )}
         </div>
 
@@ -101,18 +125,35 @@ export function HealthProfilePage() {
           <label className="block text-xs font-medium mb-2">Drug Allergies</label>
           <div className="flex flex-wrap gap-2 mb-2">
             {COMMON_ALLERGIES.map((a) => (
-              <button type="button" key={a} onClick={() => toggle(allergies, setAllergies, a)}
+              <button type="button" key={a} onClick={() => toggle(allergies, setAllergies, a, NO_ALLERGIES, setAllergyInput, setAllergyOther)}
                 className={`px-3 py-1 rounded-full text-xs font-medium border transition-colors ${allergies.includes(a) ? "bg-alert-red text-white border-alert-red" : "border-gray-300 text-text-secondary hover:border-alert-red"}`}>
                 {a}
               </button>
             ))}
+            <button type="button" onClick={() => toggleOther(allergies, setAllergies, COMMON_ALLERGIES, NO_ALLERGIES, allergyOther, setAllergyOther, setAllergyInput)}
+              className={`px-3 py-1 rounded-full text-xs font-medium border transition-colors ${allergyOther ? "bg-alert-red text-white border-alert-red" : "border-gray-300 text-text-secondary hover:border-alert-red"}`}>
+              Other
+            </button>
           </div>
-          <div className="flex gap-2">
-            <input value={allergyInput} onChange={(e) => setAllergyInput(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addCustom(allergyInput, allergies, setAllergies, setAllergyInput))}
-              placeholder="Add custom…" className="flex-1 px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/40" />
-            <button type="button" onClick={() => addCustom(allergyInput, allergies, setAllergies, setAllergyInput)} className="px-3 py-2 bg-primary text-white rounded-lg text-sm">+</button>
-          </div>
+          {allergyOther && (
+            <>
+              <div className="flex gap-2">
+                <input value={allergyInput} onChange={(e) => setAllergyInput(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addCustom(allergyInput, allergies, setAllergies, setAllergyInput, NO_ALLERGIES, COMMON_ALLERGIES, setAllergyOther))}
+                  placeholder="Add custom…" className="flex-1 px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/40" />
+                <button type="button" onClick={() => addCustom(allergyInput, allergies, setAllergies, setAllergyInput, NO_ALLERGIES, COMMON_ALLERGIES, setAllergyOther)} className="px-3 py-2 bg-primary text-white rounded-lg text-sm">+</button>
+              </div>
+              {allergies.some((x) => !COMMON_ALLERGIES.includes(x)) && (
+                <div className="flex flex-wrap gap-1.5 mt-2">
+                  {allergies.filter((x) => !COMMON_ALLERGIES.includes(x)).map((a) => (
+                    <span key={a} className="px-2 py-0.5 bg-primary-pale text-primary text-xs rounded-full flex items-center gap-1">
+                      {a} <button type="button" onClick={() => setAllergies(allergies.filter((x) => x !== a))} className="hover:text-red-500">×</button>
+                    </span>
+                  ))}
+                </div>
+              )}
+            </>
+          )}
         </div>
 
         <div>

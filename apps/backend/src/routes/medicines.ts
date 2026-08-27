@@ -1,7 +1,7 @@
 import { Router } from "express";
 import axios from "axios";
 import { API } from "@mediguard/shared";
-import { ENV } from "../config/env";
+import * as ml from "../services/mlService";
 
 export const medicineRoutes = Router();
 
@@ -70,6 +70,42 @@ medicineRoutes.get("/lookup", async (req, res) => {
   res.status(404).json({ error: "Medicine not found for this barcode" });
 });
 
+// ---------------------------------------------------------------------------
+// Failure classification.
+//
+// Every /ocr failure used to come back as one sentence -- "Scanning service is
+// busy" -- whatever had actually gone wrong. A dependency missing on the ML
+// service, a container that never woke, and a genuine overload all read the
+// same, so the only way to tell them apart was to open the server logs. Worse,
+// "busy" actively misleads: it says retrying will help, when a missing
+// dependency will fail identically forever.
+//
+// The app switches on `code` to pick its wording; `detail` is debugging
+// material and is never shown to a patient. Mirrors routes/ai.ts.
+// ---------------------------------------------------------------------------
+type OcrFailure = "ocr_unavailable" | "unreachable" | "timeout" | "unknown";
+
+function classify(err: any): OcrFailure {
+  const status = err?.response?.status;
+  const upstream = String(err?.response?.data?.error ?? "");
+
+  // The ML service raises OcrUnavailable when no OCR backend can be loaded
+  // (paddleocr/pytesseract absent). Retrying cannot fix that -- say so.
+  if (upstream.includes("OcrUnavailable")) return "ocr_unavailable";
+
+  // No response object at all means we never reached the service.
+  if (!err?.response) {
+    return err?.code === "ECONNABORTED" || err?.code === "ETIMEDOUT"
+      ? "timeout"
+      : "unreachable";
+  }
+
+  // A gateway fronts the Space: 502/504 means it is up but the service is not.
+  if (status === 502 || status === 504) return "unreachable";
+
+  return "unknown";
+}
+
 medicineRoutes.post("/ocr", async (req, res) => {
   const { image, mode } = req.body as {
     image?: string;
@@ -77,53 +113,16 @@ medicineRoutes.post("/ocr", async (req, res) => {
   };
   if (!image || !mode) { res.status(400).json({ error: "image and mode required" }); return; }
 
-  let prompt: string;
-  if (mode === "expiry") {
-    prompt = `Find the expiry date on this medicine packaging. Return ONLY valid JSON with no markdown: {"expiry": "YYYY-MM-DD"}. If no date is visible, return {"expiry": null}.`;
-  } else if (mode === "packaging") {
-    prompt = `You are reading a medicine box or packaging (could be Indian or any country). Extract all visible information and return ONLY valid JSON with no markdown:
-{"name": "brand or generic medicine name", "dosage": "strength like 500mg or 10ml, empty string if not visible", "category": "tablet|capsule|liquid|injection|other", "expiryDate": "YYYY-MM-DD if visible else null"}
-Make your best guess for category based on the packaging. Never return null for name — use whatever is printed.`;
-  } else {
-    prompt = `Read this prescription image and list all medicines. Return ONLY valid JSON with no markdown: {"medicines": [{"name": "...", "dosage": "...", "category": "tablet|capsule|liquid|injection|other"}]}. Return empty array if nothing detected.`;
+  try {
+    // Our own OCR pipeline (PaddleOCR + expiry/dosage parsers + lexicon
+    // matching against medicines.db). The ML service returns exactly the JSON
+    // shape this endpoint has always returned, so it is forwarded unchanged.
+    const result = await ml.ocr(image, mode);
+    res.json(result);
+  } catch (err: any) {
+    const code = classify(err);
+    const detail = err?.response?.data?.error ?? err?.message ?? "unknown";
+    console.error(`[OCR] mode=${mode} failed (${code}):`, detail);
+    res.status(503).json({ error: "OCR failed", code, detail });
   }
-
-  // gemini-2.0-flash / 1.5-* removed: 429 (free-tier quota 0) or 404 (retired).
-  const MODELS = ["gemini-2.5-flash", "gemini-flash-latest"];
-  const payload = {
-    contents: [{
-      parts: [
-        { inline_data: { mime_type: "image/jpeg", data: image } },
-        { text: prompt },
-      ],
-    }],
-  };
-
-  const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
-
-  for (let m = 0; m < MODELS.length; m++) {
-    const model = MODELS[m];
-    const url = `${API.GEMINI_BASE}/models/${model}:generateContent?key=${ENV.GEMINI_API_KEY}`;
-    for (let attempt = 0; attempt < 3; attempt++) {
-      try {
-        const { data } = await axios.post(url, payload, { timeout: 30000 });
-        let raw: string = data.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
-        console.log(`[OCR] ${model} attempt ${attempt + 1} succeeded`);
-        raw = raw.replace(/```(?:json)?/g, "").replace(/```/g, "").trim();
-        const parsed = JSON.parse(raw);
-        res.json(parsed);
-        return;
-      } catch (err: any) {
-        const status = err?.response?.status;
-        const detail = err?.response?.data?.error?.message ?? err?.message ?? "unknown";
-        console.error(`[OCR] ${model} attempt ${attempt + 1} failed (${status}): ${detail}`);
-        const isRetryable = status === 503 || status === 429 ||
-          (typeof detail === "string" && (detail.includes("high demand") || detail.includes("overloaded")));
-        if (!isRetryable || attempt === 2) break;
-        await sleep(2000 * Math.pow(2, attempt)); // 2s, 4s
-      }
-    }
-  }
-
-  res.status(503).json({ error: "OCR failed", detail: "AI service is busy. Please try again in a moment." });
 });

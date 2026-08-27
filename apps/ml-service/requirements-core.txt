@@ -1,0 +1,10 @@
+# Always needed: API surface, date/dosage parsing, lexicon matching.
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+pydantic==2.10.4
+requests==2.32.3
+numpy==2.2.1
+scikit-learn==1.6.0
+rapidfuzz==3.11.0
+python-dateutil==2.9.0.post0
+pillow==11.1.0

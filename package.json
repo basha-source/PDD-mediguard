@@ -2,13 +2,17 @@
   "name": "mediguard",
   "private": true,
   "scripts": {
-    "dev": "turbo dev --ui=tui",
+    "demo": "powershell -ExecutionPolicy Bypass -File ./demo.ps1",
+    "dev": "powershell -ExecutionPolicy Bypass -File ./dev.ps1",
+    "dev:turbo": "turbo dev --ui=tui",
+    "dev:services": "turbo dev --filter=@mediguard/web --filter=@mediguard/backend",
     "build": "turbo build",
     "lint": "turbo lint",
     "type-check": "turbo type-check",
-    "mobile": "turbo dev --filter=@mediguard/mobile",
+    "mobile": "pnpm --filter @mediguard/mobile exec expo start",
     "web": "turbo dev --filter=@mediguard/web",
-    "backend": "turbo dev --filter=@mediguard/backend"
+    "backend": "turbo dev --filter=@mediguard/backend",
+    "ml": "powershell -ExecutionPolicy Bypass -Command \"cd apps/ml-service; ./.venv/Scripts/Activate.ps1; python -m uvicorn app.main:app --reload --port 8000\""
   },
   "devDependencies": {
     "turbo": "^2.0.0",

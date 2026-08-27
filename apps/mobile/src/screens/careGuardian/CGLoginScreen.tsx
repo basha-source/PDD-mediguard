@@ -14,8 +14,8 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "@mediguard/shared";
 import { signInWithEmail, getDb } from "@mediguard/firebase";
-import { collection, query, where, getDocs, setDoc, doc, getDoc } from "firebase/firestore";
-import { FIRESTORE } from "@mediguard/shared";
+import { setDoc, doc, getDoc } from "firebase/firestore";
+import { FIRESTORE, CARE_GUARDIAN } from "@mediguard/shared";
 import { useAuthStore } from "@/store/authStore";
 
 const TEAL = "#00695C";
@@ -58,28 +58,41 @@ export function CGLoginScreen() {
         const db = getDb();
         const code = patientCode.trim().toUpperCase();
 
-        // Step 2: Look up patient by care guardian code
-        const usersRef = collection(db, FIRESTORE.USERS);
-        const q = query(usersRef, where("careGuardianCode", "==", code));
-        const snap = await getDocs(q);
+        // Step 2: Look up the patient through the public code directory.
+        // This used to be query(users, where careGuardianCode == code), which the
+        // security rules always denied: listing /users requires uid == userId, and
+        // a guardian is by definition a different user. Rules cannot authorise a
+        // query at all, so the code must resolve by document ID instead.
+        const codeSnap = await getDoc(doc(db, FIRESTORE.PATIENT_CODES, code));
+        const patientId = codeSnap.exists() ? (codeSnap.data().patientId as string) : null;
 
-        if (snap.empty) {
+        if (!patientId) {
           setError("Patient code not found. Ask your patient for their MG-XXXX code.");
           setLoading(false);
           return;
         }
 
-        const patientDoc = snap.docs[0];
-        const patientId = patientDoc.id;
-
-        // Step 3: Create link document
-        const linkRef = doc(db, FIRESTORE.CG_LINKS, `${uid}_${patientId}`);
-        await setDoc(linkRef, {
-          patientId,
-          guardianId: uid,
-          code,
-          linkedAt: new Date().toISOString(),
-        });
+        // Step 3: Create link document.
+        // The doc ID is deterministic — CARE_GUARDIAN.linkId(guardianId, patientId)
+        // — so the security rules can prove this link exists with a single
+        // exists() lookup instead of a query (rules cannot run queries at all).
+        // merge:true makes the write idempotent: re-linking the same
+        // guardian/patient pair updates this one doc, never creates a duplicate.
+        const linkRef = doc(
+          db,
+          FIRESTORE.CG_LINKS,
+          CARE_GUARDIAN.linkId(uid, patientId)
+        );
+        await setDoc(
+          linkRef,
+          {
+            patientId,
+            guardianId: uid,
+            code,
+            linkedAt: new Date().toISOString(),
+          },
+          { merge: true }
+        );
       }
 
       // Step 4: Read guardian's own user doc and set in store

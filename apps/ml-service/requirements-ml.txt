@@ -1,0 +1,12 @@
+# Feature 3 (retrieval) and Feature 2 (TrOCR). CPU-only wheels.
+# Install torch from the CPU index to avoid pulling ~2GB of CUDA libraries:
+#   pip install -r requirements-ml.txt --extra-index-url https://download.pytorch.org/whl/cpu
+# torch 2.6 is the first release with Python 3.13 wheels, so the same pin works
+# for local dev on 3.13 and for the 3.11 image in the Dockerfile.
+torch==2.6.0
+transformers==4.49.0
+sentence-transformers==3.4.1
+faiss-cpu==1.10.0
+# TrOCR's tokenizer is loaded through the slow-tokenizer path, which needs both.
+sentencepiece==0.2.2
+protobuf>=5.29,<8
