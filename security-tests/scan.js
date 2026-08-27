@@ -514,7 +514,7 @@ function writeSecurityReview(inventory, endpoints, sast, secrets) {
   return { confirmed, remediated };
 }
 
-function writeExecutiveSummary(confirmed, deps, scoreValue, deductions) {
+function writeExecutiveSummary(confirmed, deps, scoreValue, deductions, endpoints, allFindings) {
   const bySev = (s) => confirmed.filter((f) => f.severity === s);
   const top = [...confirmed].sort((a, b) => {
     const w = { CRITICAL: 4, HIGH: 3, MEDIUM: 2, LOW: 1 };
@@ -576,22 +576,46 @@ function writeExecutiveSummary(confirmed, deps, scoreValue, deductions) {
     "guardian relationship can be proven in a rule. That is careful work and it is the part that protects " +
     "patient records.");
   lines.push("");
-  lines.push("The weakness is the **API layer in front of it**. Eleven of twelve endpoints require no " +
-    "authentication at all. Two of them are not merely readable but *actively privileged*: one revokes " +
-    "any user's session given only their UID, and one triggers a job that writes alerts and pushes " +
-    "notifications to every patient, guarded by a secret whose default value is published in this " +
-    "repository. Neither requires an account to reach.");
+
+  const unauthEps = endpoints.filter((e) => e.auth === "No");
+  const authEps = endpoints.filter((e) => e.auth.startsWith("Yes"));
+  lines.push(`The weakness is the **API layer in front of it**. Of ${endpoints.length} endpoints, ` +
+    `**${unauthEps.length} require no authentication at all** and only ${authEps.length} require a ` +
+    `Firebase ID token. ${endpoints.filter((e) => e.rateLimited === "No").length} are not rate limited.`);
   lines.push("");
-  lines.push("None of these are hard to fix. `requireAuth` already exists and works — it is applied to one " +
-    "route. Most of the critical and high findings close by adding it, adding a rate limiter, and " +
-    "removing two lines that leak upstream error detail.");
+
+  const fixedCriticals = (allFindings || []).filter(
+    (f) => f.severity === "CRITICAL" && f.verifyStatus === "REMEDIATED"
+  );
+  if (confirmed.some((f) => f.severity === "CRITICAL")) {
+    lines.push("**Critical findings are currently present and must be fixed before this ships.** " +
+      "See the CRITICAL section of `security-review.md`.");
+  } else if (fixedCriticals.length) {
+    lines.push(`**${fixedCriticals.length} critical findings were found and fixed during this assessment**, ` +
+      "and their verifiers now report REMEDIATED:");
+    lines.push("");
+    for (const f of fixedCriticals) {
+      lines.push(`- **${f.id}** — ${f.title}`);
+    }
+    lines.push("");
+    lines.push("Both affected endpoints had zero callers in the web app, the mobile app, or any script, " +
+      "so closing them changed no working behaviour. The dynamic phase of the CI pipeline now probes " +
+      "both as regression checks, including a request using the old published secret.");
+  } else {
+    lines.push("No critical findings are present.");
+  }
+  lines.push("");
+  lines.push("What remains is a set of highs that share one root cause: `requireAuth` already exists and " +
+    "works, and is applied to a single route. Most of them close by applying it, adding a rate limiter, " +
+    "pinning CORS, and removing two lines that forward upstream error detail to the caller.");
   lines.push("");
   lines.push("## Recommended remediation order");
   lines.push("");
   lines.push("| Priority | Action | Findings closed | Effort |");
   lines.push("| --- | --- | --- | --- |");
-  lines.push("| 1 | Remove the `dev-cron-secret` fallback; rotate the secret | MG-SEC-001 | 10 min |");
-  lines.push("| 2 | Put `/api/auth/revoke-tokens` behind `requireAuth`, revoke only the caller | MG-SEC-002 | 15 min |");
+  const done = (id) => (allFindings || []).some((f) => f.id === id && f.verifyStatus === "REMEDIATED");
+  lines.push(`| 1 | ${done("MG-SEC-001") ? "~~Remove the \`dev-cron-secret\` fallback; rotate the secret~~ **DONE**" : "Remove the \`dev-cron-secret\` fallback; rotate the secret"} | MG-SEC-001 | 10 min |`);
+  lines.push(`| 2 | ${done("MG-SEC-002") ? "~~Put \`/api/auth/revoke-tokens\` behind \`requireAuth\`~~ **DONE**" : "Put \`/api/auth/revoke-tokens\` behind \`requireAuth\`, revoke only the caller"} | MG-SEC-002 | 15 min |`);
   lines.push("| 3 | Add `requireAuth` + per-user rate limits to `/ai/ask` and `/medicines/ocr` | MG-SEC-003, 004, 012 | 1 hr |");
   lines.push("| 4 | Pin CORS to the deployed origins; add `helmet` | MG-SEC-005, 007 | 30 min |");
   lines.push("| 5 | Drop `detail` from error responses; stop logging payloads | MG-SEC-006, 021 | 20 min |");
@@ -601,7 +625,7 @@ function writeExecutiveSummary(confirmed, deps, scoreValue, deductions) {
   lines.push("| 9 | Set the real Firebase service account in Render; fail closed at boot | MG-SEC-013 | 15 min |");
   lines.push("| 10 | Remove `RECORD_AUDIO`; add `testID`/`accessibilityLabel` to the mobile app | MG-SEC-014, 016 | 1 day |");
   lines.push("");
-  lines.push("Items 1–6 close both criticals and four of the six highs, and are a single afternoon.");
+  lines.push("Items 3–6 close four of the six remaining highs and are a single afternoon's work.");
   lines.push("");
 
   fs.writeFileSync(path.join(OUTDIR, "executive-summary.md"), lines.join("\n"), "utf8");
@@ -720,7 +744,7 @@ async function main() {
   writeSecurityReview(inventory, endpoints, sast, secrets);
 
   console.log("Phase 7  Writing executive-summary.md…");
-  writeExecutiveSummary(confirmed, deps, scoreValue, deductions);
+  writeExecutiveSummary(confirmed, deps, scoreValue, deductions, endpoints, sast);
 
   console.log("Phase 7  Writing dependency-report.md…");
   writeDependencyReport(deps);
